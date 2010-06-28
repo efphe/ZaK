@@ -204,3 +204,12 @@ function arrayFromRecords(r) {
   }
   return res;
 }
+
+function copyObject(d, skipfields) {
+  var no= {};
+  for (var k in d) {
+    if (!skipfields || skipfields.indexOf(k) == -1)
+      no[k]= d[k];
+  }
+  return no;
+}

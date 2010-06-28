@@ -41,6 +41,7 @@ function addRate() {
 
 var iPricing= function(pricing) {
   this['pricing']= pricing;
+  this['periods']= new Array();
 
   this['designPrice']= function(price) {
     var sdfrom= strDate(price['dfrom']);
@@ -55,16 +56,20 @@ var iPricing= function(pricing) {
     return '<tr>' + res + '</tr>';
   }
 
+  this['designPrices']= function() {
+    res= '';
+    for (i=0;i<zakPricing.periods.length;i++) {
+      res+= zakPricing.designPrice(zakPricing.periods[i]);
+    }
+    return res;
+  }
+
   this['designPeriods']= function() {
     var ap= getActivePricing();
     llLoadPricesPeriods(ap,
       function(ses, recs) {
-        console.log('Designing ' + recs.rows.length + ' periods');
-        var i, res= '';
-        for (i=0;i<recs.rows.length;i++) {
-          res+= zakPricing.designPrice(recs.rows.item(i)); 
-        }
-        $('#defperiods').empty().html(res);
+        zakPricing.periods= arrayFromRecords(recs);
+        $('#defperiods').empty().html(zakPricing.designPrices());
       },
       function(ses, err) {
         humanMsg.displayMsg('Error: ' + err.message);
@@ -88,6 +93,85 @@ var iPricing= function(pricing) {
     $('#selplan').empty().html(res);
     zakPricing.designPeriods();
   }
+
+  this['mergePeriods']= function(oldp, newp) {
+    var os= oldp['dfrom'];
+    var oe= oldp['dto'];
+    var ns= newp['dfrom'];
+    var ne= newp['dto'];
+
+    var res= [];
+    var no;
+    /* the old period contains the new */
+    if (os <= ns && ne <= oe) { 
+      var removeid= false;
+      no= copyObject(oldp);
+      no['dto']= ns - 86400;
+      if (no['dto'] > no['dfrom']) {
+        res.push(no);
+        removeid= true;
+      }
+      else { 
+        no['del']= 1;
+        res.push(no);
+      }
+      no= copyObject(oldp);
+      no['dfrom']= newp['dto'] + 86400;
+      if (no['dto'] > no['dfrom']) {
+        if (removeid) {
+          console.log('Flagging for new period removing id');
+          delete no.id;
+        }
+        console.log('Pushing');
+        console.log(no);
+        res.push(no);
+      }
+      else {
+        no['del']= 1;
+        res.push(no);
+      }
+      return res;
+    }
+
+    /* the new period contains the old */
+    if (ns <= os && oe <= ne) {
+      no= copyObject(oldp);
+      no['del']= 1;
+      res.push(no);
+      return res;
+    }
+
+    /* pure intersection */
+    /*if (os < ns) {*/
+    /*no= copyObject(oldp);*/
+    /*no['dto']= newp['dfrom'] - 86400;*/
+    /*if (no['dto'] > no['dfrom'])*/
+    /*res.push(no);*/
+    /*return res;*/
+    /*}*/
+  }
+
+  this['eatPrices']= function(prices) {
+    if (zakPricing.periods.length == 0) return [prices];
+    var dfrom= prices['dfrom'];
+    var dto= prices['dto'];
+    var intersections= new Array();
+    var i, pp;
+    for(i=0;i<zakPricing.periods.length;i++) {
+      pp= zakPricing.periods[i];
+      if (pp['dto'] >= dfrom && pp['dfrom'] <= dto) 
+        intersections.push(pp);
+    }
+    if (intersections.length == 0) return [prices];
+    var res= [prices], tres, j;
+    for(i=0;i<intersections.length;i++) {
+      pp= intersections[i];
+      tres= zakPricing.mergePeriods(pp, prices);
+      for (j=0;j<tres.length;j++) res.push(tres[i]);
+    }
+    return res;
+  }
+
   return this;
 }
 
@@ -153,7 +237,11 @@ function addPricingPeriod() {
   }
   prices['dfrom']= pdfrom;
   prices['dto']= pdto;
-  llNewPricesPeriod(getActivePricing(), [prices],
+
+  lprices= zakPricing.eatPrices(prices);
+  /*lprices= [prices];*/
+
+  llNewPricesPeriod(getActivePricing(), lprices,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
       zakPricing.designPeriods();

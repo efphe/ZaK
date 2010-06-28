@@ -342,6 +342,11 @@ function llNewPricesPeriod(pid, periods, cbs) {
     console.log('Working on ' + periods.length + ' periods');
     for(i=0;i<periods.length;i++) {
       per= periods[i]; 
+      if (per['del'] == 1) {
+        console.log('period to be deleted');
+        ses.executeSql('delete from pricing_periods where id = ?',[per['id']]);
+        continue
+      }
       if (per['id']) {
         console.log('period to be updated');
         sd= updateStatement(per); 
@@ -349,12 +354,12 @@ function llNewPricesPeriod(pid, periods, cbs) {
         sqarr= sd['qarr'];
         sqarr.push(per['id']);
         ses.executeSql('update pricing_periods set ' + sqry + ' where id = ?', sqarr);
-      } else {
-        console.log('period to be inserted');
-        if (pid) per['id_pricing']= pid;
-        sd= insertStatement(per);
-        ses.executeSql('insert into pricing_periods ' + sd['qry'], sd['qarr']);
-      }
+        continue;
+      } 
+      console.log('period to be inserted');
+      if (pid) per['id_pricing']= pid;
+      sd= insertStatement(per);
+      ses.executeSql('insert into pricing_periods ' + sd['qry'], sd['qarr']);
     }
     cbs();
   });
