@@ -248,7 +248,7 @@ var iRoom= function(tableau, room) {
       /* let's handle begin,end, end-begin cases */
       if (day.indexOf('r') != 0) {
         if (day.indexOf('z') == 0 || day.indexOf('b') == 0)
-          imgdrag= '<img data-rid="' + this.id + '" class="draggable" src="/imgs/mng/tbl/mv.png" ' + dataoid +'></img>';
+          imgdrag= '<img data-rid="' + this.id + '" class="draggable" src="/imgs/tbl/mv.png" ' + dataoid +'></img>';
         else imgdrag= '';
         if ( i-1 > 0 && tempmap[i-1])
           menuclass+= ' rsrv_'+tempmap[i-1]['id_reservation'];
