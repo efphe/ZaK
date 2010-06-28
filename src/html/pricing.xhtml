@@ -3,9 +3,9 @@
     <div id="mcont" style="overflow:auto">
       <div id="mmenu">
         <div class="immenu">
-          <select id="selplan"></select>
+          <select id="selplan" onchange="changeActivePricing()"></select>
           <br/>
-          <a href="javascript:addNewPlan()">Add new</a>
+          <a href="javascript:askNewPricing()">Add new</a>
         </div>
         <div style="margin-top:6px" class="immenu">
           <b>Default prices</b>:
@@ -108,7 +108,7 @@
                     <input type="text" id="pfb" style="width:75px" value="2"></input>
                   </td>
                   <td>
-                    <input type="submit" value="Save" onclick="return newPricesPeriod()"></input>
+                    <input type="submit" value="Save" onclick="javascript:addPricingPeriod()"></input>
                   </td>
                 </tr>
               </thead>
@@ -154,62 +154,6 @@
 
     </div>
 
-  </div>
-
-  <div id="delPropertyAlert" class="zakmodal">
-    <h1>Security Check</h1>
-    <h2>Please, confirm your wishes</h2>
-    Dear, are you conscious that, deleting this property, you will loose
-    each type of data relative to this property (Rooms, reservations,
-    customers and so on)?
-    <br/>
-    <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:_delProperty()">Yes, I know, continue</a> 
-    <br/>
-    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
-  </div>
-  <div id="delRoomAlert" class="zakmodal">
-    <h1>Security Check</h1>
-    <h2>Please, confirm your wishes</h2>
-    Dear, are you conscious that, deleting this room, you will delete
-    also all the occupancies relative to this room? Reservations without
-    occupancies (ie reservations relying only on this room) will be deleted too.
-    <br/>
-    <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()">Yes, I know, continue</a> 
-    <br/>
-    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
-  </div>
-  <div id="newProperty" class="zakmodal">
-    <h1>Please, add a new property</h1>
-    <h2>Just enter your property name</h2>
-    Property Name: <input type="text" id="newpropertyname"></input>
-    <br/>
-    <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewProperty()">Add this property</a> 
-  </div>
-  <div id="modRoom" class="zakmodal">
-    <h1>Modify room</h1>
-    <h2>Modify name and/or code</h2>
-    <table>
-      <tr>
-        <td>
-          Room name: 
-        </td>
-        <td>
-          <input type="text" id="modroom_name" style="width:100px"></input>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Room code: 
-        </td>
-        <td>
-          <input type="text" id="modroom_code" style="width:60px"></input>
-        </td>
-      </tr>
-    </table>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:modRoom()">Modify</a> 
   </div>
 
   <div id="newpricing" class="zakmodal">

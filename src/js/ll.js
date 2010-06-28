@@ -305,8 +305,20 @@ function llLoadPricing(cbs, cbe) {
 
 function llNewPricing(name, cbs, cbe) {
   db= zakOpenDb();
-  db.readTransaction(function(ses) {
+  db.transaction(function(ses) {
     ses.executeSql('insert into pricing (name) values (?)', [name], cbs, cbe);
+  });
+}
+
+function llModPricing(pid, params, cbs, cbe) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    var sd= updateStatement(params); 
+    console.log(sd);
+    sqry= sd['qry'];
+    sqarr= sd['qarr'];
+    sqarr.push(pid);
+    ses.executeSql('update pricing set ' + sqry + ' where id = ?', sqarr, cbs, cbe);
   });
 }
 

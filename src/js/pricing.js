@@ -6,6 +6,98 @@ function getActivePricing() {
     return localStorage.activePricing;
   } catch(e) {return false};
 }
+function askNewPricing() {
+  $('#newpricing').modal({onClose: function() {
+    console.log('Closing now');
+    console.log(getActivePricing());
+    if (!getActivePricing()) {
+      console.log('No Active Pricing: ' + getActivePricing());
+      askNewPricing();
+      }
+  }});
+}
+
+function addRate() {
+  var rname= $('#newpricing_name').val();
+  if (!rname) {
+    humanMsg.displayMsg('Please, specify a good value');
+    return;
+  }
+  llNewPricing(rname, 
+    function(ses, recs) {
+      console.log('Setting active pricing...');
+      setActivePricing(recs.insertId);
+      console.log('Closing modal...');
+      $.modal.close();
+      $.modal.close();
+      console.log('Init pricing');
+      initPricing();
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error: ' + err.message);
+    });
+}
+
+
+var iPricing= function(pricing) {
+  this['pricing']= pricing;
+
+  this['designPrice']= function(price) {
+    var sdfrom= strDate(price['dfrom']);
+    var sdto= strDate(price['dto']);
+    var res= '<td>' + sdfrom + '</td>';
+    res+= '<td>' + sdto + '</td>';
+    res+= '<td>' + price['price_ro'] + '</td>';
+    res+= '<td>' + price['price_bb'] + '</td>';
+    res+= '<td>' + price['price_hb'] + '</td>';
+    res+= '<td>' + price['price_fb'] + '</td>';
+    res+= '<td><a href="javascript:delPricingPeriod(' + price['id'] + ')">Delete</a></td>';
+    return '<tr>' + res + '</tr>';
+  }
+
+  this['designPeriods']= function() {
+    var ap= getActivePricing();
+    llLoadPricesPeriods(ap,
+      function(ses, recs) {
+        console.log('Designing ' + recs.rows.length + ' periods');
+        var i, res= '';
+        for (i=0;i<recs.rows.length;i++) {
+          res+= zakPricing.designPrice(recs.rows.item(i)); 
+        }
+        $('#defperiods').empty().html(res);
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error: ' + err.message);
+      });
+  }
+  this['designMe']= function() {
+    var i, res= '';
+    var ap= getActivePricing(), p;
+    for(i=0;i<zakPricing.pricing.length;i++) {
+      p= zakPricing.pricing[i];
+      if (p['id'] == ap) {
+        res+= '<option selected="selected" value="' + p['id'] + '">' + p['name'] + '</option>';
+        $('#price_ro').val(p['price_ro'] || '');
+        $('#price_bb').val(p['price_bb'] || '');
+        $('#price_fb').val(p['price_fb'] || '');
+        $('#price_hb').val(p['price_hb'] || '');
+      }
+      else
+        res+= '<option value="' + p['id'] + '">' + p['name'] + '</option>';
+    }
+    $('#selplan').empty().html(res);
+    zakPricing.designPeriods();
+  }
+  return this;
+}
+
+function changeActivePricing() {
+  var splan= $('#selplan').val();
+  if (splan == getActivePricing()) return;
+  setActivePricing(splan);
+  initPricing();
+}
+
 function saveBasePrices() {
   var pro= $('#price_ro').val();
   var pbb= $('#price_bb').val();
@@ -18,7 +110,7 @@ function saveBasePrices() {
       return;
     }
   }
-  llModPropertyW(getActiveProperty()['id'], prices,
+  llModPricing(getActivePricing(), prices,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
     },
@@ -27,56 +119,29 @@ function saveBasePrices() {
     });
 }
 
-var iPricing= function() {
-  this['periods']= new Array();
-  this['designPrice']= function(price) {
-    var sdfrom= strDate(price['dfrom']);
-    var sdto= strDate(price['dto']);
-    var res= '<td>' + sdfrom + '</td>';
-    res+= '<td>' + sdto + '</td>';
-    res+= '<td>' + price['price_ro'] + '</td>';
-    res+= '<td>' + price['price_bb'] + '</td>';
-    res+= '<td>' + price['price_hb'] + '</td>';
-    res+= '<td>' + price['price_fb'] + '</td>';
-    res+= '<td><a href="javascript:delPricePeriod(' + price['id'] + ')">Delete</a></td>';
-    return '<tr>' + res + '</tr>';
-  }
-  this['designMe']= function() {
-    var i;
-    res= '';
-    for(i=0;i<zakPricing.periods.length;i++) {
-      res+= zakPricing.designPrice(zakPricing.periods[i]);
-    }
-    $('#defperiods').empty().append(res);
-  }
-  this['initPricing']= function() {
-    zakPricing.periods= new Array();
-    llLoadPricesPeriods(getActivePricing(),
-      function(ses, recs) {
-        var i;
-        for(i=0;i<recs.rows.length;i++) 
-          zakPricing.periods.push(recs.rows.item(i));
-        zakPricing.designMe();
-      },
-      function(ses, err) {
-        humanMsg.displayMsg('Error readin prices: ' + err.message);
-      });
-  }
-  return this;
-}
-
-function delPricePeriod(pid) {
-  llDelPricesPeriod(pid, 
+function delPricingPeriod(ppid) {
+  llDelPricesPeriod(ppid,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
-      zakPricing.initPricing();
+      zakPricing.designPeriods();
     },
     function(ses, err) {
-      humanMsg.displayMsg('Error deleting prices: ' + err.message);
+      humanMsg.displayMsg('Error: ' + err.message);
     });
 }
 
-function newPricesPeriod() {
+function addPricingPeriod() {
+  var pro= $('#price_ro').val();
+  var pbb= $('#price_bb').val();
+  var pfb= $('#price_fb').val();
+  var phb= $('#price_hb').val();
+  var prices= {price_ro: pro, price_fb: pfb, price_hb: phb, price_bb: pbb};
+  for (var k in prices) {
+    if (!checkFloat(prices[k])) {
+      humanMsg.displayMsg('Please, specify valid values', 1);
+      return;
+    }
+  }
   var pdfrom= $('#pdfrom').val();
   var pdto= $('#pdto').val();
   var today= unixDate();
@@ -86,77 +151,40 @@ function newPricesPeriod() {
     humanMsg.displayMsg('Please, specify valid dates', 1);
     return;
   }
-  var pro= $('#pro').val();
-  var pbb= $('#pbb').val();
-  var pfb= $('#pfb').val();
-  var phb= $('#phb').val();
-  var prices= {price_ro: pro, price_fb: pfb, price_hb: phb, price_bb: pbb};
-  for (var k in prices) {
-    if (!checkFloat(prices[k])) {
-      humanMsg.displayMsg('Please, specify valid values', 1);
-      return;
-    }
-  }
   prices['dfrom']= pdfrom;
   prices['dto']= pdto;
-  console.log('Launching now new prices');
-  llNewPricesPeriod(false, [prices],
+  llNewPricesPeriod(getActivePricing(), [prices],
     function(ses, recs) {
-      zakPricing.initPricing();
+      humanMsg.displayMsg('Sounds good');
+      zakPricing.designPeriods();
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error: ' + err.message);
     });
 }
 
-function initBasePrices() {
+function initPricing() {
   llLoadPricing(
     function(ses, recs) {
-      if (recs.rows.length==0) {
-        $('#newpricingname').val('Standard');
-        $('#newpricing').modal({onClose: function() {
-          console.log(getActivePricing());
-          if (!getActivePricing()) initBasePrices();
-        }});
+      if (recs.rows.length == 0) {
+        console.log('No pricing!! Ask new');
+        askNewPricing();
         return;
       }
-      var i, per, plist= new Array();
-      var ap= getActivePricing();
-      var res= '';
-      for (i=0;i<recs.rows.length;i++) {
-        per= recs.rows.item(i);
-        if (per['id'] == ap || (!per['id'] && !ap)) {
-          $('#price_ro').val(per['price_ro'] || '');
-          $('#price_bb').val(per['price_bb'] || '');
-          $('#price_fb').val(per['price_fb'] || '');
-          $('#price_hb').val(per['price_hb'] || '');
-          res+= '<option value="0">Default</option>';
-        } else res+= '<option value="' + per['id'] + '">' + per['name'] + '</option>';
+      if (!getActivePricing()) {
+        setActivePricing(recs.rows.item(0)['id']);
       }
-      $('#selplan').empty().html(res);
-      zakPricing= new iPricing();
-      zakPricing.initPricing();
+      zakPricing= new iPricing(arrayFromRecords(recs));
+      zakPricing.designMe();
     },
     function(ses, err) {
-      humanMsg.displayMsg('Error loading meal plans: ' + err.message);
+      humanMsg.displayMsg('Error ' + err.message, 1);
     });
-  var prop= getActiveProperty();
-}
 
-function addRate() {
-  var rname= $('newpricingname').val();
-  if (!rname) {
-    humanMsg.displayMsg('Please, specify a good value');
-    return;
-  }
-  llNewPricing(rname, 
-    function(ses, recs) {
-      
-      initBasePrices();
-    },
-    function(ses, err) {
-    });
 }
 
 $(document).ready(function() {
   $('#pdfrom').datepicker({dateFormat: 'dd/mm/yy'});
   $('#pdto').datepicker({dateFormat: 'dd/mm/yy'});
-  initBasePrices();
+  initPricing();
 });

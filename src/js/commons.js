@@ -175,7 +175,7 @@ function checkFloat(x){
 }
 
 function updateStatement(d) {
-  var qry, qarr;
+  var qry, qarr= new Array();
   var temp= new Array();
   for (var k in d) {
     temp.push(k + '= ?');
@@ -195,4 +195,12 @@ function insertStatement(d) {
   }
   var q= '(' + keys.join(',') + ') values (' + dots.join(',') + ')';
   return {qarr: vals, qry: q};
+}
+
+function arrayFromRecords(r) {
+  var i, res= new Array;
+  for(i=0;i<r.rows.length;i++) {
+    res.push(r.rows.item(i));
+  }
+  return res;
 }

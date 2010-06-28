@@ -158,7 +158,7 @@ table.roomsmanagement td {padding:6px;font-weight:bold}
 
     /*Simple Modal*/
 #simplemodal-container a.modalCloseImg {
- background:url(/imgs/share/x.png) no-repeat; /* adjust url as required */
+ background:url(/imgs/x.png) no-repeat; /* adjust url as required */
  width:25px;
  height:29px;
  display:inline;
