@@ -104,32 +104,28 @@ var iPricing= function(pricing) {
     var no;
     /* the old period contains the new */
     if (os <= ns && ne <= oe) { 
-      var removeid= false;
       no= copyObject(oldp);
       no['dto']= ns - 86400;
-      if (no['dto'] > no['dfrom']) {
-        res.push(no);
-        removeid= true;
-      }
+      if (no['dto'] > no['dfrom']) 
+        res.push(copyObject(no));
       else { 
         no['del']= 1;
-        res.push(no);
+        res.push(copyObject(no));
       }
       no= copyObject(oldp);
       no['dfrom']= newp['dto'] + 86400;
       if (no['dto'] > no['dfrom']) {
-        if (removeid) {
-          console.log('Flagging for new period removing id');
-          delete no.id;
-        }
+        delete no.id;
         console.log('Pushing');
         console.log(no);
-        res.push(no);
+        res.push(copyObject(no));
       }
       else {
         no['del']= 1;
-        res.push(no);
+        res.push(copyObject(no));
       }
+      console.log('Res Res');
+      console.log(res);
       return res;
     }
 
@@ -142,13 +138,24 @@ var iPricing= function(pricing) {
     }
 
     /* pure intersection */
-    /*if (os < ns) {*/
-    /*no= copyObject(oldp);*/
-    /*no['dto']= newp['dfrom'] - 86400;*/
-    /*if (no['dto'] > no['dfrom'])*/
-    /*res.push(no);*/
-    /*return res;*/
-    /*}*/
+    /* old older */
+    if (os < ns) {
+      no= copyObject(oldp);
+      no['dto']= newp['dfrom'] - 86400;
+      if (! no['dto'] > no['dfrom'])
+        no['del']= 1;
+      res.push(no);
+      return res;
+    }
+
+    /* old newest */
+    console.log('Old newest');
+    no= copyObject(oldp);
+    no['dfrom']= newp['dto'] + 86400;
+    if (! no['dto'] > no['dfrom']) 
+      no['del']= 1;
+    res.push(no);
+    return res;
   }
 
   this['eatPrices']= function(prices) {
@@ -167,8 +174,15 @@ var iPricing= function(pricing) {
     for(i=0;i<intersections.length;i++) {
       pp= intersections[i];
       tres= zakPricing.mergePeriods(pp, prices);
-      for (j=0;j<tres.length;j++) res.push(tres[i]);
+      for (j=0;j<tres.length;j++) {
+        console.log(tres[j]['id']);
+        console.log(tres[j]['del']);
+        console.log(jsDate(tres[j]['dfrom']));
+        console.log(jsDate(tres[j]['dto']));
+        res.push(tres[j]);
+      }
     }
+    console.log(res);
     return res;
   }
 
@@ -215,10 +229,10 @@ function delPricingPeriod(ppid) {
 }
 
 function addPricingPeriod() {
-  var pro= $('#price_ro').val();
-  var pbb= $('#price_bb').val();
-  var pfb= $('#price_fb').val();
-  var phb= $('#price_hb').val();
+  var pro= $('#pro').val();
+  var pbb= $('#pbb').val();
+  var pfb= $('#pfb').val();
+  var phb= $('#phb').val();
   var prices= {price_ro: pro, price_fb: pfb, price_hb: phb, price_bb: pbb};
   for (var k in prices) {
     if (!checkFloat(prices[k])) {

@@ -327,16 +327,15 @@ function llLoadPricesPeriods(pid, cbs, cbe) {
   db.readTransaction(function(ses) {
     var adfrom= unixDate();
     if (pid) 
-      ses.executeSql('select * from pricing_periods where id_pricing = ? and dto > ?', [pid, adfrom], cbs, cbe);
+      ses.executeSql('select * from pricing_periods where id_pricing = ? and dto > ? order by dfrom', [pid, adfrom], cbs, cbe);
     else
-      ses.executeSql('select * from pricing_periods where id_pricing is null and dto > ?', [adfrom], cbs, cbe);
+      ses.executeSql('select * from pricing_periods where id_pricing is null and dto > ? order by dfrom', [adfrom], cbs, cbe);
   });
 }
 
 function llNewPricesPeriod(pid, periods, cbs) {
   db= zakOpenDb();
   db.transaction(function(ses) {
-    console.log('dai dio cane');
     console.log(periods);
     var i, per, sd, sqry, sqarr;
     console.log('Working on ' + periods.length + ' periods');
