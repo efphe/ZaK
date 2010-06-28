@@ -1,0 +1,19 @@
+div.bookright {
+  float: right;
+  border-radius: 5px;
+  background-color: #cccccc;
+  width: 320px;
+  min-height: 100px;
+  padding: 10px;
+  border: 3px solid #888888;
+  margin-left: 5px;
+}
+h1.secacc {
+  border-radius: 5px;
+  background-color: #eeeeee;
+  padding: 5px;
+}
+
+h1.secacc a {
+  color: black;
+}

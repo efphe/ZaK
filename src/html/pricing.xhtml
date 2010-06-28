@@ -1,0 +1,230 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <div id="pcont" style="margin-top:10px">
+    <div id="mcont" style="overflow:auto">
+      <div id="mmenu">
+        <div class="immenu">
+          <select id="selplan"></select>
+          <br/>
+          <a href="javascript:addNewPlan()">Add new</a>
+        </div>
+        <div style="margin-top:6px" class="immenu">
+          <b>Default prices</b>:
+          <br/>
+          Per person prices:
+          <table class="defprices">
+            <tr>
+              <td>
+                RO:
+              </td>
+              <td>
+                <input type="text" id="price_ro" style="width:75px"></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                BB:
+              </td>
+              <td>
+                <input type="text" id="price_bb" style="width:75px"></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                HB:
+              </td>
+              <td>
+                <input type="text" id="price_hb" style="width:75px"></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                FB:
+              </td>
+              <td>
+                <input type="text" id="price_fb" style="width:75px"></input>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:center">
+                <input type="submit" value="Save" onclick="saveBasePrices()"></input>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          RO= room only<br/>
+          HB= half board<br/>
+          FB= full board<br/>
+          BB= Bed and breakfast<br/>
+        </div>
+      </div>
+
+      <div id="contents">
+        <div class="immenu">
+          <h1>Pricing</h1>
+          <h2>Define different prices for a period:</h2>
+          <div class="subctnt">
+            <table class="roomsmanagement">
+              <thead>
+                <tr>
+                  <th>
+                    <b>From</b>
+                  </th>
+                  <th>
+                    <b>To</b>
+                  </th>
+                  <th>
+                    <b>RO</b>
+                  </th>
+                  <th>
+                    <b>BB</b>
+                  </th>
+                  <th>
+                    <b>HB</b>
+                  </th>
+                  <th>
+                    <b>FB</b>
+                  </th>
+                  <th>
+                    <b>Save</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="text" id="pdfrom" style="width:75px" value="01/07/2010"></input>
+                  </td>
+                  <td>
+                    <input type="text" id="pdto" style="width:75px" value="03/07/2010"></input>
+                  </td>
+                  <td>
+                    <input type="text" id="pro" style="width:75px" value="2"></input>
+                  </td>
+                  <td>
+                    <input type="text" id="pbb" style="width:75px" value="2"></input>
+                  </td>
+                  <td>
+                    <input type="text" id="phb" style="width:75px" value="2"></input>
+                  </td>
+                  <td>
+                    <input type="text" id="pfb" style="width:75px" value="2"></input>
+                  </td>
+                  <td>
+                    <input type="submit" value="Save" onclick="return newPricesPeriod()"></input>
+                  </td>
+                </tr>
+              </thead>
+            </table>
+            <br/>
+            <br/>
+          </div>
+          <h2>Defined periods</h2>
+          <div class="subCtnt">
+            
+            <table class="roomsmanagement">
+              <thead>
+                <tr>
+                  <th>
+                    <b>From</b>
+                  </th>
+                  <th>
+                    <b>To</b>
+                  </th>
+                  <th>
+                    <b>RO</b>
+                  </th>
+                  <th>
+                    <b>BB</b>
+                  </th>
+                  <th>
+                    <b>HB</b>
+                  </th>
+                  <th>
+                    <b>FB</b>
+                  </th>
+                  <th>
+                    <b>Delete</b>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="defperiods">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="delPropertyAlert" class="zakmodal">
+    <h1>Security Check</h1>
+    <h2>Please, confirm your wishes</h2>
+    Dear, are you conscious that, deleting this property, you will loose
+    each type of data relative to this property (Rooms, reservations,
+    customers and so on)?
+    <br/>
+    <br/>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:_delProperty()">Yes, I know, continue</a> 
+    <br/>
+    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  </div>
+  <div id="delRoomAlert" class="zakmodal">
+    <h1>Security Check</h1>
+    <h2>Please, confirm your wishes</h2>
+    Dear, are you conscious that, deleting this room, you will delete
+    also all the occupancies relative to this room? Reservations without
+    occupancies (ie reservations relying only on this room) will be deleted too.
+    <br/>
+    <br/>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()">Yes, I know, continue</a> 
+    <br/>
+    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  </div>
+  <div id="newProperty" class="zakmodal">
+    <h1>Please, add a new property</h1>
+    <h2>Just enter your property name</h2>
+    Property Name: <input type="text" id="newpropertyname"></input>
+    <br/>
+    <br/>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewProperty()">Add this property</a> 
+  </div>
+  <div id="modRoom" class="zakmodal">
+    <h1>Modify room</h1>
+    <h2>Modify name and/or code</h2>
+    <table>
+      <tr>
+        <td>
+          Room name: 
+        </td>
+        <td>
+          <input type="text" id="modroom_name" style="width:100px"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Room code: 
+        </td>
+        <td>
+          <input type="text" id="modroom_code" style="width:60px"></input>
+        </td>
+      </tr>
+    </table>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:modRoom()">Modify</a> 
+  </div>
+
+  <div id="newpricing" class="zakmodal">
+    <h1>New rate</h1>
+    <table>
+      <tr>
+        <td>
+          Rate name: 
+        </td>
+        <td>
+          <input type="text" id="newpricing_name" style="width:100px"></input>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addRate()">Add the rate</a> 
+  </div>
+</div>

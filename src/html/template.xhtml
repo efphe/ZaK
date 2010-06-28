@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <head>
+    <link type="text/css" rel="stylesheet" href="/css/template.css"></link>
+    <script><nevow:attr name="src" nevow:render="js"></nevow:attr></script>
+    <span nevow:render="css"></span>
+    <script>
+      $(document).ready(function() {
+        selectPropertiesInit();
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <div style="height:40px">
+        <img id="zakLogo" src="/imgs/zak.png"></img>
+      </div>
+      <div style="background-color: #bd0000;height:30px;border-radius:5px;line-height:28px">
+        <div style="float:right;margin-right:10px">
+          <a class="menu" href="tableau">Tableau</a>
+          <a class="menu" href="dashboard">Dashboard</a>
+        </div>
+        <select style="margin-top:5px;margin-left: 10px" id="selectproperty"></select>
+      </div>
+    </div>
+    <div nevow:render="contents">
+      ciao
+    </div>
+  </body>
+</html>

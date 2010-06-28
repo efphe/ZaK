@@ -1,0 +1,213 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <div id="graycontainer">
+    <div class="bookright">
+      <b style="color:black;float:right;font-size:12px">Rooms</b>
+      <div>
+        <h1>Room Setup <select id="roomSetup"></select></h1>
+        <table>
+          <tr>
+            <td>
+              <a href="#" id="addRSetupButton" onclick="askNewRSetup()"><b>Setup</b></a>
+            </td>
+            <td>
+              <select id="selectSetup"></select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Remarks:
+            </td>
+            <td colspan="2">
+              <textarea id="roomSetupRemarks" style="background-color:white;width:100%;height:100px"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="button" onclick="saveRSetup()" value="Save"></input></td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h1>Occupancy</h1>
+        <table id="table_occupancy">
+          <tr>
+            <td>
+              Adults:
+            </td>
+            <td>
+              <select id="adults">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Children:
+            </td>
+            <td>
+              <input readonly="readonly" id="childrenCounter" value="0" style="width:40px"></input>
+            </td>
+            <td id="childrenCounter">
+              <b><a href="javascript:askChildren()" id="addChildrenButton">Add</a></b>
+            </td>
+          </tr>
+        </table>
+        <div align="center">
+          <br/>
+          <input type="submit" value="Save Occupancy" onclick="saveOccupancy()"></input>
+        </div>
+      </div>
+    </div>
+    <div class="bookright">
+      <b style="color:black;float:right;font-size:12px">Reservation</b>
+      <div>
+        <h1>Extras</h1>
+        <table>
+          <tr>
+            <td>
+              <a id="addExtraButton" href="javascript:askExtra()"><b>Add extra</b></a>
+            </td>
+            <td>
+              <select id="selectExtra"></select>
+            </td>
+            <td>
+              <select id="selectExtraHow">
+                <option value="1" selected="selected">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </td>
+            <td>
+              <input type="submit" value="Add"></input>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h1>Remarks</h1>
+        <textarea id="rremarks" style="background-color:white;width: 100%;height: auto;min-height:400px"></textarea>
+        <input type="submit" value="Save Remarks" onclick="saveRemarks()"></input>
+      </div>
+    </div>
+    <div style="float:right;margin-right: 20px;margin-top:10px">
+      <table id="tabtable" style="float:right">
+        <tr id="tabtableheader">
+        </tr>
+      </table>
+    </div>
+
+  <h1 id="reservationTitle"></h1>
+  <div>
+    <table>
+      <tr>
+        <td>
+          <b>Invoice:</b>
+        </td>
+        <td>
+          <select id="cmbinvoice"><option value="0">Reservation</option></select>
+        </td>
+        <td>
+          <input type="submit" value="Invoice"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Pricing:</b>
+        </td>
+        <td>
+          <select id="cmbpricing"><option value="1">Standard</option></select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  </div>
+
+<div class="zakmodalfree" id="children_div">
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Age:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:40px" id="children_age"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Red:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:40px" id="children_red"></input> <b style="color:white">%</b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="submit" value="Add" onclick="addChildren()"/>
+      </td>
+    </tr>
+  </table>
+  <br/>
+</div>
+
+<div class="zakmodalfree" id="rsetup_div">
+  <h1>Add a new setup</h1>
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="rsetup_name"></input>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="submit" value="Add" onclick="addRSetup()"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="zakmodalfree" id="addextra_div">
+  <h1>Add a new extra</h1>
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="extra_name"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Cost:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="extra_cost"></input>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="submit" value="Add" onclick="addExtra()"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+</div>

@@ -1,0 +1,241 @@
+body {
+  font-family: arial;
+  background-image: url("/imgs/bodybg.png");
+  background-repeat: repeat-x;
+  background-position: top right;
+  background-attachment:fixed;
+  background-size: 1px 100%;
+  min-height: 800px;
+}
+a.menu {
+  color:white;
+  font-weight:bold;
+}
+h1,h2 {margin-top:2px}
+h2 {
+  font-size: 22px;
+}
+h1 {
+  color: #bd0000;
+  font-size: 24px;
+}
+div.subCtnt {
+  margin-left: 20px;
+}
+div#mmenu {background-color:grey;width:200px;padding:5px;border-radius:4px;float:left}
+/*div.immenu {background-color:white;padding:5px;border-radius:3px}*/
+.lmenu {margin:0;padding:0;padding-left:16px}
+.lmenu a {font-weight:bold;color: black}
+.lmenu li {margin-top: 4px;font-size:14px}
+div#mmenu b {color:#bd0000;font-size:18px}
+div#contents {background-color:grey;margin-left: 220px;border-radius:4px;padding:5px}
+
+table.roomsmanagement {border:1px solid black;border-collapse:collapse;}
+table.roomsmanagement th {padding:4px;border-bottom:1px dotted #770000;}
+table.roomsmanagement td {padding:6px;font-weight:bold}
+
+#graycontainer {
+  margin : 5px auto;
+  border : 1px solid gray;
+  /*overflow : visible;*/
+  overflow: auto;
+  width : auto;
+  padding : 20px;
+  background : #f0f0f0;
+  min-height:30px;
+  border-radius:5px;
+}
+
+
+/*
+	HUMANIZED MESSAGES 1.0
+	idea - http://www.humanized.com/weblog/2006/09/11/monolog_boxes_and_transparent_messages
+	home - http://humanmsg.googlecode.com
+*/
+
+.humanMsg, .humanMsgErr {
+	font: normal 20px/30px Helvetica, Arial, Sans-Serif;
+	letter-spacing: -1px;
+	position: fixed;
+	top: 4px;
+	left: 25%;
+	width: 50%;
+	color: #36ff00;
+	background-color: black;
+	text-align: center; 
+	display: none;
+	opacity: 0;
+	z-index: 100000;
+    border-radius: 5px;
+}
+
+.humanMsgErr {
+  background-color: red;
+  color: black;
+}
+
+.humanMsg p, .humanMsgErr p {
+	padding: .3em;
+	display: inline; 
+	}
+
+.humanMsg a, .humanMsgErr a {
+	display: none;
+	}
+	
+#humanMsgLog {
+	font: normal 10px Helvetica, Arial, Sans-Serif;
+	color: white;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	max-height: 200px;
+	display: none;
+	z-index: 10000;
+	}
+
+#humanMsgLog p {
+	position: relative;
+	left: 50%;
+	width: 200px;
+	margin: 0;
+	margin-left: -100px;
+	padding: 0 10px;
+	line-height: 20px;
+	background: #333;
+	text-align: center;
+	white-space: pre;
+	cursor: pointer;
+	}
+
+#humanMsgLog p:hover {
+	background: #222;
+	}
+
+#humanMsgLog ul {
+	background: #eee url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAARCAIAAACaSvE/AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE1JREFUeNqEjVEKACAIQ516Ee//5wVNCjIjaB/iY5vC3YkoIgDkVDOjQ5pqLCI3r2bLFzNzyydvM4uKqfJPKN4vyl9LO/7o3/6PhwADAIWkFPjc5eRrAAAAAElFTkSuQmCC) repeat-x;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	max-height: 180px;
+	overflow: auto;
+	display: none;
+	}
+
+#humanMsgLog ul li {
+	color: #555;
+	font-size: 12px;
+	list-style-type: none;
+	border-bottom: 1px solid #ddd;
+	line-height: 40px;
+	display: none;
+	padding: 0 20px;
+	position: relative;
+	overflow: hidden;
+	white-space: pre;
+	}
+
+#humanMsgLog ul li:hover {
+	background: #f2f2f2;
+	}
+
+#humanMsgLog ul li:first-child {
+	margin-top: 1px;
+	}
+	
+#humanMsgLog ul li .error {
+	color: orangered;
+	}
+
+#humanMsgLog ul li .indent {
+	position: absolute;
+	top: 0;
+	left: 100px;
+	margin-right: 200px;
+	height: inherit;
+	}
+
+    /*Simple Modal*/
+#simplemodal-container a.modalCloseImg {
+ background:url(/imgs/share/x.png) no-repeat; /* adjust url as required */
+ width:25px;
+ height:29px;
+ display:inline;
+ z-index:3200;
+ position:absolute;
+ top:-15px;
+ right:-18px;
+ cursor:pointer;
+}
+
+.zakmodal {
+  background-color: #333333;
+  color: white;
+  display:none;
+  border: 3px solid grey;
+  padding: 20px;
+  max-width: 450px;
+  min-width: 200px;
+}
+.zakmodalfree {
+  background-color: #333333;
+  color: white;
+  display:none;
+  border: 3px solid grey;
+  padding: 20px;
+}
+
+.zakmodal td {
+  color: white;
+  font-weight: bold;
+}
+
+/* Generic context menu styles */
+.contextMenu {
+	position: absolute;
+	width: 120px;
+	z-index: 99999;
+	border: solid 2px #777777;
+	background: white;
+	padding: 0px;
+	margin: 0px;
+	display: none;
+}
+
+.contextMenu LI {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.contextMenu A {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	line-height: 20px;
+	height: 20px;
+	background-position: 6px center;
+	background-repeat: no-repeat;
+	outline: none;
+	padding: 1px 5px;
+	padding-left: 28px;
+}
+
+.contextMenu LI.hover A {
+	color: #FFF;
+	background-color: #3399FF;
+}
+
+.contextMenu LI.disabled A {
+	color: #AAA;
+	cursor: default;
+}
+
+.contextMenu LI.hover.disabled A {
+	background-color: transparent;
+}
+
+.contextMenu LI.separator {
+	border-top: solid 1px #CCC;
+}

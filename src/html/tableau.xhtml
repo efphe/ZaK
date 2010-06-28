@@ -1,0 +1,235 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <div style="margin-top:5px;background-color: #bd0000;height:30px;border-radius:5px;line-height:28px">
+    <div style="margin-left:10px">
+      <select onchange="javascript:prevDays()" id="prevDays">
+        <option selected="selected" value="0">Prev</option>
+        <option value="5">5 days</option>
+        <option value="10">10 days</option>
+        <option value="15">15 days</option>
+        <option value="20">20 days</option>
+        <option value="25">25 days</option>
+        <option value="30">30 days</option>
+      </select>
+      <select onchange="javascript:nextDays()" id="nextDays">
+        <option selected="selected" value="0">Next</option>
+        <option value="5">5 days</option>
+        <option value="10">10 days</option>
+        <option value="15">15 days</option>
+        <option value="20">20 days</option>
+        <option value="25">25 days</option>
+        <option value="30">30 days</option>
+      </select>
+      <a class="menu" href="javascript:goToTableauDate()">Today</a>
+      <a class="menu" href="javascript:document.getElementById('datepicker').focus()">From date:</a> <input type="text" id="datepicker" style="width:80px"></input>
+    </div>
+  </div>
+  <div id="graycontainer">
+    <table id="tabtable">
+      <tr id="tabtableheader">
+      </tr>
+    </table>
+  </div>
+
+<div id="menus">
+  <ul id="menuV" class="contextMenu">
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/newres.png)">Add new</a>
+      </li>
+  </ul>
+  <ul id="menuRc" class="contextMenu">
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Checkin</a>
+      </li>
+      <li class="edit">
+          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
+      </li>
+      <li class="edit">
+          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
+      </li>
+      <li class="edit">
+          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
+      </li>
+  </ul>
+  <ul id="menuRi" class="contextMenu">
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/ckores.png)">Checkout</a>
+      </li>
+      <li class="edit">
+          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
+      </li>
+      <li class="edit">
+          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
+      </li>
+      <li class="edit">
+          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
+      </li>
+  </ul>
+  <ul id="menuRn" class="contextMenu">
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/ckires.png)">Checkin</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
+      </li>
+      <li class="edit">
+          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
+      </li>
+      <li class="edit">
+          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
+      </li>
+      <li class="edit">
+          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
+      </li>
+  </ul>
+  <ul id="menuRp" class="contextMenu">
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/ckires.png)">Checkin</a>
+      </li>
+      <li class="edit">
+          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
+      </li>
+      <li class="edit">
+          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
+      </li>
+      <li class="edit">
+          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
+      </li>
+      <li class="edit">
+          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
+      </li>
+  </ul>
+</div>
+
+<div id="addNewReservation" style="display:none" class="zakmodal">
+  <h1>Add a new reservation</h1>
+  <h2>Please, insert reservation data</h2>
+    <table>
+      <tr>
+        <td>
+          Nights:
+        </td>
+        <td>
+          <input type="text" style="width:30px" id="addNewReservationNights" onchange="javascript:writeReservationNights()"></input>
+          <select id="addNewReservationNightsCmb" onchange="javascript:setReservationNights()">
+            <option value="z" selected="selected">--</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Customer
+        </td>
+        <td>
+          <input type="text" id="addNewReservationCustomer"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Status:
+        </td>
+        <td>
+          <select id="addNewReservationStatus">
+            <option value="1" selected="selected">Confirmed</option>
+            <option value="2">Not confirmed</option>
+            <option value="3">Checkin'ed</option>
+            <option value="4">Option</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Go to details:
+        </td>
+        <td>
+          <input type="checkbox" id="addNewReservationDetails" checked="checked"></input>
+        </td>
+      </tr>
+    </table>
+    <div style="float:right">
+      <a style="color:#36ff00;font-weight:bold" href="javascript:_addNewReservation()">Continue</a> 
+      <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Cancel</a>
+    </div>
+    <br/>
+</div>
+
+<div id="deleteOccupancy" class="zakmodal">
+  <h1>Security Check</h1>
+  <h2>Please, confirm your wishes</h2>
+  By deleting this occupancy you will loose it forever. Moreover,
+  if the relative reservation has no additional occupancy, the
+  reservation too will be deleted.
+  <br/>
+  <br/>
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delOccupancy()">Yes, I know, continue</a> 
+  <br/>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+</div>
+
+<div id="move_or_copy" style="padding:5px;display:none;background-color:black">
+  <input type="submit" value="Move Occupancy" onclick="moveOccupancy()"></input> 
+  <input type="submit" value="Add Occupancy" onclick="$('#copy_customer_div').toggle()"></input> 
+  <div style="display:none" id="copy_customer_div">
+    <table>
+      <tr>
+        <td>
+          <b style="color:white">Customer</b>:
+        </td>
+        <td>
+          <input type="text" style="width:140px" id="copy_customer"/> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b style="color:white">Nights</b>: 
+        </td>
+        <td>
+          <input type="text" id="copy_nights" style="width:50px"/>
+          <input type="submit" value="Add" onclick="copyOccupancy()"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="zakmodal" style="display:none" id="sliderdiv">
+  <b style="color:white" id="actual_days"></b> 
+  <br/>
+  <b style="color:white">New lenght:</b> <input readonly="readonly" type="text" id="new_days" style="width:40px"/>
+  <div style="margin:5px 0 5px 0;" id="slider"><div id="true_slider"></div></div>
+  <input type="submit" value="Change lenght" onclick="changeOccupancyLenght()"/>
+</div>
+
+<div class="zakmodal" style="display:none" id="postpone_div">
+  <b style="color:white">Days:</b> <select id="postpone_days"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
+  <br/>
+  <input type="submit" value="Postpone" onclick="postponeOccupancy()"/>
+</div>
+
+</div>

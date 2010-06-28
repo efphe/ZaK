@@ -1,0 +1,13 @@
+Zak (including all files included on the suite) is released
+with a pure GPL3 license. Please, read it inside this directory,
+file: LICENSE-GPL3.txt
+
+The directory src/js/jquery contains jquery, jquery ui and
+some plugin: the license of these files has to be considered
+indpendently from ZaK (see file headers please).
+Tha same applies for src/css related jquery (and jquery plugins) 
+files
+
+Authors: WuBook Srl
+Site: http://wubook.net/
+Copyright: 2010 and next years
