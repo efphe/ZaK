@@ -424,14 +424,16 @@ function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
 /*});*/
 /*}*/
 
-function llGetDatedPricing(prid, dfrom, dto, cbs, cbe) {
+function llGetDatedPricing(prid, xdfrom, xdto, cbs, cbe) {
   db= zakOpenDb();
   db.transaction(function(ses) {
+    dfrom= unixDate(xdfrom);
+    dto= unixDate(xdto);
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
       function(ses, frecs) {
         var frow= frecs.rows.item(0), i;
         var aprices= new Array();
-        var plen= diffDateDays(dfrom, dto);
+        var plen= diffDateDays(dfrom, dto) + 1;
         for (i=0;i<plen;i++) {
           aprices.push({
              price_ro: frow.price_ro, 
@@ -439,18 +441,23 @@ function llGetDatedPricing(prid, dfrom, dto, cbs, cbe) {
              price_hb: frow.price_hb, 
              price_fb: frow.price_fb} );
         }
-        console.log('Secondo query');
-        ses.executeSql('select * from pricing_periods where id_pricing = ? and dfrom < ? and dto > ?', [prid, dto, dfrom],
+        ses.executeSql('select * from pricing_periods where id_pricing = ? and dfrom <= ? and dto >= ?', [prid, dto, dfrom],
           function(ses, recs) {
-            console.log(aprices);
-            console.log('After query');
-            var cdate= dfrom;
+            console.log('Building with ' + recs.rows.length + ' periods');
+            var cdate= parseInt(dfrom);
+            dto= parseInt(dto)
+            var limit= 1000, count= 0;
             while(1) {
-              console.log('cycle');
+              if (count>limit) {
+                console.log('Ai ai aiaiaiaiai');
+                break;
+              }
+              count+= 1;
               if (cdate > dto) break;
               for(j=0;j<recs.rows.length;j++) {
                 var per= recs.rows.item(j);
-                if (per['dfrom'] <= cdfrom && per['dto'] >= cdate) {
+                console.log(per['dfrom'] + ', ' + cdate + ', ' + per['dto']);
+                if (parseInt(per['dfrom']) <= cdate && parseInt(per['dto']) >= cdate) {
                   var idx= diffDateDays(cdate, dfrom);
                   console.log('Found good period');
                   aprices[idx]= {
@@ -461,11 +468,9 @@ function llGetDatedPricing(prid, dfrom, dto, cbs, cbe) {
                   break;
                 }
               }
-              console.log(cdate);
-              console.log(dto);
               cdate+= 86400;
             }
-            console.log('cycle out');
+            console.log('Ok done');
             console.log(aprices);
             try {
               cbs(aprices);

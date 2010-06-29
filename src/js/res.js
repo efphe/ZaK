@@ -1,6 +1,7 @@
 zakReservation= false;
 zakTableau= false;
 zakExtras= -1;
+roomPricing= false;
 
 occupancyObject= {
   adults: 1,
@@ -23,45 +24,90 @@ var iReservation= function(reservation) {
     }
   }
 
-  this['_hierPricing']= function() {
-    var room, oid, i, occ, rname;
-    var rlist= {};
-    for (i=0;i<zakReservation.occupancies.length;i++) {
-      occ= zakReservation.occupancies[i];
-      oid= occ['id'];
-      var odfrom= occ['dfrom'];
-      var odto= occ['dto'];
-      var cdfrom= zakTableau.dfrom;
-      var rl= new Array();
-      while(1) {
-        if (cdfrom > odto) break;
-        if (cdfrom < odfrom) {
-          cdfrom+= 86400;
-          rl.push(false);
-          continue;
-        }
-        var idx= diffDateDays(zakTableau.dfrom, cdfrom);
-        rl.push(true);
-        cdfrom+= 86400;
-      }
-      while(rl.length < zakTableau.lendays)
-        rl.push(false);
-      rlist[oid]= rl;
+  this ['roomFromOcc']= function(occ) {
+    return zakTableau.rooms[occ['id_room']];
+  }
+
+  this ['roomNameFromOcc']= function(occ) {
+    return zakReservation.roomFromOcc(occ).name;
+  }
+
+  this['stupid_pricing']= function() {
+    var newp= {price_ro: '', price_bb: '', price_hb: '', price_fb: ''};
+    var res= new Array(), i;
+    for (i=0;i<zakTableau.lendays;i++) {
+      res.push(newp);
     }
-    console.log(rlist);
-    return rlist;
+    return res;
+  }
+
+  this ['_getRPrices']= function() {
+    try {
+      evprices= JSON.parse(zakReservation.reservation.custom_pricing);
+      if (!evprices) evprices= zakReservation.stupid_pricing();
+    } catch(e) {evprices= zakReservation.stupid_pricing();};
+    return evprices;
+  }
+
+  /* requires zakTableau!!! */
+  this['_designPrices']= function(evprices) {
+    if(!evprices) 
+      evprices= zakReservation._getRPrices();
+    var occs= zakReservation.occupancies, i, j;
+    var rlist= [];
+    for(i=0;i<occs.length;i++) {
+      var occ= occs[i];
+      var treatment= occ['treatment'] || 'ro';
+      var occn= 0;
+      var newar= new Array();
+      var people= zakReservation.getOccupancyPeople(occ['id']);
+      var rlen= false;
+      occn+= people.adults;
+      for (j=0;j<people.children.length;j++) {
+        var chi= people.children[j];
+        occn+= parseFloat(chi['red']) / parseFloat(100.0);
+      }
+      var room= zakReservation.roomFromOcc(occ);
+      newar.push(room);
+      var k= 'price_' + treatment,p;
+      for (j=0;j<evprices.length;j++) {
+        p= parseFloat(evprices[j][k]);
+        if (!p) p= 0.0;
+        newar.push(p * parseFloat(occn));
+      }
+      rlist.push(newar);
+      if (!rlen) rlen= newar.length;
+    }
+    roomPricing= rlist;
+    zakReservation.designReadyPrices();
+  }
+
+  this['designReadyPrices']= function() {
+    var rlist= roomPricing;
+    var rlen= rlist[0].length;
+    var res= '<tr>';
+    for(j=0;j<rlist.length;j++) {
+      res+= '<td>' + rlist[j][0].name + '</td>';
+    }
+    res+= '</tr>';
+    for(i=1;i<rlen;i++) {
+      res+= '<tr>';
+      for(j=0;j<rlist.length;j++) {
+        res+= '<td>' + rlist[j][i] + '</td>';
+      }
+      res+= '</tr>';
+    }
+    $('#tablepricing').html(res);
   }
 
   this['designPrices']= function() {
-    var hp= zakReservation._hierPricing();
-    var rid, room;
-    var rlist= {};
-    var rpid= zakReservation.reservation['id_pricing'];
-    for (var oid in hp) {
-      rid= zakTableau.getOccupancy(oid)['id_room'];
-      room= zakTableau.rooms[rid];
-    }
-    if (!rpid) return zakReservation._trivialPricing();
+    var resprices= zakReservation.reservation.custom_pricing;
+    if (resprices) return zakReservation._designPrices();
+    var prid= $('#cmbpricing').val();
+    if (prid == 0) return zakReservation._designPrices();
+    var dfrom= zakReservation.reservation.dfrom;
+    var dto= zakReservation.reservation.dto;
+    llGetDatedPricing(prid, dfrom, dto, zakReservation._designPrices);
   }
 
   this['designMe']= function() {
@@ -78,24 +124,6 @@ var iReservation= function(reservation) {
     }
     var zlen= diffDateDays(dfrom, dto) + 1;
     zakTableau= new iTableau(dfrom, zlen, rids);
-    llLoadPricing(
-      function(ses, recs) {
-        var i,p,res= '', rpid= zakReservation.reservation['id_pricing'];
-        for (i=0;i<recs.rows.length;i++) {
-          p= recs.rows.item(i); 
-          if (p['id'] == rpid) 
-            res+= '<option selected="selected" value="' + rpid + '">' + p['name'] + '</option>';
-          else
-            res+= '<option value="' +p['id'] + '">' + p['name'] + '</option>';
-        }
-        if (!rpid)
-          res+= '<option selected="selected" value="0">--</option>';
-        $('#cmbpricing').empty().html(res);
-        zakReservation.designPrices();
-      },
-      function(ses, err) {
-        humanMsg.displayMsg('Error loading pricing: ' + err.message);
-      });
     zakTableau.loadRooms(rids, function(){zakReservation.initPage()});
   }
 
@@ -146,18 +174,19 @@ var iReservation= function(reservation) {
       });
   }
 
-  this['designOccupancyPeople']= function(oid) {
+  this['getOccupancyPeople']= function(oid) {
     var occ= zakReservation.getOccupancy(oid || zakReservation.activeOccupancy);
     var people, i,children, child, age, red, res;
-    console.log(occupancyObject);
     try {
       people= JSON.parse(occ['occupancy']);
-      console.log('people: ' + people);
-      occupancyObject= people;
-      console.log(occupancyObject);
-      if (!occupancyObject) occupancyObject= copyObject(_occupancyObject);
-    } catch(e) {occupancyObject= copyObject(_occupancyObject);};
-    console.log(occupancyObject);
+      if (!people) people= copyObject(_occupancyObject);
+    } catch(e) {people= copyObject(_occupancyObject);};
+    return people;
+  }
+
+  this['designOccupancyPeople']= function(oid) {
+    var p= zakReservation.getOccupancyPeople(oid);
+    occupancyObject= p;
     designAdultsChildren(1);
   }
 
@@ -166,6 +195,27 @@ var iReservation= function(reservation) {
     else oid= zakReservation.activeOccupancy;
     zakReservation.designRoomSetup(oid);
     zakReservation.designOccupancyPeople(oid);
+  }
+
+  this['desingPagePrices']= function() {
+    llLoadPricing(
+      function(ses, recs) {
+        var i,p,res= '', rpid= zakReservation.reservation['id_pricing'];
+        for (i=0;i<recs.rows.length;i++) {
+          p= recs.rows.item(i); 
+          if (p['id'] == rpid) 
+            res+= '<option selected="selected" value="' + rpid + '">' + p['name'] + '</option>';
+          else
+            res+= '<option value="' +p['id'] + '">' + p['name'] + '</option>';
+        }
+        if (!rpid)
+          res+= '<option selected="selected" value="0">--</option>';
+        $('#cmbpricing').empty().html(res);
+        zakReservation.designPrices();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error loading pricing: ' + err.message);
+      });
   }
 
   this['initPage']= function() {
@@ -189,6 +239,7 @@ var iReservation= function(reservation) {
     $('#selRoomSetup').empty().append(hh);
     zakReservation.designOccupancy();
     zakReservation.designExtras();
+    zakReservation.desingPagePrices();
   }
 
   this['_designExtras']= function() {
