@@ -6,6 +6,7 @@ occupancyObject= {
   adults: 1,
   children: []
 }
+_occupancyObject= copyObject(occupancyObject);
 
 var iReservation= function(reservation) {
   this.reservation= reservation;
@@ -22,6 +23,47 @@ var iReservation= function(reservation) {
     }
   }
 
+  this['_hierPricing']= function() {
+    var room, oid, i, occ, rname;
+    var rlist= {};
+    for (i=0;i<zakReservation.occupancies.length;i++) {
+      occ= zakReservation.occupancies[i];
+      oid= occ['id'];
+      var odfrom= occ['dfrom'];
+      var odto= occ['dto'];
+      var cdfrom= zakTableau.dfrom;
+      var rl= new Array();
+      while(1) {
+        if (cdfrom > odto) break;
+        if (cdfrom < odfrom) {
+          cdfrom+= 86400;
+          rl.push(false);
+          continue;
+        }
+        var idx= diffDateDays(zakTableau.dfrom, cdfrom);
+        rl.push(true);
+        cdfrom+= 86400;
+      }
+      while(rl.length < zakTableau.lendays)
+        rl.push(false);
+      rlist[oid]= rl;
+    }
+    console.log(rlist);
+    return rlist;
+  }
+
+  this['designPrices']= function() {
+    var hp= zakReservation._hierPricing();
+    var rid, room;
+    var rlist= {};
+    var rpid= zakReservation.reservation['id_pricing'];
+    for (var oid in hp) {
+      rid= zakTableau.getOccupancy(oid)['id_room'];
+      room= zakTableau.rooms[rid];
+    }
+    if (!rpid) return zakReservation._trivialPricing();
+  }
+
   this['designMe']= function() {
     var dfrom= false;
     var dto= false;
@@ -36,6 +78,24 @@ var iReservation= function(reservation) {
     }
     var zlen= diffDateDays(dfrom, dto) + 1;
     zakTableau= new iTableau(dfrom, zlen, rids);
+    llLoadPricing(
+      function(ses, recs) {
+        var i,p,res= '', rpid= zakReservation.reservation['id_pricing'];
+        for (i=0;i<recs.rows.length;i++) {
+          p= recs.rows.item(i); 
+          if (p['id'] == rpid) 
+            res+= '<option selected="selected" value="' + rpid + '">' + p['name'] + '</option>';
+          else
+            res+= '<option value="' +p['id'] + '">' + p['name'] + '</option>';
+        }
+        if (!rpid)
+          res+= '<option selected="selected" value="0">--</option>';
+        $('#cmbpricing').empty().html(res);
+        zakReservation.designPrices();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error loading pricing: ' + err.message);
+      });
     zakTableau.loadRooms(rids, function(){zakReservation.initPage()});
   }
 
@@ -47,7 +107,7 @@ var iReservation= function(reservation) {
         sel= ' selected="selected" ';
       else
         sel= '';
-      res+= '<option ' + sel + 'value="'+rstp['id']+'">'+rstp['code']+'</option>';
+      res+= '<option ' + sel + 'value="'+rstp['id']+'">'+rstp['name']+'</option>';
     }
     if (!rsid) res+= '<option value="" selected="selected">--</option>';
     return res;
@@ -86,13 +146,13 @@ var iReservation= function(reservation) {
       });
   }
 
-  this['desingOccupancyPeople']= function(oid) {
+  this['designOccupancyPeople']= function(oid) {
     var occ= zakReservation.getOccupancy(oid || zakReservation.activeOccupancy);
     var people, i,children, child, age, red, res;
     try {
       people= JSON.parse(occ['occupancy']);
       occupancyObject= people;
-    } catch(e) {};
+    } catch(e) {occupancyObject= _occupancyObject;};
     designAdultsChildren(1);
   }
 
@@ -100,7 +160,7 @@ var iReservation= function(reservation) {
     if (oid) zakReservation.activeOccupancy= oid;
     else oid= zakReservation.activeOccupancy;
     zakReservation.designRoomSetup(oid);
-    zakReservation.desingOccupancyPeople(oid);
+    zakReservation.designOccupancyPeople(oid);
   }
 
   this['initPage']= function() {
@@ -121,7 +181,7 @@ var iReservation= function(reservation) {
       hh+= '<option '+sel+' value="'+rid+'">'+room['name']+'</option>';
     }
     console.log('HH: '+ hh);
-    $('#roomSetup').empty().append(hh);
+    $('#selRoomSetup').empty().append(hh);
     zakReservation.designOccupancy();
     zakReservation.designExtras();
   }
@@ -157,6 +217,16 @@ var iReservation= function(reservation) {
   return this;
 }
 
+function changeOccupancy() {
+  var rid= $('#selRoomSetup').val();
+  var i, occ;
+  for(i=0;i<zakReservation.occupancies.length;i++) {
+    occ= zakReservation.occupancies[i];
+    if (occ['id_room'] == rid && occ['id'] != zakReservation.activeOccupancy) 
+      zakReservation.designOccupancy(occ['id']);
+  }
+}
+
 function _childrenHtml(age, red) {
   var el= '<tr class="children_c"><td>Child</td><td>Age: ' + age + ' (-' + red + '%)</td>';
   el+= '<td><b><a href="javascript:delChild(' + age +','+red + ')">Delete</a></b></td></tr>'; 
@@ -164,6 +234,7 @@ function _childrenHtml(age, red) {
 }
 
 function designAdultsChildren(putAdults) {
+  console.log('Designing occupancy');
   var i, chi, res= '', age, red;
   for (i=0;i<occupancyObject.children.length;i++) {
     chi= occupancyObject.children[i];
@@ -214,9 +285,13 @@ function saveOccupancy() {
   newd= {adults: ads, children: occupancyObject.children};
   llModOccupancy(zakReservation.activeOccupancy, {occupancy: JSON.stringify(newd)},
     function(cbs, recs) {
-      occupancyObject.adults= ads;
-      designAdultsChildren();
-      humanMsg.displayMsg('Sounds good');
+      llGetReservationFromOid(zakReservation.activeOccupancy,
+        function(reservatioin) {
+          zakReservation.occupancies= reservatioin['occupancies'];
+          occupancyObject= false;
+          zakReservation.designOccupancyPeople();
+          humanMsg.displayMsg('Sounds good');
+        });
     },
     function(cbs, err) {
       humanMsg.displayMsg('Error: ' + err.message, 1);
@@ -250,7 +325,17 @@ function saveRSetup() {
   console.log('Updating occ: rsid: ' + rsid + ', remarks: ' + remarks);
   llModOccupancy(zakReservation.activeOccupancy, {remarks: remarks, id_room_setup: rsid},
     function(ses, recs) {
-      humanMsg.displayMsg('Sounds good');
+      console.log('reloading occupancies');
+      llGetReservationFromOid(zakReservation.activeOccupancy,
+        function(reservatioin) {
+          console.log('Dio cane');
+          zakReservation.occupancies= reservatioin['occupancies'];
+          zakReservation.designOccupancy();
+          humanMsg.displayMsg('Sounds good');
+        },
+        function(ses, err) {
+          humanMsg.displayMsg('Error: ' + err.message, 1);
+        });
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message, 1);

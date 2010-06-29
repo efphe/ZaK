@@ -1,9 +1,12 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
   <div id="graycontainer">
     <div class="bookright">
-      <b style="color:black;float:right;font-size:12px">Rooms</b>
+      <div style="float:right;text-align:center">
+        <b style="color:black;font-size:12px">Rooms</b><br/>
+        <input type="submit" value="Invoice"></input>
+      </div>
       <div>
-        <h1>Room Setup <select id="roomSetup"></select></h1>
+        <h1>Room Setup <select id="selRoomSetup" onchange="changeOccupancy()"></select></h1>
         <table>
           <tr>
             <td>
@@ -65,7 +68,10 @@
       </div>
     </div>
     <div class="bookright">
-      <b style="color:black;float:right;font-size:12px">Reservation</b>
+      <div style="float:right;text-align:center">
+        <b style="color:black;font-size:12px">Reservation</b><br/>
+        <input type="submit" value="Invoice"></input>
+      </div>
       <div>
         <h1>Extras</h1>
         <table>
@@ -113,18 +119,8 @@
 
   <h1 id="reservationTitle"></h1>
   <div>
+    <h1>Pricing</h1>
     <table>
-      <tr>
-        <td>
-          <b>Invoice:</b>
-        </td>
-        <td>
-          <select id="cmbinvoice"><option value="0">Reservation</option></select>
-        </td>
-        <td>
-          <input type="submit" value="Invoice"></input>
-        </td>
-      </tr>
       <tr>
         <td>
           <b>Pricing:</b>

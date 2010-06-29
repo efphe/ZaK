@@ -230,6 +230,7 @@ function llModOccupancy(oid, params, cbs, cbe) {
 
 /* cbs(reservation) */
 function llGetReservationFromOid(oid, cbs, cbe) {
+  console.log('Loading reservation ' + oid);
   db= zakOpenDb();
   db.readTransaction(function(ses) {
     s= 'select reservation.* from reservation join occupancy on reservation.id= occupancy.id_reservation ';
@@ -370,3 +371,58 @@ function llDelPricesPeriod(pid, cbs, cbe) {
       ses.executeSql('delete from pricing_periods where id = ?', [pid], cbs, cbe);
   });
 }
+
+function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select * from pricing_periods');
+  });
+}
+
+/*function llGetPricingPerioded(prid, dfrom, dto, cbs) {*/
+/*db= zakOpenDb();*/
+/*db.transaction(function(ses) {*/
+/*ses.executeSql('select * from pricing where id = ?', [prid],*/
+/*function(ses, recs) {*/
+/*var pricing= recs.rows.item(0);*/
+/*ses.executeSql('select * from pricing_periods where id_pricing = ?', [*/
+/*}*/
+/*});*/
+/*}*/
+
+/*function llGetRoomPricing(prid, dfrom, dto, cbs) {*/
+/*if (!prid) {*/
+/*var prices= new Array(), i;*/
+/*for (i=0;i<diffDateDays(dfrom, dto);i++) {*/
+/*prices.push(false);*/
+/*}*/
+/*cbs(prices);*/
+/*}*/
+/*db= zakOpenDb();*/
+/*db.transaction(function(ses) {*/
+/*var s= 'select * from pricing_periods where id_pricing = ? ';*/
+/*s+= 'and dfrom < ? and dto > ? order by dfrom';*/
+/*ses.executeSql(s, [prid, dto, dfrom], */
+/*function(ses, recs) {*/
+/*var periods= arrayFromRecords(recs);*/
+/*var i, j, prices= new Array();*/
+/*for(i=0;i<diffDateDays(dfrom, dto);i++) {*/
+/*var d= dfrom+ (86400 * i), found= false;*/
+/*for (j=0;j<periods.length;j++) {*/
+/*var per= periods[j];*/
+/*if (d>=per['dfrom'] && d<= per['dto']) {*/
+/*prices.push(per); */
+/*found= true;*/
+/*break;*/
+/*}*/
+/*}*/
+/*if (!found) {*/
+/*if(per*/
+/*}*/
+/*}*/
+/*});*/
+/*});*/
+/*}*/
+
+
+

@@ -25,6 +25,7 @@ CREATE TRIGGER if not exists pricing_deletion
 BEFORE DELETE ON pricing  
 FOR EACH ROW BEGIN  
     DELETE FROM pricing_periods WHERE pricing_periods.id_pricing = OLD.id;  
+    UPDATE reservation set id_pricing = null where reservation.id_pricing = OLD.id;
 END;; 
 create table if not exists pricing_periods (
   id integer primary key asc,
@@ -68,6 +69,7 @@ create table if not exists reservation (
   dto integer, 
   status smallint, 
   id_property integer, 
+  id_pricing integer default null,
   remarks text default '', 
  
   foreign key(id_property) references property(id) on delete cascade 
