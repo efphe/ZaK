@@ -73,7 +73,8 @@ var iReservation= function(reservation) {
       for (j=0;j<evprices.length;j++) {
         p= parseFloat(evprices[j][k]);
         if (!p) p= 0.0;
-        newar.push(p * parseFloat(occn));
+        var pp= p * parseFloat(occn);
+        newar.push(pp.toFixed(2));
       }
       rlist.push(newar);
       if (!rlen) rlen= newar.length;
