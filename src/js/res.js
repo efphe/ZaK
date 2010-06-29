@@ -149,10 +149,15 @@ var iReservation= function(reservation) {
   this['designOccupancyPeople']= function(oid) {
     var occ= zakReservation.getOccupancy(oid || zakReservation.activeOccupancy);
     var people, i,children, child, age, red, res;
+    console.log(occupancyObject);
     try {
       people= JSON.parse(occ['occupancy']);
+      console.log('people: ' + people);
       occupancyObject= people;
-    } catch(e) {occupancyObject= _occupancyObject;};
+      console.log(occupancyObject);
+      if (!occupancyObject) occupancyObject= copyObject(_occupancyObject);
+    } catch(e) {occupancyObject= copyObject(_occupancyObject);};
+    console.log(occupancyObject);
     designAdultsChildren(1);
   }
 

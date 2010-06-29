@@ -213,3 +213,9 @@ function copyObject(d, skipfields) {
   }
   return no;
 }
+
+function strObject(d) {
+  for (var k in d) {
+    console.log(k + '= ' + d[k]);
+  }
+}

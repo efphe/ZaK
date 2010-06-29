@@ -15,11 +15,11 @@ FOR EACH ROW BEGIN
 END;; 
 create table if not exists pricing (
   id integer primary key asc,
-  name text not null
+  name text not null,
   price_ro float,
   price_fb float,
   price_hb float,
-  price_bb float,
+  price_bb float
 );;
 CREATE TRIGGER if not exists pricing_deletion 
 BEFORE DELETE ON pricing  
