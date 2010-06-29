@@ -123,16 +123,33 @@
     <table>
       <tr>
         <td>
-          <b>Pricing:</b>
+          <b>Meal:</b>
         </td>
         <td>
-          <select id="cmbpricing"><option value="1">Standard</option></select> 
-          <input type="submit" value="Cancel"></input>
+          <select id="cmbmeal" onchange="changePricing()">
+            <option value="ro" selected="selected">Room only</option>
+            <option value="bb">Bed and Breakfast</option>
+            <option value="hb">Half Board</option>
+            <option value="fb">Full Board</option>
+          </select>
+        </td>
+        <td>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Pricing:</b>
+        </td>
+        <td colspan="2">
+          <select id="cmbpricing" onchange="changePricing()"><option value="1">Standard</option></select> 
+          <input type="submit" value="Cancel" id="restorePrices" style="display:none" onclick="javascript:recomputePrices()"></input>
         </td>
       </tr>
     </table>
     <table id="tablepricing">
     </table>
+    <br/>
+    <input type="submit" value="Save room prices"></input>
   </div>
   </div>
 

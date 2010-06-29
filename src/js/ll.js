@@ -424,11 +424,15 @@ function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
 /*});*/
 /*}*/
 
-function llGetDatedPricing(prid, xdfrom, xdto, cbs, cbe) {
+function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
   db= zakOpenDb();
   db.transaction(function(ses) {
     dfrom= unixDate(xdfrom);
     dto= unixDate(xdto);
+    if (excludelast) {
+      console.log('Excluding last day');
+      dto-= 86400;
+    } else console.log('INcluding las tday');
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
       function(ses, frecs) {
         var frow= frecs.rows.item(0), i;

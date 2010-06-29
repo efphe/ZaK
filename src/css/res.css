@@ -17,3 +17,21 @@ h1.secacc {
 h1.secacc a {
   color: black;
 }
+
+#tablepricing {
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+#tablepricing td {
+  text-align: center;
+}
+#tablepricing th {
+  background-color: #bd0000;
+  text-align: center;
+  color: white;
+  padding: 4px;
+}
+#tablepricing input {
+  width: 80px;
+}

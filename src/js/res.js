@@ -35,7 +35,7 @@ var iReservation= function(reservation) {
   this['stupid_pricing']= function() {
     var newp= {price_ro: '', price_bb: '', price_hb: '', price_fb: ''};
     var res= new Array(), i;
-    for (i=0;i<zakTableau.lendays;i++) {
+    for (i=0;i<zakTableau.lendays - 1;i++) {
       res.push(newp);
     }
     return res;
@@ -55,17 +55,17 @@ var iReservation= function(reservation) {
       evprices= zakReservation._getRPrices();
     var occs= zakReservation.occupancies, i, j;
     var rlist= [];
+    var treatment= $('#cmbmeal').val();
     for(i=0;i<occs.length;i++) {
       var occ= occs[i];
-      var treatment= occ['treatment'] || 'ro';
       var occn= 0;
       var newar= new Array();
       var people= zakReservation.getOccupancyPeople(occ['id']);
       var rlen= false;
-      occn+= people.adults;
+      occn+= parseFloat(people.adults);
       for (j=0;j<people.children.length;j++) {
         var chi= people.children[j];
-        occn+= parseFloat(chi['red']) / parseFloat(100.0);
+        occn+= parseFloat( (100.0 - parseFloat(chi['red'])) / parseFloat(100.0));
       }
       var room= zakReservation.roomFromOcc(occ);
       newar.push(room);
@@ -86,29 +86,51 @@ var iReservation= function(reservation) {
   this['designReadyPrices']= function() {
     var rlist= roomPricing;
     var rlen= rlist[0].length;
-    var res= '<tr>';
+    var res= '<thead class="pricing"><tr><th>Day</th>';
     for(j=0;j<rlist.length;j++) {
-      res+= '<td>' + rlist[j][0].name + '</td>';
+      res+= '<th>' + rlist[j][0].name + '</th>';
     }
-    res+= '</tr>';
+
+    function _strDay(dayidx) {
+      var d= unixDate(zakTableau.dfrom) + (86400 * parseInt(dayidx - 1));
+      return  strDate(d, 'd/m');
+    }
+
+
+    res+= '</tr></thead>';
     for(i=1;i<rlen;i++) {
-      res+= '<tr>';
+      res+= '<tr><td>' + _strDay(i) + '</td>';
       for(j=0;j<rlist.length;j++) {
-        res+= '<td>' + rlist[j][i] + '</td>';
+        var rid= rlist[j][0].id;
+        res+= '<td><input onchange="computeRoomSum(' + j + ')" class="col_index_' + j + '" id="rprice_' + rid + '_' + j + '" type="text" value="' + rlist[j][i] + '"></input></td>';
       }
       res+= '</tr>';
     }
+    var lastrow= '';
+    totcount= 0.0;
+    for(j=0;j<rlist.length;j++) {
+      count= 0.0;
+      for(i=1;i<rlen;i++) {
+        count+= parseFloat(rlist[j][i]);
+        totcount+= count;
+      }
+      lastrow+= '<td class="col_total col_total_' + j + '">' + count.toFixed(2) + '</td>';
+    }
+    lastrow= '<tr><td><b id="rtotal">' + totcount + '</b></td>' + lastrow + '</tr>';
+    res+= lastrow;
     $('#tablepricing').html(res);
   }
 
-  this['designPrices']= function() {
-    var resprices= zakReservation.reservation.custom_pricing;
-    if (resprices) return zakReservation._designPrices();
-    var prid= $('#cmbpricing').val();
-    if (prid == 0) return zakReservation._designPrices();
+  this['designPrices']= function(prid) {
+    if (!prid) {
+      var resprices= zakReservation.reservation.custom_pricing;
+      if (resprices) return zakReservation._designPrices();
+      var prid= $('#cmbpricing').val();
+      if (prid == 0) return zakReservation._designPrices();
+    }
     var dfrom= zakReservation.reservation.dfrom;
     var dto= zakReservation.reservation.dto;
-    llGetDatedPricing(prid, dfrom, dto, zakReservation._designPrices);
+    llGetDatedPricing(prid, dfrom, dto, true, zakReservation._designPrices);
   }
 
   this['designMe']= function() {
@@ -288,6 +310,37 @@ function _childrenHtml(age, red) {
   var el= '<tr class="children_c"><td>Child</td><td>Age: ' + age + ' (-' + red + '%)</td>';
   el+= '<td><b><a href="javascript:delChild(' + age +','+red + ')">Delete</a></b></td></tr>'; 
   return el;
+}
+
+function computeRoomSum(j) {
+  var count= 0.0;
+  var ocount= parseFloat($('td.col_total_' + j).html());
+  $('input.col_index_' + j).each(function(n, el) {
+    var v= $(el).val();
+    if (!checkFloat(v)) {
+      humanMsg.displayMsg('Please, specify correct prices');
+      return;
+    }
+    count+= parseFloat(v);
+  });
+  $('#restorePrices').show();
+  $('td.col_total_' + j).each(function(n, el) {
+    $(el).html(count.toFixed(2));
+  });
+  var diff= parseFloat(count) - parseFloat(ocount);
+  var newcount= parseFloat($('#rtotal').html()) + diff;
+  $('#rtotal').html(newcount.toFixed(2));
+}
+
+function recomputePrices() {
+  $('#restorePrices').hide();
+  zakReservation.designPrices();
+}
+
+function changePricing() {
+  var pidr= $('#cmbpricing').val();
+  zakReservation.designPrices(pidr);
+  $('#restorePrices').show();
 }
 
 function designAdultsChildren(putAdults) {
