@@ -424,5 +424,46 @@ function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
 /*});*/
 /*}*/
 
+function llGetDatedPricing(prid, dfrom, dto, cbs, cbe) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    recs= ses.executeSql('select pricing.*,pricing_periods.price_fb as pfb, pricing_periods.price_hb as phb, pricing_periods.price_bb as pbb, pricing_periods.price_ro as pro, pricing_periods.dfrom, pricing_periods.dto from pricing left join pricing_periods on pricing_periods.id_pricing = pricing.id where pricing.id= ? and ((pricing_periods.dfrom < ? and pricing_periods.dto > ?) or pricing_periods.dfrom is null)', [prid, dto, dfrom],
+      function(ses, recs) {
+        var frow= recs.rows.item(0);
+        var plen= diffDateDays(dfrom, dto);
+        var aprices= new Array(), i, j;
+        for (i=0;i<plen;i++) 
+          aprices.push({
+             price_ro: frow.price_ro, 
+             price_bb: frow.price_bb, 
+             price_hb: frow.price_hb, 
+             price_fb: frow.price_fb} );
+        var cdate= dfrom;
+        while(1) {
+          if (cdate > dto) break;
+          var idx= diffDateDays(cdate, dfrom);
+          if(j=0;j<recs.rows.length;j++) {
+            var per= recs.rows.item(j);
+            if (!per['dfrom']) {
+              cdfrom+= 86400;
+              continue;
+            }
+            if (per['dfrom'] <= cdfrom && per['dto'] >= cdate) {
+              aprices[idx]= {
+                 price_ro: per.price_ro, 
+                 price_bb: per.price_bb, 
+                 price_hb: per.price_hb, 
+                 price_fb: per.price_fb};
+              };
+            }
+          }
+          console.log(aprices);
+          try {
+            cbs(aprices);
+          catch(e) {};
+        }
+      }, cbe);
+  });
+}
 
 
