@@ -10,6 +10,7 @@ _occupancyObject= copyObject(occupancyObject);
 
 var iReservation= function(reservation) {
   this.reservation= reservation;
+  this.extras= reservation.extras;
   this.occupancies= reservation['occupancies'];
   this.activeOccupancy= localStorage.editOccupancyOid;
   this.roomSetups= new Array();
@@ -269,16 +270,21 @@ var iReservation= function(reservation) {
 
   this['_designAssignedExtras']= function() {
     console.log('Designing assignedExtra');
-    if (!zakReservation.reservation.extras) {
+    if (!zakReservation.extras) {
       $('#assignedExtras').html('');
       return;
     }
-    var extras= JSON.parse(zakReservation.reservation.extras);
-    var res= '', e;
+    var extras= JSON.parse(zakReservation.extras);
+    var res= '<table class="assignedExtras">', e;
     for (i=0;i<extras.length;i++) {
       e= extras[i];
-      res+= [e['name'], e['cost'], e['id'], e['how']].join(',');
+      res+= '<tr><td><b>' + e['name'] + '</b>:</td>'; 
+      res+= '<td><input class="extraHow" type="text" id="extra_how_' + e['id'] + '" value="' + e['how'] + '"></input></td>'; 
+      res+= '<td>' + (parseFloat(e['cost']) * parseFloat(e['how'])).toFixed(2) + '</td>';
+      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')">Del</a></td>';
+      res+= '</tr>';
     }
+    res+= '<tr><td colspan="4" style="text-align:center"><input type="submit" value="Update"></input></td></tr></table>';
     $('#assignedExtras').html(res);
   }
 
@@ -479,17 +485,15 @@ function addExtra() {
   llAddExtra(ename, ecost,
     function(ses, recs) {
       var eid= recs.insertId;
-      if (zakReservation.reservation.extras) {
-        var extras= JSON.parse(zakReservation.reservation.extras);
+      if (zakReservation.extras) {
+        var extras= JSON.parse(zakReservation.extras);
         extras.push({id: eid, how: how, cost: ecost, name: ename});
       }
       else var extras= [{id: eid, how: how, cost: ecost, name: ename}];
       var sextras= JSON.stringify(extras);
       llModReservation(zakReservation.reservation.id, {extras: sextras},
         function(ses, recs) {
-          console.log(sextras);
-          zakReservation.reservation.extras= sextras;
-          console.log(zakReservation.reservation.extras);
+          zakReservation.extras= sextras;
           zakReservation.designExtras();
           $.modal.close();
           humanMsg.displayMsg('Sounds good');

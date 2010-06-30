@@ -35,3 +35,6 @@ h1.secacc a {
 #tablepricing input {
   width: 80px;
 }
+input.extraHow {
+  width: 40px;
+}
