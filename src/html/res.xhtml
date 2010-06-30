@@ -99,7 +99,7 @@
               </select>
             </td>
             <td>
-              <input type="submit" value="Add"></input>
+              <input type="submit" value="Add" onclick="assignExtra()"></input>
             </td>
           </tr>
         </table>
@@ -151,7 +151,7 @@
     <table id="tablepricing">
     </table>
     <br/>
-    <input type="submit" value="Save room prices"></input>
+    <input type="submit" id="storePricesButton" style="display:none" value="Save room prices" onclick="saveRoomsPrices()"></input>
   </div>
   </div>
 

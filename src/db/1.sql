@@ -72,6 +72,7 @@ create table if not exists reservation (
   id_pricing integer default null,
   remarks text default '', 
   extras text default '',
+  custom_pricing text default '',
  
   foreign key(id_property) references property(id) on delete cascade 
 );; 
