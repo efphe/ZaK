@@ -278,7 +278,7 @@ var iReservation= function(reservation) {
     var res= '<table class="assignedExtras">', e;
     for (i=0;i<extras.length;i++) {
       e= extras[i];
-      res+= '<tr><td><b>' + e['name'] + '</b>:</td>'; 
+      res+= '<tr><td><b id="extra_id_' + e['id'] +">' + e['name'] + '</b>:</td>'; 
       res+= '<td><input class="extraHow" type="text" id="extra_how_' + e['id'] + '" value="' + e['how'] + '"></input></td>'; 
       res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'] + '" value="' + parseFloat(e['cost']).toFixed(2) + '"></input></td>'; 
       /*res+= '<td>' + (parseFloat(e['cost']) * parseFloat(e['how'])).toFixed(2) + '</td>';*/
