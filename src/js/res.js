@@ -1,6 +1,5 @@
 zakReservation= false;
 zakTableau= false;
-zakExtras= -1;
 roomPricing= false;
 
 occupancyObject= {
@@ -14,7 +13,6 @@ var iReservation= function(reservation) {
   this.occupancies= reservation['occupancies'];
   this.activeOccupancy= localStorage.editOccupancyOid;
   this.roomSetups= new Array();
-  this.extras= new Array();
 
   this['getOccupancy']= function(oid) {
     var i= 0;
@@ -35,6 +33,7 @@ var iReservation= function(reservation) {
   this['stupid_pricing']= function() {
     var newp= {price_ro: '', price_bb: '', price_hb: '', price_fb: ''};
     var res= new Array(), i;
+    console.log('Stupid pricing: ' + zakTableau.lendays);
     for (i=0;i<zakTableau.lendays - 1;i++) {
       res.push(newp);
     }
@@ -110,11 +109,10 @@ var iReservation= function(reservation) {
     totcount= 0.0;
     for(j=0;j<rlist.length;j++) {
       count= 0.0;
-      for(i=1;i<rlen;i++) {
+      for(i=1;i<rlen;i++) 
         count+= parseFloat(rlist[j][i]);
-        totcount+= count;
-      }
       lastrow+= '<td class="col_total col_total_' + j + '">' + count.toFixed(2) + '</td>';
+      totcount+= count;
     }
     lastrow= '<tr><td><b id="rtotal">' + totcount + '</b></td>' + lastrow + '</tr>';
     res+= lastrow;
@@ -128,8 +126,8 @@ var iReservation= function(reservation) {
       var prid= $('#cmbpricing').val();
       if (prid == 0) return zakReservation._designPrices();
     }
-    var dfrom= zakReservation.reservation.dfrom;
-    var dto= zakReservation.reservation.dto;
+    var dfrom= zakTableau.dfrom;
+    var dto= dateAddDays(dfrom, zakTableau.lendays - 1);
     llGetDatedPricing(prid, dfrom, dto, true, zakReservation._designPrices);
   }
 
@@ -182,14 +180,9 @@ var iReservation= function(reservation) {
     var occ, rsid;
     occ= zakReservation.getOccupancy(oid || zakReservation.activeOccupancy);
     rsid= occ['id_room_setup'];
-    if (zakReservation.roomSetups.length > 0) {
-      $('#selectSetup').html(zakReservation.selectRoomSetups(rsid));
-      $('#roomSetupRemarks').val(occ['remarks'] || '');
-    } else zakReservation.getRoomSetups(
+    zakReservation.getRoomSetups(
       function() {
-        console.log('After loading');
         $('#selectSetup').html(zakReservation.selectRoomSetups(rsid));
-        console.log('Now remarks');
         $('#roomSetupRemarks').val(occ['remarks'] || '');
       },
       function(ses, err) {
@@ -265,28 +258,35 @@ var iReservation= function(reservation) {
     zakReservation.desingPagePrices();
   }
 
-  this['_designExtras']= function() {
+  this['_designExtras']= function(extras) {
     var i, res= '', e;
-    for (i=0;i<zakExtras.length;i++) {
-      e= zakExtras[i];
+    for (i=0;i<extras.length;i++) {
+      e= extras[i];
       res+= '<option value="' + e['id'] + '">' + e['name'] + '</option>';
     }
     $('#selectExtra').empty().append(res);
   }
 
-  this['designExtras']= function() {
-    if(zakExtras!= -1) {
-      zakReservation._designExtras();
+  this['_designAssignedExtras']= function() {
+    console.log('Designing assignedExtra');
+    if (!zakReservation.reservation.extras) {
+      $('#assignedExtras').html('');
       return;
     }
+    var extras= JSON.parse(zakReservation.reservation.extras);
+    var res= '', e;
+    for (i=0;i<extras.length;i++) {
+      e= extras[i];
+      res+= [e['name'], e['cost'], e['id'], e['how']].join(',');
+    }
+    $('#assignedExtras').html(res);
+  }
+
+  this['designExtras']= function() {
     llLoadExtras(
       function(ses, recs) {
-        var extras= new Array(), i;
-        for(i=0;i<recs.rows.length;i++) {
-          extras.push(recs.rows.item(i));
-        }
-        zakExtras= extras;
-        zakReservation._designExtras();
+        zakReservation._designExtras(arrayFromRecords(recs));
+        zakReservation._designAssignedExtras();
       },
       function(ses, err) {
         humanMsg.displayMsg('Error loading extras: ' + err.message);
@@ -418,20 +418,18 @@ function addRSetup() {
   var rsname= $('#rsetup_name').val();
   llAddRSetup(rsname, 
     function(ses, recs) {
-      rsid= recs.insertId;
-      zakReservation.roomSetups.push({name: rsname, id: rsid});
-      zakReservation.designRoomSetup();
+      var rsid= recs.insertId;
+      saveRSetup(rsid);
       $.modal.close();
-      humanMsg.displayMsg('Sounds good');
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message);
     });
 }
 
-function saveRSetup() {
-  var rsid= $('#selectSetup').val();
-  var remarks= $('#roomSetupRemarks').val();
+function saveRSetup(rsid, remarks) {
+  var rsid= rsid || $('#selectSetup').val();
+  var remarks= remarks || $('#roomSetupRemarks').val();
   console.log('Updating occ: rsid: ' + rsid + ', remarks: ' + remarks);
   llModOccupancy(zakReservation.activeOccupancy, {remarks: remarks, id_room_setup: rsid},
     function(ses, recs) {
@@ -473,6 +471,7 @@ function askExtra() {
 function addExtra() {
   var ename= $('#extra_name').val();
   var ecost= $('#extra_cost').val();
+  var how= $('#extra_how').val();
   if (!checkFloat(ecost) || ! ename) {
     humanMsg.displayMsg('Please, specify good values', 1);
     return;
@@ -480,10 +479,21 @@ function addExtra() {
   llAddExtra(ename, ecost,
     function(ses, recs) {
       var eid= recs.insertId;
-      zakExtras.push({name: ename, cost: ecost});
-      zakReservation._designExtras();
-      $.modal.close();
-      humanMsg.displayMsg('Sounds good');
+      if (zakReservation.reservation.extras) {
+        var extras= JSON.parse(zakReservation.reservation.extras);
+        extras.push({id: eid, how: how, cost: ecost, name: ename});
+      }
+      else var extras= [{id: eid, how: how, cost: ecost, name: ename}];
+      var sextras= JSON.stringify(extras);
+      llModReservation(zakReservation.reservation.id, {extras: sextras},
+        function(ses, recs) {
+          console.log(sextras);
+          zakReservation.reservation.extras= sextras;
+          console.log(zakReservation.reservation.extras);
+          zakReservation.designExtras();
+          $.modal.close();
+          humanMsg.displayMsg('Sounds good');
+        }, function(ses, err) {humanMsg.displayMsg('Error: ' + err.message);});
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message);
