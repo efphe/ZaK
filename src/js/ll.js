@@ -483,5 +483,3 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
       });
   });
 }
-
-

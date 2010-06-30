@@ -185,9 +185,9 @@ function updateStatement(d) {
 }
 
 function insertStatement(d) {
-  var keys= new Array();
-  var vals= new Array();
-  var dots= new Array();
+  var keys= [];
+  var vals= [];
+  var dots= [];
   for (var k in d) {
     keys.push(k);
     vals.push(d[k]);
@@ -198,9 +198,18 @@ function insertStatement(d) {
 }
 
 function arrayFromRecords(r) {
-  var i, res= new Array;
+  var i, res= [];
   for(i=0;i<r.rows.length;i++) {
     res.push(r.rows.item(i));
+  }
+  return res;
+}
+
+function dictFromRecords(r) {
+  var i, res= {}, it;
+  for(i=0;i<r.rows.length;i++) {
+    it= r.rows.item(i);
+    res[it['id']]= it;
   }
   return res;
 }

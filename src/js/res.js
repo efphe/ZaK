@@ -280,9 +280,9 @@ var iReservation= function(reservation) {
       e= extras[i];
       res+= '<tr><td><b>' + e['name'] + '</b>:</td>'; 
       res+= '<td><input class="extraHow" type="text" id="extra_how_' + e['id'] + '" value="' + e['how'] + '"></input></td>'; 
-      res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'] + '" value="' + (parseFloat(e['cost']) * parseFloat(e['how'])).toFixed(2) + '"></input></td>'; 
+      res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'] + '" value="' + parseFloat(e['cost']).toFixed(2) + '"></input></td>'; 
       /*res+= '<td>' + (parseFloat(e['cost']) * parseFloat(e['how'])).toFixed(2) + '</td>';*/
-      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')">Del</a></td>';
+      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
       res+= '</tr>';
     }
     res+= '<tr><td colspan="4" style="text-align:center"><input type="submit" value="Update extras"></input></td></tr></table>';
@@ -478,18 +478,6 @@ function askExtra() {
   $('#addextra_div').modal({position: [y,x]});
 }
 
-function extraAppendAssigned(eid, how) {
-  var i, extras;
-  extras= JSON.parse(zakReservation.extras);
-  for(i=0;i<extras.length;i++) {
-    if (extras[i]['id'] == eid) {
-      extras[i]['how']= parseInt(extras[i]['how']) + parseInt(how);
-      return extras;
-    }
-  }
-  return false;
-}
-
 function removeAssignedExtra(eid) {
   var extras= JSON.parse(zakReservation.extras);
   var newextras= new Array();
@@ -508,6 +496,19 @@ function removeAssignedExtra(eid) {
     });
 }
 
+function extraAppendAssigned(eid, how, cost) {
+  var i, extras;
+  extras= JSON.parse(zakReservation.extras);
+  for(i=0;i<extras.length;i++) {
+    if (extras[i]['id'] == eid) {
+      extras[i]['how']= parseInt(extras[i]['how']) + parseInt(how);
+      extras[i]['cost']= parseFloat(extras[i]['cost']) + parseFloat(cost);
+      return {extras: extras, found: true};
+    }
+  }
+  return {extras: extras, found: false};
+}
+
 function assignExtra() {
   var eid= $('#selectExtra').val();
   var how= $('#selectExtraHow').val();
@@ -515,37 +516,33 @@ function assignExtra() {
     humanMsg.displayMsg('Please, insert a new extra before', 1);
     return;
   }
-  var res= extraAppendAssigned(eid, how);
-  if (res) {
-    var sextras= JSON.stringify(res);
-    llModReservation(zakReservation.reservation.id, {extras: sextras},
-      function(ses, recs) {
-        zakReservation.extras= sextras;
-        zakReservation.designExtras();
-        humanMsg.displayMsg('Sounds good');
-      }, 
-      function(ses, err) {
-        humanMsg.displayMsg('Error: ' + err.message, 1);
-      });
-    return;
-  }
   llLoadExtras(
     function(ses, recs) {
-      var i;
-      var aextras= JSON.parse(zakReservation.extras);
-      for (i=0;i<recs.rows.length;i++) {
-        var e= recs.rows.item(i);
-        if (e['id'] == eid) {
-          aextras.push({id: eid, cost: e['cost'], how: how, name: e['name']});
-          var sextras= JSON.stringify(aextras);
+      var i, e, cost, name, sextras;
+      for(i=0;i<recs.rows.length;i++) {
+        e= recs.rows.item(i);
+        if (e['id'] == eid) {cost= e['cost']; name= e['name']; break;}
+      }
+
+      var res= extraAppendAssigned(eid, how, cost);
+      console.log(res);
+      if (res['found']) 
+        sextras= JSON.stringify(res['extras']);
+      else {
+        var extras= res['extras'];
+        extras.push({id: eid, how: how, cost: parseFloat(cost) * parseInt(how), name: name}); 
+        sextras= JSON.stringify(extras);
+      }
+      llModReservation(zakReservation.reservation.id, {extras: sextras},
+        function(ses, recs) {
           zakReservation.extras= sextras;
           zakReservation.designExtras();
-          $.modal.close();
           humanMsg.displayMsg('Sounds good');
-          return;
-        }
-      }
-    }, 
+        }, 
+        function(ses, err) {
+          humanMsg.displayMsg('Error: ' + err.message, 1);
+        });
+    },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message, 1);
     });
@@ -559,14 +556,15 @@ function addExtra() {
     humanMsg.displayMsg('Please, specify good values', 1);
     return;
   }
+  var fcost= parseFloat(ecost) * parseInt(how);
   llAddExtra(ename, ecost,
     function(ses, recs) {
       var eid= recs.insertId;
       if (zakReservation.extras) {
         var extras= JSON.parse(zakReservation.extras);
-        extras.push({id: eid, how: how, cost: ecost, name: ename});
+        extras.push({id: eid, how: how, cost: fcost, name: ename});
       }
-      else var extras= [{id: eid, how: how, cost: ecost, name: ename}];
+      else var extras= [{id: eid, how: how, cost: fcost, name: ename}];
       var sextras= JSON.stringify(extras);
       llModReservation(zakReservation.reservation.id, {extras: sextras},
         function(ses, recs) {
