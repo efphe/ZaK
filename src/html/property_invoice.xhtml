@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <style>
+      textarea.oneline {
+        width: 220px;
+        height: 20px;
+        border: none;
+      }
+      div#main {
+        min-height: 100px;
+        width: 600px;
+        border: 2px solid black;
+        padding-left: 6px;
+        border-radius: 4px;
+      }
+      table#rooms_prices td {
+        text-align: center;
+      }
+    </style>
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.hovergreen').hover(
+        function(ev) {
+          $(this).css('background-color', '#daffa9');
+        },
+        function(ev) {
+          $(this).css('background-color', 'white');
+        });
+        if (!$('#today').val()) {
+          var nd= new Date();
+          $('#today').val($.datepicker.formatDate('D M yy', nd));
+        }
+        if (!$('#vat').val()) {
+          $('#vat').val('--');
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          Guest:
+        </td>
+        <td>
+          <textarea id="guest" class="hovergreen oneline"></textarea>
+        </td>
+        <td>
+          Today:
+        </td>
+        <td>
+          <textarea id="today" class="hovergreen oneline"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Vat:
+        </td>
+        <td>
+          <textarea id="vat" class="hovergreen oneline"></textarea>
+        </td>
+      </tr>
+    </table>
+    <div id="main">
+      <h2>Rooms</h2>
+      <table id="rooms_prices">
+        <tr>
+          <td></td>
+          <td>Double</td>
+          <td>Total</td>
+        </tr>
+        <tr>
+          <td>12/12</td>
+          <td>100.00</td>
+          <td>100.00</td>
+        </tr>
+        <tr>
+          <td>13/12</td>
+          <td>110.00</td>
+          <td>110.00</td>
+        </tr>
+        <tr>
+          <td>14/12</td>
+          <td>120.00</td>
+          <td>120.00</td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td>
+            330.00
+          </td>
+          <td>
+            <b>330.00</b>
+          </td>
+        </tr>
+      </table>
+      <h2>Extras</h2>
+    </div>
+  </body>
+</html>
