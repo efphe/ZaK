@@ -84,7 +84,7 @@ var iReservation= function(reservation) {
       lastrow+= '<td class="col_total col_total_' + j + '">' + count.toFixed(2) + '</td>';
       totcount+= count;
     }
-    lastrow= '<tr><td><b id="rtotal">' + totcount + '</b></td>' + lastrow + '</tr>';
+    lastrow= '<tr><td><b id="rtotal">' + totcount.toFixed(2) + '</b></td>' + lastrow + '</tr>';
     res+= lastrow;
     $('#tablepricing').html(res);
   }
