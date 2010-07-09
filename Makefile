@@ -37,6 +37,12 @@ src/js/cm/pgpricing.js: $(PGPRICES)
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
+PGINV= src/js/j.js src/js/dates.js src/js/commons.js src/js/invoice.js
+src/js/cm/pginvoice.js: $(PGINV)
+	cat $^ > temp.uncompressed
+	jszip temp.uncompressed $@
+	rm temp.uncompressed
+
 src/js/j.js: src/js/jquery/jquery.js src/js/jquery/jquery-ui.js \
 			 src/js/jquery/jquery.hoverIntent.js src/js/jquery/jquery.humanmsg.js \
 			 src/js/jquery/jquery.simplemodal-1.3.5.js src/js/jquery/jquery.contextMenu.js
@@ -49,4 +55,5 @@ jspages:
 	make src/js/cm/pgres.js
 	make src/js/cm/pginit.js
 	make src/js/cm/pgpricing.js
+	make src/js/cm/pginvoice.js
 
