@@ -11,7 +11,6 @@ BEFORE DELETE ON property
 FOR EACH ROW BEGIN  
     DELETE FROM room WHERE room.id_property = OLD.id;  
     DELETE from reservation where reservation.id_property= OLD.id; 
-    DELETE from pricing where pricing.id_property= OLD.id;
 END;; 
 create table if not exists pricing (
   id integer primary key asc,
