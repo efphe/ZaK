@@ -18,7 +18,7 @@ src/js/cm/pgtab.js: $(PGTAB)
 	rm temp.uncompressed
 
 PGRES= src/js/j.js src/js/commons.js src/js/propsbase.js \
-	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/res.js
+	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/resbase.js src/js/res.js
 src/js/cm/pgres.js: $(PGRES)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
@@ -37,7 +37,8 @@ src/js/cm/pgpricing.js: $(PGPRICES)
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGINV= src/js/j.js src/js/dates.js src/js/commons.js src/js/invoice.js
+PGINV= src/js/j.js src/js/commons.js src/js/propsbase.js \
+	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/resbase.js src/js/invoice.js
 src/js/cm/pginvoice.js: $(PGINV)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
