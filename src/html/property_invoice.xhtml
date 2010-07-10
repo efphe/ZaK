@@ -38,34 +38,49 @@
     </script>
   </head>
   <body>
-    <table>
-      <tr>
-        <td>
-          Guest:
-        </td>
-        <td>
-          <textarea id="guest" class="hovergreen oneline"></textarea>
-        </td>
-        <td>
-          Today:
-        </td>
-        <td>
-          <textarea id="today" class="hovergreen oneline"></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vat:
-        </td>
-        <td>
-          <textarea id="vat" class="hovergreen oneline"></textarea>
-        </td>
-      </tr>
-    </table>
     <div id="main">
+
+      <div style="float:right;margin-top:10px">
+        <h3>Thanks for your stay</h3>
+        <b id="stay"></b>
+        <table>
+          <tr>
+            <td>
+              Guest:
+            </td>
+            <td>
+              <textarea id="guest" class="hovergreen oneline"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Today:
+            </td>
+            <td>
+              <textarea id="today" class="hovergreen oneline"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Vat:
+            </td>
+            <td>
+              <textarea id="vat" class="hovergreen oneline"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <b>Total</b>: <b id="itotal"></b>
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <h2>Rooms</h2>
-      <table id="tablepricing"></table>
+      Per Room/Night prices:
+      <table id="tablepricing" style="margin-left:20px"></table>
       <h2>Extras</h2>
+      <table id="extraspricing" style="margin-left:20px"></table>
     </div>
   </body>
 </html>
