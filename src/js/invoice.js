@@ -14,7 +14,6 @@ $(document).ready(function() {
   console.log('Initializing reservation');
   var reservation= JSON.parse(localStorage.invoiceReservation);
   zakReservation= iReservation(reservation, 1);
-  zakReservation.loadTableau(zakReservation._designPrices);
 
   var extras= JSON.parse(zakReservation.extras);
   var res= '';
@@ -31,8 +30,20 @@ $(document).ready(function() {
   $('#extraspricing').html(res);
   $('#guest').html(zakReservation.reservation.customer);
   console.log(strDate(zakTableau.dfrom));
-  $('#stay').html('From ' + strDate(zakTableau.dfrom) + ' to ' + strDate(dateAddDays(zakTableau.dfrom, zakTableau.lendays)));
-  $('#itotal').html(etotal.toFixed(2));
+
+  zakReservation.loadTableau(function() {
+    zakReservation._designPrices();
+    var count= 0.0;
+    for (var j in roomPricing) {
+      var rp= roomPricing[j];
+      for (var i= 1; i< rp.length; i++) {
+        count+= parseFloat(rp[i]);
+      }
+    }
+    count+= parseFloat(etotal);
+    $('#itotal').html(count.toFixed(2) + ' &#8364');
+    $('#stay').html('From ' + strDate(zakTableau.dfrom) + ' to ' + strDate(dateAddDays(zakTableau.dfrom, zakTableau.lendays)));
+  });
 });
 
 

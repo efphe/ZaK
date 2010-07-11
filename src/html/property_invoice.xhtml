@@ -12,9 +12,13 @@
         border: 2px solid black;
         padding-left: 6px;
         border-radius: 4px;
+        padding-bottom: 10px;
       }
       table#tablepricing td {
         text-align: center;
+      }
+      #humanMsg, #humanMsgErr, #humanMsgLog {
+        display: none;
       }
     </style>
     <script src="/js/cm/pginvoice.js"></script>
@@ -38,10 +42,16 @@
     </script>
   </head>
   <body>
+    <div style="margin-left:450px;margin-bottom:5px">
+      <input type="submit" value="Print" onclick="javascript:print()"></input>
+      <input type="submit" value="Save" onclick="javascript:saveInvoice()"></input>
+      <input type="submit" value="Back" onclick="javascript:exitInvoice()"></input>
+    </div>
     <div id="main">
 
       <div style="float:right;margin-top:10px">
         <b style="float:right;margin-right:20px">Invoice <span id="invoiceN">3</span></b>
+        <br/>
         <h3>Thanks for your stay</h3>
         <span id="stay"></span>
         <table>
@@ -69,12 +79,10 @@
               <textarea id="vat" class="hovergreen oneline"></textarea>
             </td>
           </tr>
-          <tr>
-            <td>
-              <b>Total</b>: <b id="itotal"></b>
-            </td>
-          </tr>
         </table>
+        <br/>
+        <br/>
+        <b>Total</b>: <b id="itotal"></b>
       </div>
 
       <h2>Rooms</h2>
