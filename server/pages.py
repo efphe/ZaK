@@ -2,35 +2,38 @@ from nevow import rend, loaders, tags as T, inevow
 from twisted.web.util import ChildRedirector
 from twisted.web.static import File
 from twisted.web import resource
+from twisted.python.util import sibpath
 import os
-JsDispenser= File('src/js', defaultType= 'application/x-javascript')
-CssDispenser= File('src/css', defaultType= 'text/css')
-ImgDispenser= File('src/imgs', defaultType= 'image/png')
+_bdir= sibpath(os.path.dirname(__file__), '')
+_sdir= _bdir + 'src/'
+JsDispenser= File(_sdir + 'js', defaultType= 'application/x-javascript')
+CssDispenser= File(_sdir + 'css', defaultType= 'text/css')
+ImgDispenser= File(_sdir + 'imgs', defaultType= 'image/png')
 
 class IZak:
   def __init__(self):
     self.zakDbVersion= self.dbInit()
   def dbInit(self):
-    files= [f for f in os.listdir('src/db') if f.endswith('.sql')]
+    files= [f for f in os.listdir(_sdir + 'db') if f.endswith('.sql')]
     files.sort()
     self.files= files
     return len(files)
   def getSchema(self, fromversion= 0):
     res= ''
     for f in self.files[fromversion:]:
-      res+= open('src/db/%s' % f).read()
+      res+= open(_sdir + 'db/%s' % f).read()
     return res
 
 ZaK= IZak()
 
 class AdminTemplate(rend.Page):
   addSlash= 0
-  docFactory= loaders.xmlfile('src/html/template.xhtml')
+  docFactory= loaders.xmlfile(_sdir + 'html/template.xhtml')
   jsorigin= None
   cssorigin= None
   xmlfile= None
   def render_contents(self, ctx, data):
-    return loaders.xmlfile(self.xmlfile)
+    return loaders.xmlfile(_bdir + self.xmlfile)
   def render_js(self, ctx, data):
     return self.jsorigin
   def render_css(self, ctx, data):
@@ -61,9 +64,9 @@ class AdminReservation(AdminTemplate):
   cssorigin= '/css/tab.css', '/css/res.css'
 
 class AdminInvoice(rend.Page):
-  docFactory= loaders.xmlfile('src/html/property_invoice.xhtml')
+  docFactory= loaders.xmlfile(_bdir + 'src/html/property_invoice.xhtml')
 class ShowInvoice(rend.Page):
-  docFactory= loaders.xmlfile('src/html/property_oinvoice.xhtml')
+  docFactory= loaders.xmlfile(_bdir + 'src/html/property_oinvoice.xhtml')
 
 class AdminSchema(resource.Resource):
   def render(self, rqst):
@@ -76,7 +79,7 @@ class AdminSchema(resource.Resource):
       return ''
 
 class AdminInit(rend.Page):
-  docFactory= loaders.xmlfile('src/html/init.xhtml')
+  docFactory= loaders.xmlfile(_bdir + 'src/html/init.xhtml')
   def __init__(self):
     rend.Page.__init__(self)
     self.children= {
@@ -92,6 +95,16 @@ class AdminInit(rend.Page):
 
 
 class ZakAdmin(rend.Page):
+  docFactory= loaders.xmlstr("""<html> 
+  <head> 
+    <script src="/js/cm/pginit.js"></script> 
+  </head> 
+  <body> 
+    Welcome there.<br /> 
+    Now initializing Zak <span id="dots"></span> 
+  </body> 
+</html>""")
+
   def __init__(self):
     rend.Page.__init__(self)
     self.children= {
@@ -101,9 +114,16 @@ class ZakAdmin(rend.Page):
         'js': JsDispenser,
         'css': CssDispenser,
         'imgs': ImgDispenser,
-        '': ChildRedirector('/init/'),
         'init': AdminInit(),
         'pricing': AdminPricing(),
         'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
+        'schema': AdminSchema(),
+        '': self,
         }
+  def locateChild(self, ctx, segs):
+    if segs[0] == 'version':
+      rqst= inevow.IRequest(ctx)
+      rqst.setHeader('content-type', 'text/plain')
+      return str(ZaK.zakDbVersion), ()
+    return rend.Page.locateChild(self, ctx, segs)
