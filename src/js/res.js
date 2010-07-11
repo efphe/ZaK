@@ -315,6 +315,7 @@ function buildReservatioinInvoice() {
   localStorage.invoiceOccupancyId= '';
   goToSameDirPage('invoice');
 }
+
 function buildOccupancyInvoice() {
 }
 
@@ -343,6 +344,8 @@ function initReservation() {
 }
 
 function showInvoice(iid) {
+  localStorage.showInvoiceId= iid;
+  goToSameDirPage('oinvoice');
 }
 
 $(document).ready(function() {

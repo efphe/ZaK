@@ -62,6 +62,8 @@ class AdminReservation(AdminTemplate):
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile('src/html/property_invoice.xhtml')
+class ShowInvoice(rend.Page):
+  docFactory= loaders.xmlfile('src/html/property_oinvoice.xhtml')
 
 class AdminSchema(resource.Resource):
   def render(self, rqst):
@@ -102,5 +104,6 @@ class ZakAdmin(rend.Page):
         '': ChildRedirector('/init/'),
         'init': AdminInit(),
         'pricing': AdminPricing(),
+        'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
         }

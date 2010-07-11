@@ -524,6 +524,16 @@ function llGetInvoiceId(pid, rid, oid, cb) {
   });
 }
 
+function llGetInvoiceHtml(iid, cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select html from reservation_invoice where id = ?', [iid],
+      function(ses, recs) {
+        cb(recs.rows.item(0).html);
+      });
+  });
+}
+
 function llSaveInvoice(pid, n, rid, oid, html, cb) {
   db= zakOpenDb();
   db.transaction(function(ses) {
