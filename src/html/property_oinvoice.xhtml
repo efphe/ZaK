@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <style>
+      textarea.oneline {
+        width: 220px;
+        height: 20px;
+        border: none;
+      }
+      div#main {
+        min-height: 100px;
+        width: 600px;
+        border: 2px solid black;
+        padding-left: 6px;
+        border-radius: 4px;
+        padding-bottom: 10px;
+      }
+      table#tablepricing td {
+        text-align: center;
+      }
+      #humanMsg, #humanMsgErr, #humanMsgLog {
+        display: none;
+      }
+    </style>
+    <script src="/js/cm/pginvoice.js"></script>
+    <script>
+      $(document).ready(function() {
+        llGetInvoiceHtml(localStorage.showInvoiceId, 
+          function(h) {$('body').html(h);});
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
