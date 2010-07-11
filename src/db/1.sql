@@ -112,8 +112,11 @@ create table if not exists reservation_invoice (
   id integer primary key asc,
   n integer,
   html text,
+  created integer,
+  id_property integer,
   id_reservation integer,
   id_occupancy integer default null,
   foreign key(id_reservation) references reservation(id) on delete cascade,
   foreign key(id_occupancy) references occupancy(id) on delete cascade 
+  foreign key(id_property) references property(id) on delete cascade 
 );;

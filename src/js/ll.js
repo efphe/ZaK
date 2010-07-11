@@ -483,3 +483,62 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
       });
   });
 }
+
+function llNextInvoiceNumber(pid, cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    var now= jsDate();
+    now= unixDate('01/01/' + now.getFullYear());
+    ses.executeSql('select max(n) as n from reservation_invoice where created > ? and id_property = ? ', 
+        [now, pid], 
+      function(ses, recs) {
+        var r= recs.rows.item(0);
+        var n= parseInt(r.n);
+        console.log('This is the max: ' + n);
+        if (parseInt(n) == n) n+= 1;
+        cb(n || 1);
+      },
+      function(ses, err) {
+        console.log('Error llNextInvoiceNumber: ' + err.message);
+        cb(1);
+      });
+  });
+}
+
+function llGetInvoiceId(pid, rid, oid, cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    var q= 'select id,n from reservation_invoice where id_property = ? and id_reservation = ?';
+    var qarr= [pid, rid];
+    if (oid) {
+      q+= ' and id_occupancy = ?';
+      qarr.push(oid);
+    }
+    ses.executeSql(q, qarr,
+      function(ses, recs) {
+        console.log(recs);
+        if (recs.rows.length != 1)
+          return cb(false);
+        return cb(recs.rows.item(0));
+      });
+  });
+}
+
+function llSaveInvoice(pid, n, rid, oid, html, cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    if (oid) {
+      var s= 'insert into reservation_invoice (created, id_property, n,html,id_reservation,id_occupancy)';
+      s+= ' values (?,?,?,?,?,?)';
+      console.log(s);
+      console.log([unixDate(), pid, n,html, rid,oid]);
+      ses.executeSql(s, [unixDate(), pid, n,html, rid,oid], cb);
+    } else {
+      var s= 'insert into reservation_invoice (created, id_property, n,html,id_reservation)';
+      s+= ' values (?,?,?,?,?)';
+      console.log(s);
+      console.log([unixDate(), pid, n,html, rid]);
+      ses.executeSql(s, [unixDate(), pid, n,html, rid], cb);
+    }
+  });
+}

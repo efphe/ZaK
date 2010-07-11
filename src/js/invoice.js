@@ -31,6 +31,12 @@ $(document).ready(function() {
   $('#guest').html(zakReservation.reservation.customer);
   console.log(strDate(zakTableau.dfrom));
 
+  llNextInvoiceNumber(getActiveProperty()['id'],
+    function(n) {
+      console.log('Number invoice: ' + n);
+      $('#invoiceN').html(n);
+    });
+
   zakReservation.loadTableau(function() {
     zakReservation._designPrices();
     var count= 0.0;
@@ -46,4 +52,13 @@ $(document).ready(function() {
   });
 });
 
+function exitInvoice() {
+  goToSameDirPage('book');
+}
+
+function saveInvoice() {
+  var html= $('body').html();
+  var n= $('#invoiceN').html();
+  llSaveInvoice(getActiveProperty()['id'], n, zakReservation.reservation.id, false, html, function() {alert('ok');});
+}
 
