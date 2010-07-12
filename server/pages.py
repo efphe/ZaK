@@ -1,7 +1,6 @@
 from nevow import rend, loaders, tags as T, inevow
 from twisted.web.util import ChildRedirector
 from twisted.web.static import File
-from twisted.web import resource
 from twisted.python.util import sibpath
 import os
 _bdir= sibpath(os.path.dirname(__file__), '')
@@ -68,31 +67,17 @@ class AdminInvoice(rend.Page):
 class ShowInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/property_oinvoice.xhtml')
 
-class AdminSchema(resource.Resource):
-  def render(self, rqst):
-    rqst.setHeader('content-type', 'text/plain')
-    try:
-      fromversion= int(rqst.args['fromversion'][0])
-      return ZaK.getSchema(fromversion)
-    except Exception, ss: 
-      print 'Error parsing schema: %s' % str(ss)
-      return ''
-
 class AdminInit(rend.Page):
-  docFactory= loaders.xmlfile(_bdir + 'src/html/init.xhtml')
-  def __init__(self):
-    rend.Page.__init__(self)
-    self.children= {
-        '': self,
-        'schema': AdminSchema(),
-        }
+  docFactory= None
   def locateChild(self, ctx, segs):
-    if segs[0] != 'version':
-      return rend.Page.locateChild(self, ctx, segs)
     rqst= inevow.IRequest(ctx)
-    rqst.setHeader('content-type', 'text/plain')
-    return str(ZaK.zakDbVersion), ()
-
+    if segs[0] == 'version':
+      rqst.setHeader('content-type', 'text/plain')
+      return str(ZaK.zakDbVersion), ()
+    if segs[0] == 'schema':
+      fromversion= int(rqst.args['fromversion'][0])
+      return ZaK.getSchema(fromversion), ()
+    return '?', ()
 
 class ZakAdmin(rend.Page):
   docFactory= loaders.xmlstr("""<html> 
@@ -118,12 +103,5 @@ class ZakAdmin(rend.Page):
         'pricing': AdminPricing(),
         'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
-        'schema': AdminSchema(),
         '': self,
         }
-  def locateChild(self, ctx, segs):
-    if segs[0] == 'version':
-      rqst= inevow.IRequest(ctx)
-      rqst.setHeader('content-type', 'text/plain')
-      return str(ZaK.zakDbVersion), ()
-    return rend.Page.locateChild(self, ctx, segs)

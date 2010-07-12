@@ -8,6 +8,7 @@ function _akInitSchema() {
   var dbv= db.version || 0;
   console.log('Local version: ' + dbv);
   $.get('init/schema?fromversion=' + dbv, function(data) {
+    console.log('Received data: ' + data);
     if(!data) {initEnd();return;}
     $.get('init/version', function(zdbv) {
       console.log('Changing db version: to version: ' + zdbv);
