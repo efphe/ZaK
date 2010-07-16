@@ -38,7 +38,6 @@ function zakOpenDb(v, sync) {
 function _zakloop(tx, queries, cbs, cbe) {
   if (zakCountArrayDb == zakCountArrayNb -1 ) return;
   var s= queries[zakCountArrayDb];
-  console.log(s);
   zakCountArrayDb+= 1;
   if (zakCountArrayDb == zakCountArrayNb -1 ) 
     tx.executeSql(s, new Array(), cbs, cbe);
@@ -124,14 +123,12 @@ function selectPropertiesInit() {
       var i= 0;
       var aprop= getActiveProperty();
       console.log('Selecting with active= ' + aprop);
-      console.log(aprop);
       $('.putPropertyname').each(function(idx, el) {
         $(this).append(aprop['name'] || 'Property');
       });
       var aid= aprop['id'];
       for(i=0;i<props.rows.length;i++) {
         var prop= props.rows.item(i);
-        console.log('combo to ' + prop['name']);
         if (prop['id'] == aid) {
           res+= '<option selected="selected" value="' + prop['id'] + '">' + prop['name'] + '</option>';
         }
@@ -141,7 +138,6 @@ function selectPropertiesInit() {
       $('#selectproperty').empty().append(res).change(function() {
         var zcode= $('#selectproperty').val();
         if (getActiveProperty()['id'] != zcode) {
-          console.log('Setting now prop: ' + zcode);
           setActiveProperty(zcode, function() {document.location.reload(false);});
         }
       });
@@ -184,6 +180,14 @@ function updateStatement(d) {
   return {qarr: qarr, qry: temp.join(',')};
 }
 
+function updateStatementWhere(d, where, wherearr, tbl) {
+  var o= updateStatement(d);
+  o.qry= 'update ' + tbl + ' set ' + o.qry + ' ' + where;
+  for (var i in wherearr)
+    o.qarr.push(wherearr[i]);
+  return o;
+}
+
 function insertStatement(d) {
   var keys= [];
   var vals= [];
@@ -195,6 +199,12 @@ function insertStatement(d) {
   }
   var q= '(' + keys.join(',') + ') values (' + dots.join(',') + ')';
   return {qarr: vals, qry: q};
+}
+
+function insertStatementWhere(d, t) {
+  var o= insertStatement(d);
+  o.qry= 'insert into ' + t + ' ' + o.qry;
+  return o;
 }
 
 function arrayFromRecords(r) {
@@ -226,5 +236,11 @@ function copyObject(d, skipfields) {
 function strObject(d) {
   for (var k in d) {
     console.log(k + '= ' + d[k]);
+  }
+}
+
+function addArray(src, dst) {
+  for (var i=0;i<dst.length;i++) {
+    src.push(dst[i]);
   }
 }

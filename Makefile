@@ -3,58 +3,60 @@ gw:
 pyclean:
 	for i in `find . -name \*pyc`; do rm $$i; done
 
-PGPROPS= src/js/j.js src/js/commons.js \
-		 src/js/ll.js src/js/propsbase.js src/js/properties.js
-src/js/cm/pgprops.js: $(PGPROPS)
+SRCJSDIR=src/js
+
+PGPROPS= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js \
+		 $(SRCJSDIR)/ll.js $(SRCJSDIR)/propsbase.js $(SRCJSDIR)/properties.js
+$(SRCJSDIR)/cm/pgprops.js: $(PGPROPS)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGTAB= src/js/j.js src/js/commons.js src/js/propsbase.js \
-	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/tab.js
-src/js/cm/pgtab.js: $(PGTAB)
+PGTAB= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
+	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/tab.js
+$(SRCJSDIR)/cm/pgtab.js: $(PGTAB)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGRES= src/js/j.js src/js/commons.js src/js/propsbase.js \
-	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/resbase.js src/js/res.js
-src/js/cm/pgres.js: $(PGRES)
+PGRES= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
+	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js $(SRCJSDIR)/res.js
+$(SRCJSDIR)/cm/pgres.js: $(PGRES)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGINIT= src/js/j.js src/js/commons.js src/js/init.js
-src/js/cm/pginit.js: $(PGINIT)
+PGINIT= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/init.js
+$(SRCJSDIR)/cm/pginit.js: $(PGINIT)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGPRICES= src/js/j.js src/js/commons.js src/js/dates.js \
-		 src/js/ll.js src/js/propsbase.js src/js/pricing.js
-src/js/cm/pgpricing.js: $(PGPRICES)
+PGPRICES= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/dates.js \
+		 $(SRCJSDIR)/ll.js $(SRCJSDIR)/propsbase.js $(SRCJSDIR)/pricing.js
+$(SRCJSDIR)/cm/pgpricing.js: $(PGPRICES)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-PGINV= src/js/j.js src/js/commons.js src/js/propsbase.js \
-	   src/js/ll.js src/js/dates.js src/js/tabbase.js src/js/resbase.js src/js/invoice.js
-src/js/cm/pginvoice.js: $(PGINV)
+PGINV= $(SRCJSDIR)/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
+	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js $(SRCJSDIR)/invoice.js
+$(SRCJSDIR)/cm/pginvoice.js: $(PGINV)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
-src/js/j.js: src/js/jquery/jquery.js src/js/jquery/jquery-ui.js \
-			 src/js/jquery/jquery.hoverIntent.js src/js/jquery/jquery.humanmsg.js \
-			 src/js/jquery/jquery.simplemodal-1.3.5.js src/js/jquery/jquery.contextMenu.js
+$(SRCJSDIR)/j.js: $(SRCJSDIR)/jquery/jquery.js $(SRCJSDIR)/jquery/jquery-ui.js \
+			 $(SRCJSDIR)/jquery/jquery.hoverIntent.js $(SRCJSDIR)/jquery/jquery.humanmsg.js \
+			 $(SRCJSDIR)/jquery/jquery.simplemodal-1.3.5.js $(SRCJSDIR)/jquery/jquery.contextMenu.js
 	cat $^ > $@
 
 jspages:
-	make src/js/j.js
-	make src/js/cm/pgprops.js
-	make src/js/cm/pgtab.js
-	make src/js/cm/pgres.js
-	make src/js/cm/pginit.js
-	make src/js/cm/pgpricing.js
-	make src/js/cm/pginvoice.js
+	make $(SRCJSDIR)/j.js
+	make $(SRCJSDIR)/cm/pgprops.js
+	make $(SRCJSDIR)/cm/pgtab.js
+	make $(SRCJSDIR)/cm/pgres.js
+	make $(SRCJSDIR)/cm/pginit.js
+	make $(SRCJSDIR)/cm/pgpricing.js
+	make $(SRCJSDIR)/cm/pginvoice.js
 

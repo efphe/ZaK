@@ -1,12 +1,9 @@
 create table if not exists property ( 
   id integer primary key asc, 
   name text, 
-  rooms integer, 
-  active integer default 0, 
-  zakcode integer, 
-  revision integer 
+  active integer default 0
 );; 
-CREATE TRIGGER if not exists property_deletion 
+CREATE TRIGGER if not exists property_d
 BEFORE DELETE ON property  
 FOR EACH ROW BEGIN  
     DELETE FROM room WHERE room.id_property = OLD.id;  
@@ -20,7 +17,7 @@ create table if not exists pricing (
   price_hb float,
   price_bb float
 );;
-CREATE TRIGGER if not exists pricing_deletion 
+CREATE TRIGGER if not exists pricing_d
 BEFORE DELETE ON pricing  
 FOR EACH ROW BEGIN  
     DELETE FROM pricing_periods WHERE pricing_periods.id_pricing = OLD.id;  
@@ -42,12 +39,11 @@ create table if not exists room (
   code text, 
   id_property integer, 
   name text, 
-  price real, 
  
   unique (code,id_property), 
   foreign key(id_property) references property(id) on delete cascade 
 );; 
-CREATE TRIGGER if not exists room_deletion  
+CREATE TRIGGER if not exists room_d
 BEFORE DELETE ON room  
 FOR EACH ROW BEGIN  
     delete from occupancy where id_room = OLD.id;  
@@ -56,7 +52,7 @@ create table if not exists room_setup (
   id integer primary key asc, 
   name text 
 );; 
-CREATE TRIGGER if not exists room_setup_deletion 
+CREATE TRIGGER if not exists room_setup_d
 BEFORE DELETE ON room_setup  
 FOR EACH ROW BEGIN  
     update occupancy set id_room_setup= null where occupancy.id_room_setup = OLD.id; 
@@ -68,14 +64,13 @@ create table if not exists reservation (
   dto integer, 
   status smallint, 
   id_property integer, 
-  id_pricing integer default null,
   remarks text default '', 
   extras text default '',
   custom_pricing text default '',
  
   foreign key(id_property) references property(id) on delete cascade 
 );; 
-CREATE TRIGGER if not exists reservation_deletion 
+CREATE TRIGGER if not exists reservation_d
 BEFORE DELETE ON reservation 
 FOR EACH ROW BEGIN  
     delete from occupancy where id_reservation= OLD.id; 
@@ -98,7 +93,7 @@ create table if not exists occupancy (
   foreign key(id_room) references room(id) on delete cascade, 
   foreign key(id_reservation) references reservation(id) on delete cascade 
 );; 
-CREATE TRIGGER if not exists occupancy_deletion 
+CREATE TRIGGER if not exists occupancy_d
 BEFORE DELETE ON occupancy 
 FOR EACH ROW BEGIN  
     delete from reservation_invoice where id_occupancy= OLD.id; 
@@ -112,7 +107,6 @@ create table if not exists reservation_invoice (
   id integer primary key asc,
   n integer,
   html text,
-  created integer,
   id_property integer,
   id_reservation integer,
   id_occupancy integer default null,
