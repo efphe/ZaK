@@ -99,7 +99,7 @@ var iReservation= function(reservation, invoice) {
   /* requires zakTableau!!! */
   this['_designPrices']= function(evprices) {
     if(!evprices) {
-      console.log('There is no saved prices');
+      /*console.log('There is no saved prices');*/
       evprices= zakReservation._getRPrices();
       roomPricing= evprices;
       zakReservation.designReadyPrices();
@@ -256,14 +256,14 @@ var iReservation= function(reservation, invoice) {
     var hh= '';
     var sel= '';
     for (var rid in zakTableau.rooms) {
-      console.log(rid);
+    /*console.log(rid);*/
       room= zakTableau.rooms[rid];
-      console.log('Now '+ room['id']);
+      /*console.log('Now '+ room['id']);*/
       if (rid == localStorage.editOccupancyRid) sel= 'selected="selected"';
       else sel= '';
       hh+= '<option '+sel+' value="'+rid+'">'+room['name']+'</option>';
     }
-    console.log('HH: '+ hh);
+    /*console.log('HH: '+ hh);*/
     $('#selRoomSetup').empty().append(hh);
     zakReservation.designOccupancy();
     zakReservation.designExtras();
@@ -280,7 +280,7 @@ var iReservation= function(reservation, invoice) {
   }
 
   this['_designAssignedExtras']= function() {
-    console.log('Designing assignedExtra');
+    /*console.log('Designing assignedExtra');*/
     if (!zakReservation.extras) {
       $('#assignedExtras').html('');
       return;
@@ -296,7 +296,7 @@ var iReservation= function(reservation, invoice) {
       res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
       res+= '</tr>';
     }
-    res+= '<tr><td colspan="4" style="text-align:center"><input type="submit" value="Update extras"></input></td></tr></table>';
+    res+= '<tr><td colspan="4" style="text-align:center"><input type="submit" value="Update extras" onclick="saveUpdatedExtras()"></input></td></tr></table>';
     $('#assignedExtras').html(res);
   }
 

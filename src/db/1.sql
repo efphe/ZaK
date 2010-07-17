@@ -103,14 +103,16 @@ create table if not exists extra (
   name text,
   cost float
 );;
-create table if not exists reservation_invoice (
+create table if not exists invoice (
   id integer primary key asc,
   n integer,
-  html text,
   id_property integer,
   id_reservation integer,
   id_occupancy integer default null,
+  customer text,
+  idate text,
+  vat text,
   foreign key(id_reservation) references reservation(id) on delete cascade,
-  foreign key(id_occupancy) references occupancy(id) on delete cascade 
+  foreign key(id_occupancy) references occupancy(id) on delete cascade,
   foreign key(id_property) references property(id) on delete cascade 
 );;

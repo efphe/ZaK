@@ -25,6 +25,10 @@ function goToSameDirPage(apage) {
   return;
 }
 
+function goToPage(apage) {
+  window.location.href= location.protocol + '//' + location.host + '/' + apage;
+}
+
 function zakOpenDb(v, sync) {
   var dbv= v || '';
   if (sync) {

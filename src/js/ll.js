@@ -251,6 +251,28 @@ function llGetReservationFromOid(oid, cbs, cbe) {
       function(ses, err) {cbe(ses, err);});
   });
 }
+function llGetReservationFromRid(rid, cbs, cbe) {
+  console.log('Loading reservation ' + rid);
+  db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    s= 'select reservation.* from reservation ';
+    s+= 'where reservation.id = ?';
+    ses.executeSql(s, [rid], 
+      function(ses, recs){
+        var reservation= recs.rows.item(0);
+        ses.executeSql('select * from occupancy where id_reservation = ?', [reservation.id], 
+          function(ses, recs) {
+            var occs= new Array();
+            var i= 0;
+            for(i=0;i<recs.rows.length;i++) occs.push(recs.rows.item(i));
+            reservation['occupancies']= occs;
+            cbs(reservation);
+          }, 
+          function(ses, err) {cbe(ses, err);});
+      }, 
+      function(ses, err) {cbe(ses, err);});
+  });
+}
 
 function llLoadRoomSetups(cbs, cbe) {
   var db= zakOpenDb();

@@ -49,7 +49,7 @@ function changePricing() {
 }
 
 function designAdultsChildren(putAdults) {
-  console.log('Designing occupancy');
+  /*console.log('Designing occupancy');*/
   var i, chi, res= '', age, red;
   for (i=0;i<occupancyObject.children.length;i++) {
     chi= occupancyObject.children[i];
@@ -135,13 +135,13 @@ function addRSetup() {
 function saveRSetup(rsid, remarks) {
   var rsid= rsid || $('#selectSetup').val();
   var remarks= remarks || $('#roomSetupRemarks').val();
-  console.log('Updating occ: rsid: ' + rsid + ', remarks: ' + remarks);
+  /*console.log('Updating occ: rsid: ' + rsid + ', remarks: ' + remarks);*/
   llModOccupancy(zakReservation.activeOccupancy, {remarks: remarks, id_room_setup: rsid},
     function(ses, recs) {
-      console.log('reloading occupancies');
+    /*console.log('reloading occupancies');*/
       llGetReservationFromOid(zakReservation.activeOccupancy,
         function(reservatioin) {
-          console.log('Dio cane');
+        /*console.log('Dio cane');*/
           zakReservation.occupancies= reservatioin['occupancies'];
           zakReservation.designOccupancy();
           humanMsg.displayMsg('Sounds good');
@@ -174,7 +174,9 @@ function askExtra() {
 }
 
 function removeAssignedExtra(eid) {
-  var extras= JSON.parse(zakReservation.extras);
+  try {
+    var extras= JSON.parse(zakReservation.extras);
+  } catch(e) {var extras = []};
   var newextras= new Array();
   for(i=0;i<extras.length;i++) 
     if (extras[i]['id'] != eid) 
@@ -192,12 +194,14 @@ function removeAssignedExtra(eid) {
 }
 
 function extraAppendAssigned(eid, how, cost) {
-  var i, extras;
-  extras= JSON.parse(zakReservation.extras);
+  var i;
+  try {
+    var extras= JSON.parse(zakReservation.extras);
+  } catch(e) {var extras = []};
   for(i=0;i<extras.length;i++) {
     if (extras[i]['id'] == eid) {
       extras[i]['how']= parseInt(extras[i]['how']) + parseInt(how);
-      extras[i]['cost']= parseFloat(extras[i]['cost']) + parseFloat(cost);
+      extras[i]['cost']= parseFloat(extras[i]['cost']) + (parseFloat(cost) * parseInt(how));
       return {extras: extras, found: true};
     }
   }
@@ -220,7 +224,7 @@ function assignExtra() {
       }
 
       var res= extraAppendAssigned(eid, how, cost);
-      console.log(res);
+      /*console.log(res);*/
       if (res['found']) 
         sextras= JSON.stringify(res['extras']);
       else {
@@ -256,7 +260,9 @@ function addExtra() {
     function(ses, recs) {
       var eid= recs.insertId;
       if (zakReservation.extras) {
-        var extras= JSON.parse(zakReservation.extras);
+        try {
+          var extras= JSON.parse(zakReservation.extras);
+        } catch(e) {var extras = []};
         extras.push({id: eid, how: how, cost: fcost, name: ename});
       }
       else var extras= [{id: eid, how: how, cost: fcost, name: ename}];
@@ -274,6 +280,32 @@ function addExtra() {
     });
 }
 
+function saveUpdatedExtras() {
+  try {
+    var extras= JSON.parse(zakReservation.extras);
+  } catch(e) {var extras = []};
+  console.log(extras);
+  var i, newextras= [];
+  for (i=0;i<extras.length;i++) {
+    var eid= extras[i].id;
+    var how= $('#extra_how_' + eid).val();
+    var cost= $('#extra_cost_' + eid).val();
+    /*console.log('Eid: ' + eid + ' cost: ' + cost + ' how: ' + how);*/
+    if (!checkFloat(cost) || how != parseInt(how)) {
+      humanMsg.displayMsg('Please, specify good values', 1);
+      return;
+    }
+    newextras.push({id: extras[i].id, cost: cost, how: how, name: extras[i].name});
+  }
+  var sextras= JSON.stringify(newextras);
+  llModReservation(zakReservation.reservation.id, {extras: sextras},
+    function(ses, recs) {
+      zakReservation.extras= sextras;
+      zakReservation.designExtras();
+      humanMsg.displayMsg('Sounds good');
+    }, function(ses, err) {humanMsg.displayMsg('Error: ' + err.message, 1);});
+}
+
 function saveRoomsPrices() {
   var i, j, rid, v;
   var occs= zakReservation.occupancies;
@@ -281,7 +313,7 @@ function saveRoomsPrices() {
   for (i=0;i<occs.length;i++) {
     newar= new Array();
     rid= occs[i]['id_room'];
-    console.log('Reading prices for ' + rid);
+    /*console.log('Reading prices for ' + rid);*/
     newar.push(rid);
     for(j=1;j<zakTableau.lendays;j++) {
       v= $('#rprice_' + rid + '_' + j).val();
@@ -294,7 +326,7 @@ function saveRoomsPrices() {
     res.push(newar);
   }
   roomPricing= res;
-  console.log('compacting');
+  /*console.log('compacting');*/
   var sp= JSON.stringify(res);
   llModReservation(zakReservation.reservation.id, {custom_pricing: sp},
     function(ses, recs) {
@@ -311,7 +343,7 @@ function saveRoomsPrices() {
 }
 
 function buildReservatioinInvoice() {
-  localStorage.invoiceReservation= JSON.stringify(zakReservation.reservation);
+  localStorage.invoiceReservation= JSON.stringify(zakReservation.reservation.id);
   localStorage.invoiceOccupancyId= '';
   goToSameDirPage('invoice');
 }
@@ -324,7 +356,7 @@ function initReservation() {
     goToSameDirPage('tableau');
     return;
   }
-  console.log('Initializing occupancy: '+ localStorage.editOccupancyOid);
+  /*console.log('Initializing occupancy: '+ localStorage.editOccupancyOid);*/
   llGetReservationFromOid(localStorage.editOccupancyOid,
     function(reservation) {
       zakReservation= new iReservation(reservation);
@@ -332,8 +364,8 @@ function initReservation() {
 
       llGetInvoiceId(getActiveProperty().id, zakReservation.reservation.id, false,
         function(inv) {
-          console.log('Inv');
-          console.log(inv);
+        /*console.log('Inv');*/
+        /*console.log(inv);*/
           if (!inv) return;
           $('#resinvoice').append('<br/><b><a style="font-size:12px" href="javascript:showInvoice(' + inv.id + ')">Invoice ' + inv.n + '</a></b>');
         });
