@@ -67,6 +67,7 @@ create table if not exists reservation (
   remarks text default '', 
   extras text default '',
   custom_pricing text default '',
+  meal default 'bb',
  
   foreign key(id_property) references property(id) on delete cascade 
 );; 
@@ -74,7 +75,7 @@ CREATE TRIGGER if not exists reservation_d
 BEFORE DELETE ON reservation 
 FOR EACH ROW BEGIN  
     delete from occupancy where id_reservation= OLD.id; 
-    delete from reservation_invoice where id_reservation= OLD.id; 
+    delete from invoice where id_reservation= OLD.id; 
 END;; 
 create table if not exists occupancy ( 
   id integer primary key asc, 
@@ -96,7 +97,7 @@ create table if not exists occupancy (
 CREATE TRIGGER if not exists occupancy_d
 BEFORE DELETE ON occupancy 
 FOR EACH ROW BEGIN  
-    delete from reservation_invoice where id_occupancy= OLD.id; 
+    delete from invoice where id_occupancy= OLD.id; 
 END;; 
 create table if not exists extra (
   id integer primary key asc,
