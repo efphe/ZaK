@@ -174,29 +174,33 @@ function checkFloat(x){
   return true;
 }
 
-function updateStatement(d) {
+function updateStatement(d, ekeys) {
   var qry, qarr= new Array();
   var temp= new Array();
   for (var k in d) {
+    if (ekeys.indexOf(k) >= 0) continue;
     temp.push(k + '= ?');
     qarr.push(d[k]);
   }
   return {qarr: qarr, qry: temp.join(',')};
 }
 
-function updateStatementWhere(d, where, wherearr, tbl) {
-  var o= updateStatement(d);
+function updateStatementWhere(d, where, wherearr, tbl, ekeys) {
+  var ekeys= ekeys || [];
+  var o= updateStatement(d, ekeys);
   o.qry= 'update ' + tbl + ' set ' + o.qry + ' ' + where;
-  for (var i in wherearr)
+  for (var i=0; i < wherearr.length; i++ )
     o.qarr.push(wherearr[i]);
   return o;
 }
 
-function insertStatement(d) {
+function insertStatement(d, ekeys) {
   var keys= [];
   var vals= [];
   var dots= [];
+  var ekeys= ekeys || [];
   for (var k in d) {
+    if (ekeys.indexOf(k) >= 0) continue;
     keys.push(k);
     vals.push(d[k]);
     dots.push('?');
@@ -205,8 +209,8 @@ function insertStatement(d) {
   return {qarr: vals, qry: q};
 }
 
-function insertStatementWhere(d, t) {
-  var o= insertStatement(d);
+function insertStatementWhere(d, t, ekeys) {
+  var o= insertStatement(d, ekeys);
   o.qry= 'insert into ' + t + ' ' + o.qry;
   return o;
 }

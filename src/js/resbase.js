@@ -57,9 +57,26 @@ var iReservation= function(reservation, invoice) {
 
   this['designReadyPrices']= function() {
     var rlist= roomPricing;
-    var rlen= rlist[0].length;
+    var rlen= zakTableau.lendays;
     var res= '<thead class="pricing"><tr><th>Day</th>';
-    var room;
+    var room, j, i;
+    var allrids= [];
+    for (var oid in zakReservation.occupancies) {
+      var allrid= zakReservation.occupancies[oid]['id_room'];
+      found= false;
+      for (j=0;j<rlist.length;j++) {
+        if (allrid == rlist[j][0]) {
+          found= true;
+          break
+        }
+      }
+      if (!found) {
+        var newPrices= [allrid];
+        for (i=0;i<rlen;i++) 
+          newPrices[i+1]= 0.0;
+        rlist.push(newPrices);
+      }
+    }
     for(j=0;j<rlist.length;j++) {
       room= zakTableau.rooms[rlist[j][0]];
       res+= '<th>' + room.name + '</th>';
@@ -70,13 +87,18 @@ var iReservation= function(reservation, invoice) {
       return  strDate(d, 'd/m');
     }
 
+    function _getRP(jj,ii) {
+      try {return rlist[jj][ii] || 0.0;}
+      catch(e) {return 0.0};
+    }
+
     res+= '</tr></thead>';
     for(i=1;i<rlen;i++) {
       res+= '<tr><td>' + _strDay(i) + '</td>';
       for(j=0;j<rlist.length;j++) {
         var rid= rlist[j][0];
         if (!zakReservation.invoiceReservation)
-          res+= '<td><input onchange="computeRoomSum(' + j + ')" class="col_index_' + j + '" id="rprice_' + rid + '_' + i + '" type="text" value="' + rlist[j][i] + '"></input></td>';
+          res+= '<td><input onchange="computeRoomSum(' + j + ')" class="col_index_' + j + '" id="rprice_' + rid + '_' + i + '" type="text" value="' + _getRP(j,i) + '"></input></td>';
         else
           res+= '<td>' + rlist[j][i] + '</td>';
       }
@@ -237,7 +259,7 @@ var iReservation= function(reservation, invoice) {
             res+= '<option value="' +p['id'] + '">' + p['name'] + '</option>';
         }
         if (!rpid)
-          res+= '<option selected="selected" value="0">--</option>';
+          res+= '<option selected="selected" value="">--</option>';
         $('#cmbpricing').empty().html(res);
         zakReservation.designPrices();
       },

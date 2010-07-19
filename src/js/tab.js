@@ -62,6 +62,11 @@ function copyOccupancy() {
   console.log('Day: ' + day);
   console.log('Src Rid: ' + srid);
   console.log('Dst Rid: ' + drid);
+  if (srid == drid) {
+    humanMsg.displayMsg('You can\'t add a new occupancy on the same room', 1);
+    $.modal.close();
+    return;
+  }
 
   var room= zakTableau.rooms[srid];
   var occ= room.getOccupancy(oid);
@@ -217,13 +222,29 @@ function postponeOccupancy() {
   var occ= zakTableau.rooms[rid].getOccupancy(oid);
   var newdfrom= dateAddDays(occ['dfrom'], ndays);
   var newdto= dateAddDays(occ['dto'], ndays);
-  llModOccupancy(oid, {dfrom: unixDate(newdfrom), dto: unixDate(newdto)},
+
+  /*llModOccupancy(oid, {dfrom: unixDate(newdfrom), dto: unixDate(newdto)},*/
+  /*function(ses, recs) {*/
+  /*zakTableau.loadRooms([rid]);*/
+  /*},*/
+  /*function(ses, err) {*/
+  /*humanMsg.displayMsg('Error: ' + err.message);*/
+  /*});*/
+
+  llMoveOccupancy(oid, newdfrom, newdto, rid, 
     function(ses, recs) {
-      zakTableau.loadRooms([rid]);
+      if (!recs) {
+        humanMsg.displayMsg('Not enough space for this reservation');
+        return;
+      }
+      console.log(strDate(newdfrom));
+      var toload= [rid];
+      zakTableau.loadRooms(toload, function() {humanMsg.displayMsg('Sounds good');});
     },
     function(ses, err) {
-      humanMsg.displayMsg('Error: ' + err.message);
-    });
+      humanMsg.displayMsg('Sorry, error: ' + err.message);
+    }
+  );
 }
 
 function _sameMenu(a,e,p) {
