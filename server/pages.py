@@ -57,6 +57,11 @@ class AdminPricing(AdminTemplate):
   xmlfile= 'src/html/pricing.xhtml'
   cssorigin= '/css/pricing.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
+class AdminSettings(AdminTemplate):
+  jsorigin= '/js/cm/pgsettings.js'
+  xmlfile= 'src/html/settings.xhtml'
+  cssorigin= '/css/pricing.css'
+
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
   xmlfile= 'src/html/res.xhtml'
@@ -103,5 +108,6 @@ class ZakAdmin(rend.Page):
         'pricing': AdminPricing(),
         'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
+        'settings': AdminSettings(),
         '': self,
         }

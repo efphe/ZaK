@@ -1,0 +1,95 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <div id="pcont" style="margin-top:10px">
+    <div id="mcont" style="overflow:auto">
+      <div id="mmenu">
+        <div class="immenu">
+          <b>Vat settings</b>
+          <br/>
+          <br/>
+          With vat settings, you have control on
+          your invoices. You can setup the right vat
+          percentage and vat name.
+          <br/>
+          <br/>
+          <b>Reservation settings</b>
+          <br/>
+          <br/>
+          If you set a default meal plan, when you
+          insert a new reservation the meal plan
+          will be automatically assigned. If (also) a
+          default pricing is chosen, when a
+          reservaton is inserted the pricing is built.
+        </div>
+      </div>
+
+      <div id="contents">
+        <div class="immenu">
+          <h1>Zak settings</h1>
+
+          <h2>Vat settings</h2>
+          <div class="subctnt">
+            <table>
+              <tr>
+                <td>
+                  Vat Name:
+                </td>
+                <td>
+                  <input type="text" style="width:50px" id="vatname"></input>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Vat Percentage:
+                </td>
+                <td>
+                  <input type="text" style="width:50px" id="vatperc"></input> %
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" align="right">
+                  <input type="submit" value="Save"></input>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h2>Reservation settings</h2>
+          <div class="subctnt">
+            <table>
+              <tr>
+                <td>
+                  Default meal plan:
+                </td>
+                <td>
+                  <select id="defmealplan">
+                    <option value="">None</option>
+                    <option value="ro">Room only</option>
+                    <option value="bb">BB</option>
+                    <option value="hb">Half board</option>
+                    <option value="fb">Full board</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Default pricing:
+                </td>
+                <td>
+                  <select id="defpricing">
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" align="right">
+                  <input type="submit" value="Save"></input>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
