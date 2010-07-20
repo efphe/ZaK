@@ -45,6 +45,12 @@ $(SRCJSDIR)/cm/pginvoice.js: $(PGINV)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
+PGSETTINGS= src/js/cm/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
+		    $(SRCJSDIR)/ll.js $(SRCJSDIR)/settings.js
+src/js/cm/pgsettings.js: $(PGSETTINGS)
+	cat $^ > temp.uncompressed
+	jszip temp.uncompressed $@
+	rm temp.uncompressed
 
 $(SRCJSDIR)/cm/j.js: $(SRCJSDIR)/jquery/jquery.js $(SRCJSDIR)/jquery/jquery-ui.js \
 			 $(SRCJSDIR)/jquery/jquery.hoverIntent.js $(SRCJSDIR)/jquery/jquery.humanmsg.js \
@@ -59,4 +65,5 @@ jspages:
 	make $(SRCJSDIR)/cm/pginit.js
 	make $(SRCJSDIR)/cm/pgpricing.js
 	make $(SRCJSDIR)/cm/pginvoice.js
+	make $(SRCJSDIR)/cm/pgsettings.js
 
