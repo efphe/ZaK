@@ -84,6 +84,9 @@ class AdminInit(rend.Page):
       return ZaK.getSchema(fromversion), ()
     return '?', ()
 
+class AdminNotSupported(rend.Page):
+  docFactory= loaders.xmlfile(_bdir + 'src/html/bad_browser.xhtml')
+
 class ZakAdmin(rend.Page):
   docFactory= loaders.xmlstr("""<html> 
   <head> 
@@ -109,5 +112,6 @@ class ZakAdmin(rend.Page):
         'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
         'settings': AdminSettings(),
+        'notsupported': AdminNotSupported(),
         '': self,
         }
