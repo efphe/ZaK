@@ -66,4 +66,5 @@ jspages:
 	make $(SRCJSDIR)/cm/pgpricing.js
 	make $(SRCJSDIR)/cm/pginvoice.js
 	make $(SRCJSDIR)/cm/pgsettings.js
+	cp src/js/jquery/jquery.js src/js/
 

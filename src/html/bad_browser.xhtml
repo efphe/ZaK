@@ -1,12 +1,22 @@
 <html>
   <head>
+    <script src="/js/jquery.js"></script>
+    <script>
+      $(document).ready(function() {
+        jQuery.each(jQuery.browser, 
+          function(i, val) {
+            $('#yourbrowser').append(i + ': ' + val + ' ');
+          });
+      });
+    </script>
   </head>
   <body>
-    <h2>Your browser not supported</h2>
+    <h2>Your browser is not supported :j</h2>
     <div>
-      You can't use <a href="http://zak.wubook.net/">ZaK</a> with this browser.<br/>
-      Supported browser are listed below, please, install one of them <br/>
-      (the following browsers are free) to use Zak:
+      You can't use <a href="http://zak.wubook.net/">ZaK</a> with this browser (<span id="yourbrowser"></span>).
+      <br/>
+      <br/>
+      Supported browser are listed below, <br/>please, install one of them to use Zak:
       <br/>
       <br/>
       <table>
@@ -39,6 +49,11 @@
           </td>
         </tr>
       </table>
+      <br/>
+      <br/>
+      <b>Remarks:</b> other browsers will be included on this list as soon as possible.<br/>
+      We're waiting for their improvements. In particular, we're waiting for Firefox,<br/> 
+      hoping to include it really soon.
     </div>
   </body>
 </html>
