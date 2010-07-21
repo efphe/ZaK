@@ -577,24 +577,49 @@ function llSaveInvoice(pid, n, rid, oid, html, cb) {
 
 _defSettings= {
   vatSettingsName: 'Vat taxes',
-  vatSettingsPerc: '10'
+  vatSettingsPerc: '10',
+  vatSettingsHeader: ''
 }
 function llGetPropertySettings(pid, cb) {
   db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('select * from psettings where id_property = ?', [pid], 
       function(ses, recs) {
+        var dsets= _defSettings;
         if (recs.rows.length == 0) {
-          var dsets= _defSettings;
           sets= jQuery.extend({}, dsets);
           sets.defaultSettings= true;
         }
         else {
           var sets= recs.rows.item(0).settings;
           sets= JSON.parse(sets);
-          sets.defaultSettings= false;
+          for (var k in sets) dsets[k]= sets[k];
+          dsets.defaultSettings= false;
+          sets= dsets;
         }
         cb(ses, recs, sets);
       });
     });
+}
+
+function llNewInvoiceType(name, cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('insert into invoice_type (name) values (?)', [name], cb);
+  });
+}
+
+function llGetItypes(cb) {
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select id,name from invoice_type', [], cb);
+  });
+}
+
+function llDelItype(iid, cb) {
+  console.log('deleteing itype ' + iid);
+  db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('delete from invoice_type where id = ?', [iid], cb);
+  });
 }

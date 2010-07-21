@@ -67,8 +67,11 @@ function exitInvoice() {
 }
 
 function saveInvoice() {
-  var html= $('body').html();
-  var n= $('#invoiceN').html();
-  llSaveInvoice(getActiveProperty()['id'], n, zakReservation.reservation.id, false, html, function() {alert('ok');});
+  var guest= $('#guest').val();
+  var today= $('#today').val();
+  var vat= $('#vat').val();
+  var inv= {guest: guest, today: today, vat: vat};
+  alert('Now saving');
+  /*llSaveInvoice(getActiveProperty()['id'], n, zakReservation.reservation.id, false, html, function() {alert('ok');});*/
 }
 

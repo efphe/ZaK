@@ -26,6 +26,7 @@
         <div class="immenu">
           <h1>Zak settings</h1>
 
+          <div class="subctnt">
           <h2>Vat settings</h2>
           <div class="subctnt">
             <table>
@@ -46,8 +47,36 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="2" align="right">
+                <td>
+                  Invoice Header:
+                </td>
+                <td>
+                  <textarea style="width: 320px" rows="3" id="vatheader"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" align="center">
                   <input type="submit" value="Save" onclick="saveVatSettings()"></input>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h2>Invoices: enumeration types</h2>
+          <div class="subctnt">
+            <table>
+              <tr>
+                <td style="vertical-align: top">Invoice types</td>
+                <td>
+                  <table id="titypes">
+                    <tr>
+                      <td>
+                        <b>Classic Invoice</b>
+                      </td>
+                      <td>
+                        <b>(<a href="javascript:askAddType()">+Add</a>)</b>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>
@@ -85,6 +114,7 @@
               </tr>
             </table>
           </div>
+        </div>
 
         </div>
       </div>
@@ -92,4 +122,22 @@
     </div>
 
   </div>
+
+<div class="zakmodal" style="display:none" id="newIType">
+  <h1>New invoice type</h1>
+  <b style="color:white">Name:</b> <input type="text" id="newitypename" style="width:80px"/>
+  <input type="submit" value="Add" onclick="addNewIType()"/>
+</div>
+<div class="zakmodal" style="display:none" id="delItypeDiv">
+  <h1>Deleting invoice type</h1>
+  <h2>Please, confirm your wishes</h2>
+  Are you sure to delete this invoice type? By deleting it, the enumeration of 
+  your previous invoices of this types will be interrupeted forever.
+  <br/>
+  <br/>
+  <input type="hidden" id="iid_delete"></input>
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delItype()">Yes, I know, continue</a> 
+  <br/>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+</div>
 </div>
