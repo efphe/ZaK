@@ -39,6 +39,7 @@
             </td>
             <td colspan="2">
               <input type="text" id="ocustomer" style="width:180px"></input>
+              <a style="border:none" href="javascript:addMainCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png"></img></a>
             </td>
           </tr>
           <tr>
@@ -72,6 +73,11 @@
           <input type="submit" value="Save Occupancy" onclick="saveOccupancy()"></input>
         </div>
         <h1>Customers</h1>
+        <div style="float:right;margin:1px">
+          <a style="border:none" href="javascript:addCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png"></img></a>
+        </div>
+        <ul id="lcustomers">
+        </ul>
       </div>
     </div>
     <div class="bookright">

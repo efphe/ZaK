@@ -64,6 +64,7 @@ function designAdultsChildren(putAdults) {
   $('#table_occupancy').append(res);
   var occ= zakReservation.getOccupancy(zakReservation.activeOccupancy);
   $('#ocustomer').val(occ.customer);
+  /*llGetOccupancyCustomers();*/
 }
 
 function addChildren() {

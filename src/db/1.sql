@@ -9,6 +9,7 @@ FOR EACH ROW BEGIN
     DELETE FROM room WHERE room.id_property = OLD.id;  
     DELETE from reservation where reservation.id_property= OLD.id; 
     DELETE from psettings where psettings.id_property = OLD.id;
+    delete from invoice where id_property= OLD.id; 
 END;; 
 create table psettings (
   id integer primary key asc,
@@ -77,6 +78,11 @@ create table if not exists customer (
   male integer default 1,
   country text default '--'
 );;
+CREATE TRIGGER if not exists customer_d
+BEFORE DELETE ON customer  
+FOR EACH ROW BEGIN  
+  delete from rcustomer where id_customer = OLD.id;
+END;; 
 create table if not exists reservation ( 
   id integer primary key asc, 
   customer text, 
@@ -96,7 +102,17 @@ BEFORE DELETE ON reservation
 FOR EACH ROW BEGIN  
     delete from occupancy where id_reservation= OLD.id; 
     delete from invoice where id_reservation= OLD.id; 
+    delete from rcustomer where id_reservation= OLD.id; 
 END;; 
+create table if not exists rcustomer (
+  id integer primary key asc, 
+  zakid text not null,
+  id_customer integer not null,
+  id_reservation integer not null,
+  primary key(id),
+  foreign key(id_customer) references customer(id) on delete cascade,
+  foreign key(id_reservation) references reservation(id) on delete cascade
+);;
 create table if not exists occupancy ( 
   id integer primary key asc, 
   customer text, 
@@ -108,12 +124,10 @@ create table if not exists occupancy (
   remarks text, 
   id_room_setup integer default null, 
   occupancy text,
-  id_customer integer default null,
   invoiced integer default 0,
  
   foreign key(id_room_setup) references room_setup(id) on delete set null, 
   foreign key(id_room) references room(id) on delete cascade, 
-  foreign key(id_customer) references customer(id) on delete set null, 
   foreign key(id_reservation) references reservation(id) on delete cascade 
 );; 
 CREATE TRIGGER if not exists occupancy_d
@@ -130,6 +144,10 @@ create table invoice_type (
   id integer primary key asc,
   name text
 );;
+create trigger if not extra invoice_type_d
+before delete on invoice_type for each row begin
+  update invoice set id_invoice_type = null where id_invoice_type = OLD.id;
+end;;
 create table if not exists invoice (
   id integer primary key asc,
   n integer,
