@@ -178,7 +178,7 @@ function updateStatement(d, ekeys) {
   var qry, qarr= new Array();
   var temp= new Array();
   for (var k in d) {
-    if (ekeys.indexOf(k) >= 0) continue;
+    if (ekeys && ekeys.indexOf(k) >= 0) continue;
     temp.push(k + '= ?');
     qarr.push(d[k]);
   }
@@ -200,7 +200,7 @@ function insertStatement(d, ekeys) {
   var dots= [];
   var ekeys= ekeys || [];
   for (var k in d) {
-    if (ekeys.indexOf(k) >= 0) continue;
+    if (ekeys && ekeys.indexOf(k) >= 0) continue;
     keys.push(k);
     vals.push(d[k]);
     dots.push('?');
@@ -251,4 +251,8 @@ function addArray(src, dst) {
   for (var i=0;i<dst.length;i++) {
     src.push(dst[i]);
   }
+}
+
+function getPropertySettings(cb) {
+  llGetPropertySettings(getActiveProperty()['id'], cb);
 }

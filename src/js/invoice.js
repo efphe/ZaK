@@ -1,4 +1,38 @@
+_vatPerc= false;
 $(document).ready(function() {
+  var ib= JSON.parse(localStorage.invoiceBuilding);
+  var rid= ib.rid;
+  var oid= ib.oid;
+  llGetInvoice(rid, oid,
+    function(ses, record) {
+      var cust= record.icustomer || record.customer;
+      var ivat= record.ivat || '';
+      var idate= record.idate || $.datepicker.formatDate('D M yy', new Date());
+      $('#customer').val(cust);
+      $('#vat').val(ivat);
+      $('#date').val(idate);
+      getPropertySettings(function(ses, sets) {
+        if (!record.jid) {
+          $('#buthandler').show();
+          $('#header').val(sets.vatheader);
+        } else {
+          $('#header').val(record.iheader || '');
+        }
+        $('#vatname').val(sets.vatname);
+        _vatPerc= sets.vatperc;
+      });
+
+    });
+
+  if 
+  llGetReservation(rid, oid, 
+    function(res) {
+    },
+    function(ses, err) {
+      console.log('Error there: ' + err.message);
+    });
+
+  /* graphic details */
   $('.hovergreen').hover(
     function(ev) {
       $(this).css('background-color', '#daffa9');
@@ -7,6 +41,12 @@ $(document).ready(function() {
       $(this).css('background-color', 'white');
     }
   );
+
+});
+
+
+
+$(document).ready(function() {
   var nd= new Date();
   $('#today').val($.datepicker.formatDate('D M yy', nd));
   $('#vat').val('--');

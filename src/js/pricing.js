@@ -208,6 +208,7 @@ function saveBasePrices() {
       return;
     }
   }
+  console.log('Now inserting');
   llModPricing(getActivePricing(), prices,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');

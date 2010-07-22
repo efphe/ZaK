@@ -64,6 +64,19 @@ BEFORE DELETE ON room_setup
 FOR EACH ROW BEGIN  
     update occupancy set id_room_setup= null where occupancy.id_room_setup = OLD.id; 
 END;; 
+create table if not exists customer (
+  id integer primary key asc,
+  customer text not null,
+  first_name text default '',
+  last_name text default '',
+  email text default '',
+  phone text default '',
+  vat text default '',
+  street text default '',
+  city text default '',
+  male integer default 1,
+  country text default '--'
+);;
 create table if not exists reservation ( 
   id integer primary key asc, 
   customer text, 
@@ -95,10 +108,12 @@ create table if not exists occupancy (
   remarks text, 
   id_room_setup integer default null, 
   occupancy text,
+  id_customer integer default null,
   invoiced integer default 0,
  
   foreign key(id_room_setup) references room_setup(id) on delete set null, 
   foreign key(id_room) references room(id) on delete cascade, 
+  foreign key(id_customer) references customer(id) on delete set null, 
   foreign key(id_reservation) references reservation(id) on delete cascade 
 );; 
 CREATE TRIGGER if not exists occupancy_d
@@ -121,9 +136,9 @@ create table if not exists invoice (
   id_property integer,
   id_reservation integer,
   id_occupancy integer default null,
-  customer text,
+  icustomer text,
   idate text,
-  vat text,
+  ivat text,
   id_invoice_type integer,
   foreign key(id_invoice_type) references invoice_type(id) on delete set null,
   foreign key(id_reservation) references reservation(id) on delete cascade,

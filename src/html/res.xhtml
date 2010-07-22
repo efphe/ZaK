@@ -35,9 +35,17 @@
         <table id="table_occupancy">
           <tr>
             <td>
+              Customer:
+            </td>
+            <td colspan="2">
+              <input type="text" id="ocustomer" style="width:180px"></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
               Adults:
             </td>
-            <td>
+            <td colspan="2">
               <select id="adults">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -55,8 +63,6 @@
             </td>
             <td>
               <input readonly="readonly" id="childrenCounter" value="0" style="width:40px"></input>
-            </td>
-            <td id="childrenCounter">
               <b><a href="javascript:askChildren()" id="addChildrenButton">Add</a></b>
             </td>
           </tr>
@@ -65,6 +71,7 @@
           <br/>
           <input type="submit" value="Save Occupancy" onclick="saveOccupancy()"></input>
         </div>
+        <h1>Customers</h1>
       </div>
     </div>
     <div class="bookright">

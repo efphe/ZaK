@@ -274,6 +274,11 @@ function llGetReservationFromRid(rid, cbs, cbe) {
   });
 }
 
+function llGetReservation(rid, oid, cbs, cbe) { 
+  if (rid) llGetReservationFromRid(rid, cbs, cbe);
+  else llGetReservationFromOid(oid, cbs, cbe);
+}
+
 function llLoadRoomSetups(cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {

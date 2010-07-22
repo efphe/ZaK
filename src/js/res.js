@@ -62,6 +62,8 @@ function designAdultsChildren(putAdults) {
   $('#childrenCounter').val(occupancyObject.children.length);
   $('tr.children_c').remove();
   $('#table_occupancy').append(res);
+  var occ= zakReservation.getOccupancy(zakReservation.activeOccupancy);
+  $('#ocustomer').val(occ.customer);
 }
 
 function addChildren() {
@@ -97,8 +99,9 @@ function askChildren() {
 function saveOccupancy() {
   var ads, newd;
   ads= $('#adults').val();
+  var ocust= $('#ocustomer').val() || 'Unkown';
   newd= {adults: ads, children: occupancyObject.children};
-  llModOccupancy(zakReservation.activeOccupancy, {occupancy: JSON.stringify(newd)},
+  llModOccupancy(zakReservation.activeOccupancy, {occupancy: JSON.stringify(newd), customer: ocust},
     function(cbs, recs) {
       llGetReservationFromOid(zakReservation.activeOccupancy,
         function(reservatioin) {
@@ -343,8 +346,7 @@ function saveRoomsPrices() {
 }
 
 function buildReservatioinInvoice() {
-  localStorage.invoiceReservation= JSON.stringify(zakReservation.reservation.id);
-  localStorage.invoiceOccupancyId= '';
+  localStorage.invoiceBuilding= JSON.stringify({rid: zakReservation.reservation.id, oid: false});
   goToSameDirPage('invoice');
 }
 
