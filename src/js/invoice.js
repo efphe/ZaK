@@ -24,7 +24,6 @@ $(document).ready(function() {
 
     });
 
-  if 
   llGetReservation(rid, oid, 
     function(res) {
     },
