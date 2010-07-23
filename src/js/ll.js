@@ -50,8 +50,14 @@ function llModPropertyW(pid, params, cbs, cbe) {
 function llLoadRooms(pid, cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
-    console.log('Reading rooms for property ' + pid);
     ses.executeSql('select * from room where id_property = ?', [pid], cbs, cbe);
+  });
+}
+
+function llGetRoomTypes(cbs, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from room_type', [], cbs, cbe);
   });
 }
 
@@ -73,10 +79,20 @@ function llDeleteRooms(pid, tobedeleted, cbs, cbe) {
   });
 }
 
-function llNewRoom(pid, rcode, rname, cbs, cbe) {
+function llNewRoom(pid, rcode, rname, rtype, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('insert into room (code,name,id_property) values (?,?,?)', [rcode,rname,pid], cbs, cbe);
+    ses.executeSql('insert into room (code,name,id_property,id_room_type) values (?,?,?,?)', [rcode,rname,pid,rtype], cbs, cbe);
+  });
+}
+function llNewRoomAndType(pid, rcode, rname, rtype, cbs, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('insert into room_type (name) values (?)', [rtype], 
+      function(ses, recs) {
+        var rtypeid= recs.insertId;
+        ses.executeSql('insert into room (code,name,id_property,id_room_type) values (?,?,?,?)', [rcode,rname,pid,rtypeid], cbs, cbe);
+      }, cbe);
   });
 }
 

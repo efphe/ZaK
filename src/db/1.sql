@@ -42,13 +42,19 @@ create table if not exists pricing_periods (
   id_pricing integer,
   foreign key(id_pricing) references pricing(id) on delete cascade 
 );;
+create table if not exists room_type (
+  id integer primary key asc,
+  name text
+);;
 create table if not exists room ( 
   id integer primary key asc, 
   code text, 
   id_property integer, 
+  id_room_type integer not null,
   name text, 
  
   unique (code,id_property), 
+  foreign key(id_room_type) references room_type(id) on delete cascade,
   foreign key(id_property) references property(id) on delete cascade 
 );; 
 CREATE TRIGGER if not exists room_d
@@ -106,10 +112,8 @@ FOR EACH ROW BEGIN
 END;; 
 create table if not exists rcustomer (
   id integer primary key asc, 
-  zakid text not null,
   id_customer integer not null,
   id_reservation integer not null,
-  primary key(id),
   foreign key(id_customer) references customer(id) on delete cascade,
   foreign key(id_reservation) references reservation(id) on delete cascade
 );;
@@ -144,7 +148,7 @@ create table invoice_type (
   id integer primary key asc,
   name text
 );;
-create trigger if not extra invoice_type_d
+create trigger if not exists invoice_type_d
 before delete on invoice_type for each row begin
   update invoice set id_invoice_type = null where id_invoice_type = OLD.id;
 end;;

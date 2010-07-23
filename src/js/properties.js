@@ -43,6 +43,72 @@ function modRoom() {
     });
 }
 
+function askNewRoomType() {
+  $('#askRoomType').modal();
+}
+
+function designRoomTypes() {
+  var res= '<option value="">New</option>';
+  llGetRoomTypes(function(ses, recs) {
+    for (var i= 0;i < recs.rows.length;i ++) {
+      var rec= recs.rows.item(i);
+      res+= '<option value="' + rec.id + ' +">' + rec.name + '</option>';
+    }
+    $('#newroomtype').empty().append(res);
+  });
+}
+
+function addNewRoomWithType() {
+  var rname= $('#tempnewroomname').val();
+  var rcode= $('#tempnewroomcode').val();
+  var rtype= $('#rtype').val();
+  if (!rname || !rcode) {
+    humanMsg.displayMsg('Please, insert a room name and a Unique Room Code', 1);
+    return;
+  }
+  if (repeatedRoomCode(rcode)) {
+    humanMsg.displayMsg('Room code specified already in use', 1);
+    return;
+  }
+  llGetRoomTypes(function(ses, recs) {
+    console.log('In');
+    console.log(recs);
+    for (var i= 0;i< recs.rows.length; i++) {
+      if (recs.rows.item(i).name == rtype) {
+        console.log('Existing rtype!!!');
+        llNewRoom(getActiveProperty()['id'], rcode, rname, recs.rows.item(i).id,
+          function(ses, recs) {
+            var rid= recs.insertId;
+            $('#roomsbody').append(_roomTd(rid, rname, rcode));
+            _rcodes[rid]= rcode;
+            humanMsg.displayMsg('Sounds Good!');
+            $.modal.close();
+          },
+          function(ses, err) {
+            humanMsg.displayMsg('Error there: ' + err.message);
+          });
+        return;
+      }
+    }
+
+    console.log('New rtype');
+    llNewRoomAndType(getActiveProperty()['id'], rname, rcode, rtype,
+      function(ses, recs) {
+        var rid= recs.insertId;
+        $('#roomsbody').append(_roomTd(rid, rname, rcode));
+        _rcodes[rid]= rcode;
+        humanMsg.displayMsg('Sounds Good!');
+        designRoomTypes();
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
+}
+
 function addNewRoom() {
   var rname= $('#newroomname').val();
   var rcode= $('#newroomcode').val();
@@ -54,7 +120,14 @@ function addNewRoom() {
     humanMsg.displayMsg('Room code specified already in use', 1);
     return;
   }
-  llNewRoom(getActiveProperty()['id'], rcode, rname,
+  var rtype= $('#newroomtype').val();
+  if (!rtype) {
+    $('#tempnewroomname').val(rname);
+    $('#tempnewroomcode').val(rcode);
+    askNewRoomType();
+    return;
+  }
+  llNewRoom(getActiveProperty()['id'], rcode, rname, rtype,
     function(ses, recs) {
       var rid= recs.insertId;
       $('#roomsbody').append(_roomTd(rid, rname, rcode));
@@ -149,6 +222,14 @@ function askNewProperty() {
 
 function initProperties() {
   console.log('Initializing Properties...');
+  designRoomTypes();
+  llGetRoomTypes(function(ses, recs) {
+    $('#newroomtype').empty();
+    for (var i= 0;i < recs.rows.length;i++) {
+      var rec= recs.rows.item(i);
+      $('#newroomtype').append('<option value="' + rec.id + '">' + rec.name + '</option>');
+    }
+  });
   llGetProperties(
     function(ses, recs) {
       if (recs.rows.length < 1) {

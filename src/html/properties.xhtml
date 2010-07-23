@@ -3,7 +3,8 @@
     <div id="mcont" style="overflow:auto">
       <div id="mmenu">
         <div class="immenu">
-          <b class="putPropertyName"></b>
+          <b class="putPropertyName"></b><br/>
+          <a href="javascript:askDelProperty()" style="font-weight:bold">Delete property</a>
         </div>
         <div style="margin-top:6px" class="immenu">
           <b>Actions</b>:
@@ -17,12 +18,12 @@
 
       <div id="contents">
         <div class="immenu">
-          <a href="javascript:askDelProperty()" style="float:right;margin:10px"><b>Delete property</b></a>
           <h1>Rooms Management (<b class="putPropertyName"></b>)</h1>
           <h2>Add a new room</h2>
           <div class="subCtnt">
             <b>Name:</b><input type="text" id="newroomname"></input>
             <b>Code:</b><input type="text" style="width:50px" id="newroomcode"></input>
+            <b>Type:</b><select id="newroomtype"></select>
             <input type="submit" value="Add room" onclick="return addNewRoom()"></input>
             <br/>
             <br/>
@@ -58,6 +59,39 @@
 
   </div>
 
+  <div id="askRoomType" class="zakmodal">
+    <h1>New roomt type</h1>
+    <h2>Please, insert a new room type</h2>
+    <table>
+      <tr>
+        <td>
+          Room name: 
+        </td>
+        <td>
+          <input type="text" id="tempnewroomname" readonly="readonly"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Room code: 
+        </td>
+        <td>
+          <input type="text" id="tempnewroomcode" readonly="readonly"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Room type name: 
+        </td>
+        <td>
+          <input type="text" id="rtype" style="width:180px"></input>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewRoomWithType()">Add room with this type</a> 
+  </div>
   <div id="delPropertyAlert" class="zakmodal">
     <h1>Security Check</h1>
     <h2>Please, confirm your wishes</h2>
