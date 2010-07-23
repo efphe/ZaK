@@ -121,7 +121,7 @@ function llCheckOccupancyChance(oid, rid, day, n, args, cb) {
 }
 
 function llDelOccupancy(oid, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(
     function(ses) {
       ses.executeSql('delete from occupancy where oid = ?', [oid], cbs, cbe);
@@ -212,7 +212,7 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
 }
 
 function llModOccupancy(oid, params, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     var key,value;
     var t= new Array();
@@ -231,7 +231,7 @@ function llModOccupancy(oid, params, cbs, cbe) {
 /* cbs(reservation) */
 function llGetReservationFromOid(oid, cbs, cbe) {
   console.log('Loading reservation ' + oid);
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.readTransaction(function(ses) {
     s= 'select reservation.* from reservation join occupancy on reservation.id= occupancy.id_reservation ';
     s+= 'where occupancy.id = ?';
@@ -253,7 +253,7 @@ function llGetReservationFromOid(oid, cbs, cbe) {
 }
 function llGetReservationFromRid(rid, cbs, cbe) {
   console.log('Loading reservation ' + rid);
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.readTransaction(function(ses) {
     s= 'select reservation.* from reservation ';
     s+= 'where reservation.id = ?';
@@ -281,7 +281,7 @@ function llGetReservation(rid, oid, cbs, cbe) {
 
 function llLoadRoomSetups(cbs, cbe) {
   var db= zakOpenDb();
-  db.transaction(function(ses) {
+  db.readTransaction(function(ses) {
     ses.executeSql('select * from room_setup', [], cbs, cbe);
     });
 }
@@ -294,7 +294,7 @@ function llAddRSetup(rname, cbs, cbe) {
 }
 
 function llModReservation(rid, params, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     var key,value;
     var t= new Array();
@@ -311,35 +311,35 @@ function llModReservation(rid, params, cbs, cbe) {
 }
 
 function llLoadExtras(cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.readTransaction(function(ses) {
     ses.executeSql('select * from extra', [], cbs, cbe);
   });
 }
 
 function llAddExtra(name, cost, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('insert into extra (name,cost) values (?,?)', [name, cost], cbs, cbe);
   });
 }
 
 function llLoadPricing(cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.readTransaction(function(ses) {
     ses.executeSql('select * from pricing', [], cbs, cbe);
   });
 }
 
 function llNewPricing(name, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('insert into pricing (name) values (?)', [name], cbs, cbe);
   });
 }
 
 function llModPricing(pid, params, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     var sd= updateStatement(params); 
     console.log(sd);
@@ -351,7 +351,7 @@ function llModPricing(pid, params, cbs, cbe) {
 }
 
 function llLoadPricesPeriods(pid, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.readTransaction(function(ses) {
     var adfrom= unixDate();
     if (pid) 
@@ -362,7 +362,7 @@ function llLoadPricesPeriods(pid, cbs, cbe) {
 }
 
 function llNewPricesPeriod(pid, periods, cbs) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     console.log(periods);
     var i, per, sd, sqry, sqarr;
@@ -393,15 +393,15 @@ function llNewPricesPeriod(pid, periods, cbs) {
 }
 
 function llDelPricesPeriod(pid, cbs, cbe) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
       ses.executeSql('delete from pricing_periods where id = ?', [pid], cbs, cbe);
   });
 }
 
 function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
     ses.executeSql('select * from pricing_periods');
   });
 }
@@ -452,8 +452,8 @@ function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
 /*}*/
 
 function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
     dfrom= unixDate(xdfrom);
     dto= unixDate(xdto);
     if (excludelast) {
@@ -511,82 +511,13 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
   });
 }
 
-function llNextInvoiceNumber(pid, cb) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
-    var now= jsDate();
-    now= unixDate('01/01/' + now.getFullYear());
-    ses.executeSql('select max(n) as n from reservation_invoice where created > ? and id_property = ? ', 
-        [now, pid], 
-      function(ses, recs) {
-        var r= recs.rows.item(0);
-        var n= parseInt(r.n);
-        console.log('This is the max: ' + n);
-        if (parseInt(n) == n) n+= 1;
-        cb(n || 1);
-      },
-      function(ses, err) {
-        console.log('Error llNextInvoiceNumber: ' + err.message);
-        cb(1);
-      });
-  });
-}
-
-function llGetInvoiceId(pid, rid, oid, cb) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
-    var q= 'select id,n from reservation_invoice where id_property = ? and id_reservation = ?';
-    var qarr= [pid, rid];
-    if (oid) {
-      q+= ' and id_occupancy = ?';
-      qarr.push(oid);
-    }
-    ses.executeSql(q, qarr,
-      function(ses, recs) {
-        console.log(recs);
-        if (recs.rows.length != 1)
-          return cb(false);
-        return cb(recs.rows.item(0));
-      });
-  });
-}
-
-function llGetInvoiceHtml(iid, cb) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
-    ses.executeSql('select html from reservation_invoice where id = ?', [iid],
-      function(ses, recs) {
-        cb(recs.rows.item(0).html);
-      });
-  });
-}
-
-function llSaveInvoice(pid, n, rid, oid, html, cb) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
-    if (oid) {
-      var s= 'insert into reservation_invoice (created, id_property, n,html,id_reservation,id_occupancy)';
-      s+= ' values (?,?,?,?,?,?)';
-      console.log(s);
-      console.log([unixDate(), pid, n,html, rid,oid]);
-      ses.executeSql(s, [unixDate(), pid, n,html, rid,oid], cb);
-    } else {
-      var s= 'insert into reservation_invoice (created, id_property, n,html,id_reservation)';
-      s+= ' values (?,?,?,?,?)';
-      console.log(s);
-      console.log([unixDate(), pid, n,html, rid]);
-      ses.executeSql(s, [unixDate(), pid, n,html, rid], cb);
-    }
-  });
-}
-
 _defSettings= {
   vatSettingsName: 'Vat taxes',
   vatSettingsPerc: '10',
   vatSettingsHeader: ''
 }
 function llGetPropertySettings(pid, cb) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('select * from psettings where id_property = ?', [pid], 
       function(ses, recs) {
@@ -608,23 +539,42 @@ function llGetPropertySettings(pid, cb) {
 }
 
 function llNewInvoiceType(name, cb) {
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('insert into invoice_type (name) values (?)', [name], cb);
   });
 }
 
 function llGetItypes(cb) {
-  db= zakOpenDb();
-  db.transaction(function(ses) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
     ses.executeSql('select id,name from invoice_type', [], cb);
   });
 }
 
 function llDelItype(iid, cb) {
   console.log('deleteing itype ' + iid);
-  db= zakOpenDb();
+  var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('delete from invoice_type where id = ?', [iid], cb);
+  });
+}
+
+function llGetInvoice(rid, oid, cb) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    var d= {};
+    if (oid) {
+      d.qry= 'select occupancy.customer, invoice.* from occupancy left join invoice ';
+      d.qry+= 'on occupancy.id = invoice.id_occupancy where occupancy.id = ?';
+      d.qarr= [oid];
+    } else {
+      d.qry= 'select reservation.customer, invoice.* from reservation left join invoice ';
+      d.qry+= 'on reservation.id = invoice.id_reservation where reservation.id = ?';
+      d.qarr= [rid];
+    }
+    ses.executeSql(d.qry, d.qarr, function(ses, recs) {
+      cb(recs.rows.item(0));
+    });
   });
 }

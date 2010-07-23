@@ -157,6 +157,7 @@ create table if not exists invoice (
   icustomer text,
   idate text,
   ivat text,
+  iheader text,
   id_invoice_type integer,
   foreign key(id_invoice_type) references invoice_type(id) on delete set null,
   foreign key(id_reservation) references reservation(id) on delete cascade,

@@ -365,13 +365,13 @@ function initReservation() {
       zakReservation= new iReservation(reservation);
       zakReservation.designMe();
 
-      llGetInvoiceId(getActiveProperty().id, zakReservation.reservation.id, false,
-        function(inv) {
-        /*console.log('Inv');*/
-        /*console.log(inv);*/
-          if (!inv) return;
-          $('#resinvoice').append('<br/><b><a style="font-size:12px" href="javascript:showInvoice(' + inv.id + ')">Invoice ' + inv.n + '</a></b>');
-        });
+      /*llGetInvoiceId(getActiveProperty().id, zakReservation.reservation.id, false,*/
+      /*function(inv) {*/
+      /**//*console.log('Inv');*/
+      /**//*console.log(inv);*/
+      /*if (!inv) return;*/
+      /*$('#resinvoice').append('<br/><b><a style="font-size:12px" href="javascript:showInvoice(' + inv.id + ')">Invoice ' + inv.n + '</a></b>');*/
+      /*});*/
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: '+ err.message, 1);
