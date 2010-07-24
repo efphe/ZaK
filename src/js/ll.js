@@ -96,6 +96,13 @@ function llNewRoomAndType(pid, rcode, rname, rtype, cbs, cbe) {
   });
 }
 
+function llLoadOccupancy(oid, cb) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from occupancy where id = ?', [oid], cb);
+  });
+}
+
 function llLoadOccupancies(rids, dfrom, dto, cbs, cbe) {
   var udfrom= unixDate(dfrom);
   if(typeof(dto) == 'number' && dto < 1000) {
@@ -280,9 +287,20 @@ function llGetReservationFromRid(rid, cbs, cbe) {
           function(ses, recs) {
             var occs= new Array();
             var i= 0;
-            for(i=0;i<recs.rows.length;i++) occs.push(recs.rows.item(i));
+            var rids= new Array();
+            for(i=0;i<recs.rows.length;i++) {
+              var occ= recs.rows.item(i);
+              occs.push(occ);
+              rids.push(occ['id_room'])
+            }
+            rids= rids.join(',');
             reservation['occupancies']= occs;
-            cbs(reservation);
+            ses.executeSql('select * from room where id in (' + rids + ')', [], 
+              function(ses, recs) {
+                var rrooms= arrayFromRecords(recs);
+                reservation['rooms']= rrooms;
+                cbs(reservation);
+              });
           }, 
           function(ses, err) {cbe(ses, err);});
       }, 
