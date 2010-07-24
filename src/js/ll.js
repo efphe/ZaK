@@ -409,6 +409,7 @@ function llNewPricesPeriod(pid, periods, cbs) {
       console.log('period to be inserted');
       if (pid) per['id_pricing']= pid;
       sd= insertStatement(per);
+      console.log(sd);
       ses.executeSql('insert into pricing_periods ' + sd['qry'], sd['qarr']);
     }
     cbs();
