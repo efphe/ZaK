@@ -72,14 +72,12 @@ function addPricing() {
 
 $(document).ready(function() {
   llGetRoomTypes(function(ses, recs) {
-    console.log(recs);
     for (var i= 0; i< recs.rows.length; i++) {
       var rt= recs.rows.item(i);
       _zakRtypes.push(rt);
     }
     var ap= getActivePricing();
     if (!ap) {
-      console.log('No active pricing, setup');
       llLoadPricings(function(ses, recs) {
         if (recs.rows.length != 0) {
           setActivePricing(recs.rows.item(0));
