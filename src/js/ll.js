@@ -320,10 +320,17 @@ function llLoadRoomSetups(cbs, cbe) {
     });
 }
 
-function llAddRSetup(rname, cbs, cbe) {
+function llAddRSetup(rname, oid, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('insert into room_setup (name) values (?)', [rname], cbs, cbe);
+    if (!oid)
+      ses.executeSql('insert into room_setup (name) values (?)', [rname], cbs, cbe);
+    else {
+      ses.executeSql('insert into room_setup (name) values (?)', [rname], 
+        function(ses, recs) {
+          ses.executeSql('update occupancy set id_room_setup = ? where id = ?', [recs.insertId, oid], cbs, cbe);
+        });
+    }
   });
 }
 
