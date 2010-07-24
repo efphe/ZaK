@@ -11,9 +11,10 @@
           <b>Default prices</b>:
           <br/>
           Per room type prices:
-          <table class="defprices">
+          <table id="defprices">
           </table>
           <br/>
+          <input type="submit" value="Save default prices" onclick="saveBasePrices()"></input>
         </div>
       </div>
 
@@ -24,47 +25,20 @@
           <div class="subctnt">
             <table class="roomsmanagement">
               <thead>
-                <tr>
+                <tr id="lrtypesname">
                   <th>
                     <b>From</b>
                   </th>
                   <th>
                     <b>To</b>
                   </th>
-                  <th>
-                    <b>RO</b>
-                  </th>
-                  <th>
-                    <b>BB</b>
-                  </th>
-                  <th>
-                    <b>HB</b>
-                  </th>
-                  <th>
-                    <b>FB</b>
-                  </th>
-                  <th>
-                    <b>Save</b>
-                  </th>
                 </tr>
-                <tr>
+                <tr id="lrtypesinput">
                   <td>
                     <input type="text" id="pdfrom" style="width:75px"></input>
                   </td>
                   <td>
                     <input type="text" id="pdto" style="width:75px"></input>
-                  </td>
-                  <td>
-                    <input type="text" id="pro" style="width:75px"></input>
-                  </td>
-                  <td>
-                    <input type="text" id="pbb" style="width:75px"></input>
-                  </td>
-                  <td>
-                    <input type="text" id="phb" style="width:75px"></input>
-                  </td>
-                  <td>
-                    <input type="text" id="pfb" style="width:75px"></input>
                   </td>
                   <td>
                     <input type="submit" value="Save" onclick="javascript:addPricingPeriod()"></input>
