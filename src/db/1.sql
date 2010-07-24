@@ -20,25 +20,18 @@ create table psettings (
 create table if not exists pricing (
   id integer primary key asc,
   name text not null,
-  price_ro float,
-  price_fb float,
-  price_hb float,
-  price_bb float
+  prices text
 );;
 CREATE TRIGGER if not exists pricing_d
 BEFORE DELETE ON pricing  
 FOR EACH ROW BEGIN  
     DELETE FROM pricing_periods WHERE pricing_periods.id_pricing = OLD.id;  
-    UPDATE reservation set id_pricing = null where reservation.id_pricing = OLD.id;
 END;; 
 create table if not exists pricing_periods (
   id integer primary key asc,
   dfrom integer,
   dto integer,
-  price_ro float,
-  price_fb float,
-  price_hb float,
-  price_bb float,
+  prices text,
   id_pricing integer,
   foreign key(id_pricing) references pricing(id) on delete cascade 
 );;

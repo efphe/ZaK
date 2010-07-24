@@ -57,7 +57,7 @@ function llLoadRooms(pid, cbs, cbe) {
 function llGetRoomTypes(cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
-    ses.executeSql('select * from room_type', [], cbs, cbe);
+    ses.executeSql('select * from room_type order by id', [], cbs, cbe);
   });
 }
 
@@ -340,7 +340,14 @@ function llAddExtra(name, cost, cbs, cbe) {
   });
 }
 
-function llLoadPricing(cbs, cbe) {
+function llLoadPricing(pid, cbs, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from pricing where id = ?', [pid], cbs, cbe);
+  });
+}
+
+function llLoadPricings(cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
     ses.executeSql('select * from pricing', [], cbs, cbe);
