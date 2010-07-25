@@ -566,6 +566,66 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
   });
 }
 
+function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    console.log('Computing now dated pricing');
+    dfrom= unixDate(xdfrom);
+    dto= unixDate(xdto);
+    if (excludelast) {
+      console.log('Excluding last day');
+      dto-= 86400;
+    } else console.log('INcluding las tday');
+    recs= ses.executeSql('select * from pricing where id = ?', [prid],
+      function(ses, frecs) {
+        var frow= frecs.rows.item(0), i;
+        var aprices= new Array();
+        var plen= diffDateDays(dfrom, dto) + 1;
+        try {
+          var app= JSON.parse(frow.prices);
+        } catch(e) {var app= -1};
+        for (i=0;i<plen;i++)
+          aprices.push(app);
+        console.log('Base pricing computed...');
+        ses.executeSql('select * from pricing_periods where id_pricing = ? and dfrom <= ? and dto >= ?', 
+                        [prid, dto, dfrom],
+          function(ses, recs) {
+            console.log('Building with ' + recs.rows.length + ' periods');
+            var cdate= parseInt(dfrom);
+            dto= parseInt(dto)
+            var limit= 1000, count= 0;
+            while(1) {
+              if (count>limit) {
+                console.log('Ai ai aiaiaiaiai');
+                break;
+              }
+              count+= 1;
+              if (cdate > dto) break;
+              for(j=0;j<recs.rows.length;j++) {
+                var per= recs.rows.item(j);
+                console.log(per['dfrom'] + ', ' + cdate + ', ' + per['dto']);
+                if (parseInt(per['dfrom']) <= cdate && parseInt(per['dto']) >= cdate) {
+                  var idx= diffDateDays(cdate, dfrom);
+                  console.log('Found good period');
+                  try {
+                    var pper= JSON.parse(per.prices);
+                  } catch(e) {pper= -1};
+                  aprices[idx]= pper;
+                  break;
+                }
+              }
+              cdate+= 86400;
+            }
+            console.log('Ok done');
+            console.log(aprices);
+            try {
+              cbs(aprices);
+            } catch(e) {};
+          });
+      });
+  });
+}
+
 _defSettings= {
   vatSettingsName: 'Vat taxes',
   vatSettingsPerc: '10',

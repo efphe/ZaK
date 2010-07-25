@@ -8,6 +8,7 @@ zakRoomsSetups= new Array();
 _tempChildren= new Array();
 _tempExtras= {};
 _zakYourVat= false;
+_tempPricing= {};
 
 function getResExtras() {
   try {
@@ -85,6 +86,79 @@ function designExtras() {
   res+= '<input type="submit" value="Update extras" onclick="saveUpdatedExtras()">';
   res+= '</input></td></tr></table>';
   $('#assignedExtras').html(res);
+}
+
+function loadRoomPricing(rid, prid) {
+  var prices= _tempPricing[prid];
+  if (!prices) {
+    llGetDatedPricing(zakEditReservation.dfrom, zakEditReservation.dto, 1,
+      function(pps) {
+        return 
+      }, 
+      function(ses, err) {
+        humanMsg.displayMsg('Bad error there: '+ err.message);
+      });
+
+  }
+}
+
+function getRoomPricing(room, prid, rprices) {
+  var rid= room.id;
+  var roomp= rprices[rid];
+  if (roomp) {
+    console.log('Prices from reservation custom');
+    return roomp;
+  }
+  if (!prid) {
+    console.log('Zero pricing');
+    var prices= [];
+    for (var i= 0; i< diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto); i++) {
+      prices.push(0.0);
+    }
+    return prices;
+  }
+  console.log('Parsing pricing');
+  var cpricing= _tempPricing[prid];
+  var rt= room.id_room_type;
+  var res= new Array();
+  console.log(cpricing);
+  for (var i= 0; i< diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto); i++) {
+    var dprice= cpricing[i];
+    try {
+      var p= dprice[rt];
+    } catch(e) {var p= 0.0};
+    if (!checkFloat(p)) p= 0.0;
+    res.push(p);
+  }
+  return res;
+}
+
+function designPrices(prid) {
+  /* make sure pricing info is loaded */
+  if (prid && !_tempPricing[prid]) {
+    llGetDatedPricing(prid, zakEditReservation.dfrom, zakEditReservation.dto, 1,
+      function(pps) {
+        _tempPricing[prid]= pps;
+        designPrices(prid);
+      }, 
+      function(ses, err) {
+        humanMsg.displayMsg('Bad error there: '+ err.message);
+      });
+    return;
+  }
+
+  console.log('Building pricing');
+  /* let's go */
+  try {
+    var rprices= JSON.parse(zakEditReservation.custom_pricing);
+  } catch(e) {var rprices= -1};
+  var res= {};
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+    var room= zakEditReservation.rooms[i];
+    var roomprices= getRoomPricing(room, prid, rprices);
+    res[room.id]= roomprices;
+  }
+  gigi= res;
 }
 
 function designMain() {
