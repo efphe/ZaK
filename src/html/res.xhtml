@@ -138,15 +138,26 @@
     <table>
       <tr>
         <td>
-          <b>Pricing:</b>
-        </td>
-        <td colspan="2">
-          <select id="cmbpricing" onchange="changePricing()"><option value="1">Standard</option></select> 
+          <b>Pricing:</b> edit
+          <select id="cmbpricing"><option value="1">Standard</option></select> 
           <input type="submit" value="Cancel" id="restorePrices" style="display:none" onclick="javascript:recomputePrices()"></input>
+          for room <select class="cmbPricingRoom" id="cmbPricingRoom"></select>
+          <input type="submit" onclick="changePricing()" value="Edit"></input>
         </td>
       </tr>
     </table>
     <table id="tablepricing"></table>
+    <br/>
+    <table>
+      <tr>
+        <td>
+          Apply <select id="cmbalter"></select>
+          for room <select class="cmbPricingRoom" id="cmbAlterRoom"></select>
+          <input type="submit" onclick="applyFilter()" value="Apply"></input> 
+          (<b><a href="javascript:askVariation()">New</a></b>)
+        </td>
+      </tr>
+    </table>
     <br/>
     <input type="submit" value="Save room prices" onclick="saveRoomsPrices()"></input>
   </div>

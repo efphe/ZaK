@@ -275,14 +275,12 @@ function llGetReservationFromOid(oid, cbs, cbe) {
   });
 }
 function llGetReservationFromRid(rid, cbs, cbe) {
-  console.log('Loading reservation ' + rid);
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
     s= 'select reservation.* from reservation ';
     s+= 'where reservation.id = ?';
     ses.executeSql(s, [rid], 
       function(ses, recs){
-        console.log(recs);
         var reservation= recs.rows.item(0);
         ses.executeSql('select * from occupancy where id_reservation = ?', [reservation.id], 
           function(ses, recs) {
@@ -291,16 +289,12 @@ function llGetReservationFromRid(rid, cbs, cbe) {
             var rids= [];
             for(i=0;i<recs.rows.length;i++) {
               var occ= recs.rows.item(i);
-              console.log('oc');
-              console.log(occ);
               occs.push(occ);
               rids.push(occ['id_room'])
             }
-            console.log(rids);
             rids= rids.join(',');
             reservation['occupancies']= occs;
             var qry= 'select * from room where id in (' + rids + ')';
-            console.log(qry);
             ses.executeSql('select * from room where id in (' + rids + ')', [], 
               function(ses, recs) {
                 var rrooms= arrayFromRecords(recs);
@@ -402,7 +396,6 @@ function llModPricing(pid, params, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
     var sd= updateStatement(params); 
-    console.log(sd);
     sqry= sd['qry'];
     sqarr= sd['qarr'];
     sqarr.push(pid);
@@ -424,18 +417,14 @@ function llLoadPricesPeriods(pid, cbs, cbe) {
 function llNewPricesPeriod(pid, periods, cbs) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    console.log(periods);
     var i, per, sd, sqry, sqarr;
-    console.log('Working on ' + periods.length + ' periods');
     for(i=0;i<periods.length;i++) {
       per= periods[i]; 
       if (per['del'] == 1) {
-        console.log('period to be deleted');
         ses.executeSql('delete from pricing_periods where id = ?',[per['id']]);
         continue
       }
       if (per['id']) {
-        console.log('period to be updated');
         sd= updateStatement(per); 
         sqry= sd['qry'];
         sqarr= sd['qarr'];
@@ -443,10 +432,8 @@ function llNewPricesPeriod(pid, periods, cbs) {
         ses.executeSql('update pricing_periods set ' + sqry + ' where id = ?', sqarr);
         continue;
       } 
-      console.log('period to be inserted');
       if (pid) per['id_pricing']= pid;
       sd= insertStatement(per);
-      console.log(sd);
       ses.executeSql('insert into pricing_periods ' + sd['qry'], sd['qarr']);
     }
     cbs();
@@ -518,7 +505,6 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
     dfrom= unixDate(xdfrom);
     dto= unixDate(xdto);
     if (excludelast) {
-      console.log('Excluding last day');
       dto-= 86400;
     } else console.log('INcluding las tday');
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
@@ -535,7 +521,6 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
         }
         ses.executeSql('select * from pricing_periods where id_pricing = ? and dfrom <= ? and dto >= ?', [prid, dto, dfrom],
           function(ses, recs) {
-            console.log('Building with ' + recs.rows.length + ' periods');
             var cdate= parseInt(dfrom);
             dto= parseInt(dto)
             var limit= 1000, count= 0;
@@ -548,10 +533,8 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
               if (cdate > dto) break;
               for(j=0;j<recs.rows.length;j++) {
                 var per= recs.rows.item(j);
-                console.log(per['dfrom'] + ', ' + cdate + ', ' + per['dto']);
                 if (parseInt(per['dfrom']) <= cdate && parseInt(per['dto']) >= cdate) {
                   var idx= diffDateDays(cdate, dfrom);
-                  console.log('Found good period');
                   aprices[idx]= {
                      price_ro: per.price_ro, 
                      price_bb: per.price_bb, 
@@ -562,8 +545,6 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
               }
               cdate+= 86400;
             }
-            console.log('Ok done');
-            console.log(aprices);
             try {
               cbs(aprices);
             } catch(e) {};
@@ -575,11 +556,9 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
 function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
-    console.log('Computing now dated pricing');
     dfrom= unixDate(xdfrom);
     dto= unixDate(xdto);
     if (excludelast) {
-      console.log('Excluding last day');
       dto-= 86400;
     } else console.log('INcluding las tday');
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
@@ -592,11 +571,9 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
         } catch(e) {var app= -1};
         for (i=0;i<plen;i++)
           aprices.push(app);
-        console.log('Base pricing computed...');
         ses.executeSql('select * from pricing_periods where id_pricing = ? and dfrom <= ? and dto >= ?', 
                         [prid, dto, dfrom],
           function(ses, recs) {
-            console.log('Building with ' + recs.rows.length + ' periods');
             var cdate= parseInt(dfrom);
             dto= parseInt(dto)
             var limit= 1000, count= 0;
