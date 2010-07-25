@@ -27,7 +27,7 @@ function designChildren() {
   for (var i= 0; i< _tempChildren.length; i++) {
     var child= _tempChildren[i];
     var age= child.age;
-    res+= '<tr class="rchildren"><td>Child</td><td>Age: ' + age + '</td>'; 
+    res+= '<tr class="rchildren"><td></td><td>Age: ' + age + '</td>'; 
     res+= '<td><b><a href="javascript:delChild(' + age +','+ i + ')">Delete</a></b></td></tr>'; 
   }
   $('#table_occupancy').append(res);
