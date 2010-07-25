@@ -170,7 +170,8 @@ function zakNotImplementedYet() {
 
 function checkFloat(x){
   var t= '^\[0-9]+(\.\?[0-9]+)?$';
-  if (x.search(t) == -1) return false;
+  var xx= x + '';
+  if (xx.search(t) == -1) return false;
   return true;
 }
 

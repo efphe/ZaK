@@ -175,10 +175,11 @@ function _menuDeleteOcc(a,e,p) {
 
 function _menuEditOcc(a,e,p) {
   var editOccupancyOid= parseInt($(e).attr('data-oid'));
-  var rid= parseInt($(e).parent().attr('data-rid'));
+  var rid= parseInt($(e).attr('data-rid'));
   console.log('Editing Occupancy: ' + editOccupancyOid);
   localStorage.editOccupancyOid= editOccupancyOid;
   localStorage.editOccupancyRid= rid;
+  console.log('Rid, oid: ' + rid + ',' + editOccupancyOid);
   goToSameDirPage('book');
 }
 

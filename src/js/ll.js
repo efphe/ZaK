@@ -282,19 +282,25 @@ function llGetReservationFromRid(rid, cbs, cbe) {
     s+= 'where reservation.id = ?';
     ses.executeSql(s, [rid], 
       function(ses, recs){
+        console.log(recs);
         var reservation= recs.rows.item(0);
         ses.executeSql('select * from occupancy where id_reservation = ?', [reservation.id], 
           function(ses, recs) {
-            var occs= new Array();
+            var occs= [];
             var i= 0;
-            var rids= new Array();
+            var rids= [];
             for(i=0;i<recs.rows.length;i++) {
               var occ= recs.rows.item(i);
+              console.log('oc');
+              console.log(occ);
               occs.push(occ);
               rids.push(occ['id_room'])
             }
+            console.log(rids);
             rids= rids.join(',');
             reservation['occupancies']= occs;
+            var qry= 'select * from room where id in (' + rids + ')';
+            console.log(qry);
             ses.executeSql('select * from room where id in (' + rids + ')', [], 
               function(ses, recs) {
                 var rrooms= arrayFromRecords(recs);

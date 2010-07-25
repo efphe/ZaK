@@ -53,6 +53,7 @@ function _designOccupancy(aocc) {
   if (!occupancy) {
     $('#adults').val(1);
     $('#childrenCounter').val(0);
+    $('.rchildren').remove();
   } else {
     occupancy= JSON.parse(occupancy);
     var adults= occupancy.adults;
@@ -103,10 +104,11 @@ function loadRoomPricing(rid, prid) {
 }
 
 function getRoomPricing(room, prid, rprices) {
+  console.log('computing room pricing');
   var rid= room.id;
   var roomp= rprices[rid];
   if (roomp) {
-    console.log('Prices from reservation custom');
+    console.log('Prices from reservation');
     return roomp;
   }
   if (!prid) {
@@ -120,12 +122,13 @@ function getRoomPricing(room, prid, rprices) {
   console.log('Parsing pricing');
   var cpricing= _tempPricing[prid];
   var rt= room.id_room_type;
+  console.log('Roomtype: ' + rt);
   var res= new Array();
   console.log(cpricing);
   for (var i= 0; i< diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto); i++) {
     var dprice= cpricing[i];
     try {
-      var p= dprice[rt];
+      var p= dprice[rt + ''];
     } catch(e) {var p= 0.0};
     if (!checkFloat(p)) p= 0.0;
     res.push(p);
@@ -133,8 +136,92 @@ function getRoomPricing(room, prid, rprices) {
   return res;
 }
 
+function _desingPrices(prices) {
+  var res= '<thead class="pricing"><tr><th>Day</th>';
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+    var rcode= zakEditReservation.rooms[i].code;
+    res+= '<th>'+rcode+'</th>';
+  }
+  res+= '</thead>';
+
+  var icycle= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
+  function _strDay(dayidx) {
+    var d= unixDate(zakEditReservation.dfrom) + (86400 * parseInt(dayidx - 1));
+    return  strDate(d, 'd/m');
+  }
+  function _strPri(dayidx, rid) {
+    try {
+      return prices[rid][dayidx];
+    } catch(e) {console.log('Pricing error: ' + e.message); return 0.0};
+  }
+
+  function _inpRoom(dayidx, rid) {
+    var iid= ' id="price_' + rid + '_' + dayidx + '" ';
+    var sty= ' style="width:50px" ';
+    var onc= ' onchange="computeRoomsAmount(' + rid + ')"' ;
+    return '<td><input ' + iid + sty + onc + 'type="text" value="' + _strPri(i, rid) + '"></input></td>';
+  }
+
+  for (var i= 0; i< icycle; i++) {
+    tres= '<tr><td>'+_strDay(i)+'</td>';
+    for (var j= 0; j< zakEditReservation.rooms.length; j++) {
+      var rid= zakEditReservation.rooms[j].id;
+      tres+= _inpRoom(i, rid);
+    }
+    tres+= '</tr>';
+    res+= tres;
+  }
+  res+= '<tr><td><b id="total_sum">...</b></td>';
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+    var rid= zakEditReservation.rooms[i].id;
+    res+= '<td><b id="partial_sum_' + rid + '">...</b></td>';
+  }
+  res+= '</tr>';
+  $('#tablepricing').html(res);
+  computeRoomsAmount();
+}
+
+function computeRoomsAmount(onlyrid) {
+  var icycle= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+    var rid= zakEditReservation.rooms[i].id;
+    if (onlyrid && onlyrid != rid) continue;
+    var pcount= 0.0;
+    for (var j= 0; j< icycle; j++) {
+      var s= '#price_' + rid + '_' + j;
+      var p= $(s).val();
+      if (!p) {
+        humanMsg.displayMsg('Please, specify good valus (use the . for decimal values)', 1);
+        return;
+      }
+      p= parseFloat(p);
+      if (!checkFloat(p)) {
+        humanMsg.displayMsg('Please, specify good valus (use the . for decimal values)', 1);
+        return;
+      }
+      pcount+= p;
+      $('#partial_sum_' + rid).html(pcount.toFixed(2));
+    }
+  }
+  var tcount= 0.0;
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) 
+    tcount+= parseFloat($('#partial_sum_' + rid).html());
+  $('#total_sum').html(tcount.toFixed(2));
+}
+
+function changePricing() {
+  designPrices($('#cmbpricing').val());
+}
+
+function changeOccupancy() {
+  localStorage.editOccupancyOid= $('#selOccupancy').val();
+  designOccupancy();
+}
+
 function designPrices(prid) {
   /* make sure pricing info is loaded */
+  console.log('Writing prices: prid= ' + prid);
+  console.log(_tempPricing[prid]);
   if (prid && !_tempPricing[prid]) {
     llGetDatedPricing(prid, zakEditReservation.dfrom, zakEditReservation.dto, 1,
       function(pps) {
@@ -150,20 +237,41 @@ function designPrices(prid) {
   console.log('Building pricing');
   /* let's go */
   try {
-    var rprices= JSON.parse(zakEditReservation.custom_pricing);
+    /* force id_pricing */
+    if (prid) rprices= -1;
+    else var rprices= JSON.parse(zakEditReservation.custom_pricing);
   } catch(e) {var rprices= -1};
   var res= {};
+  console.log('cycling room');
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
     var room= zakEditReservation.rooms[i];
+    console.log(room);
     var roomprices= getRoomPricing(room, prid, rprices);
+    console.log(roomprices);
     res[room.id]= roomprices;
   }
-  gigi= res;
+  _desingPrices(res);
+}
+
+function designCmbPricing() {
+  console.log('load pricing cmb');
+  llLoadPricings(function(ses, recs) {
+    var res= '';
+    for (var i= 0; i< recs.rows.length; i++) {
+      var p= recs.rows.item(i);
+      console.log('pricing');
+      console.log(p);
+      res+= '<option value="' + p.id + '">'+p.name+ '</option>';
+    }
+    $('#cmbpricing').html(res);
+  });
 }
 
 function designMain() {
   $('#rremarks').val(zakEditReservation.remarks || '');
+  designCmbPricing();
   designExtras();
+  designPrices();
 }
 
 function designReservation(noOccupancy) {
@@ -194,15 +302,18 @@ function designReservation(noOccupancy) {
 
         var rooms= zakEditReservation.rooms;
         var srooms= '';
-        for (j= 0; j< rooms.length; j++) {
+        for (var j= 0; j< rooms.length; j++) {
           var room= rooms[j];
           srooms+= '<option value="' + room.id + '">' + room.name + '</option>';
         }
         $('#selOccupancy').empty().html(srooms);
 
+        console.log('Designing reservation');
         designMain();
         if (!noOccupancy) 
           designOccupancy();
+      }, function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message, 1);
       });
   });
 }
@@ -410,6 +521,26 @@ function saveRemarks() {
     },
     function(ses, err) {
       humanMsg.displayMsg('Error there: ' + err.message, 1);
+    });
+}
+
+function saveRoomsPrices() {
+  var prices= {};
+  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+    var rprices= [];
+    var rid= zakEditReservation.rooms[i].id;
+    for (var j= 0; j< diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto); j++) {
+      rprices.push($('#price_' + rid + '_' + j).val());
+    }
+    prices[rid]= rprices;
+  }
+  prices= JSON.stringify(prices);
+  llModReservation(localStorage.editOccupancyRid, {custom_pricing: prices},
+    function(ses, recs) {
+      humanMsg.displayMsg('Sounds good');
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
     });
 }
 
