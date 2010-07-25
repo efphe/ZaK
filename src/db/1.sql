@@ -135,6 +135,7 @@ END;;
 create table if not exists extra (
   id integer primary key asc,
   name text,
+  perday integer default 0,
   cost float
 );;
 create table invoice_type (

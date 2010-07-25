@@ -358,11 +358,17 @@ function llLoadExtras(cbs, cbe) {
   });
 }
 
-function llAddExtra(name, cost, cbs, cbe) {
+function llAddExtra(rid, ename, ecost, eperday, how, aextras, atotal, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('insert into extra (name,cost) values (?,?)', [name, cost], cbs, cbe);
-  });
+    ses.executeSql('insert into extra (name,cost,perday) values (?,?,?)', [ename,ecost,eperday],
+      function(ses, recs) {
+        var eid= recs.insertId;
+        aextras.push({name: ename, cost: atotal, id: eid, how: how});
+        var s= JSON.stringify(aextras);
+        ses.executeSql('update reservation set extras = ? where id = ?', [s,rid], cbs, cbe);
+      }, cbe);
+    });
 }
 
 function llLoadPricing(pid, cbs, cbe) {
