@@ -90,13 +90,6 @@ function delChild(age, red) {
   designAdultsChildren();
 }
 
-function askChildren() {
-  var el= $('#addChildrenButton');
-  var x= el.offset().left;
-  var y= el.offset().top;
-  $('#children_div').modal({position: [y,x]});
-}
-
 function saveOccupancy() {
   var ads, newd;
   ads= $('#adults').val();

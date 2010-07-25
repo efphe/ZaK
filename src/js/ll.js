@@ -358,13 +358,13 @@ function llLoadExtras(cbs, cbe) {
   });
 }
 
-function llAddExtra(rid, ename, ecost, eperday, how, aextras, atotal, cbs, cbe) {
+function llAddExtra(rid, ename, ecost, eperday, evat, how, aextras, atotal, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('insert into extra (name,cost,perday) values (?,?,?)', [ename,ecost,eperday],
+    ses.executeSql('insert into extra (name,cost,perday,vat) values (?,?,?,?)', [ename,ecost,eperday,evat],
       function(ses, recs) {
         var eid= recs.insertId;
-        aextras.push({name: ename, cost: atotal, id: eid, how: how});
+        aextras.push({name: ename, cost: atotal, id: eid, how: how, vat: evat});
         var s= JSON.stringify(aextras);
         ses.executeSql('update reservation set extras = ? where id = ?', [s,rid], cbs, cbe);
       }, cbe);

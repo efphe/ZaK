@@ -7,6 +7,7 @@ zakEditReservation= false;
 zakRoomsSetups= new Array();
 _tempChildren= new Array();
 _tempExtras= {};
+_zakYourVat= false;
 
 function getResExtras() {
   try {
@@ -26,19 +27,17 @@ function designChildren() {
   for (var i= 0; i< _tempChildren.length; i++) {
     var child= _tempChildren[i];
     var age= child.age;
-    var red= child.red;
-    res+= '<tr class="rchildren"><td>Child</td><td>Age: ' + age + ' (-' + red + '%)</td>'; 
-    res+= '<td><b><a href="javascript:delChild(' + age +','+red + ')">Delete</a></b></td></tr>'; 
+    res+= '<tr class="rchildren"><td>Child</td><td>Age: ' + age + '</td>'; 
+    res+= '<td><b><a href="javascript:delChild(' + age +','+ i + ')">Delete</a></b></td></tr>'; 
   }
   $('#table_occupancy').append(res);
+  $('#childrenCounter').val(_tempChildren.length);
 }
 
-function delChild(age, red) {
+function delChild(age, j) {
   var newchi= new Array();
-  for (var i= 0; i< _tempChildren.length; i++) {
-    var c= _tempChildren[i];
-    if (c.age != age || c.red != red) newchi.push(c);
-  }
+  for (var i= 0; i< _tempChildren.length; i++)
+    if (i!=j) newchi.push(_tempChildren[i]);
   _tempChildren= newchi;
   designChildren();
 }
@@ -57,6 +56,7 @@ function _designOccupancy(aocc) {
     occupancy= JSON.parse(occupancy);
     var adults= occupancy.adults;
     var children= occupancy.children;
+    $('#childrenCounter').val(children.length);
     $('#adults').val(adults);
     _tempChildren= children;
     designChildren();
@@ -192,17 +192,24 @@ function askChildren() {
 }
 function addChildren() {
   var age= $('#children_age').val();
-  var red= $('#children_red').val();
-  if (parseInt(age) != age || parseInt(red) != red) {
+  if (parseInt(age) != age) {
     humanMsg.displayMsg('Please, specify good values', 1);
     return;
   }
-  _tempChildren.push({age: age, red: red});
+  _tempChildren.push({age: age});
   designChildren();
   $.modal.close();
 }
 
 function askExtra() {
+  if (!_zakYourVat) { 
+    llGetPropertySettings(getActiveProperty(),
+      function(ses, recs, sets) {
+      _zakYourVat= sets.vatSettingsPerc;
+      askExtra();
+      });
+    return;
+  }
   var el= $('#addExtraButton');
   var x= el.offset().left;
   var y= el.offset().top;
@@ -212,6 +219,11 @@ function askExtra() {
 function saveExtra() {
   var ename= $('#extra_name').val();
   var ecost= $('#extra_cost').val();
+  var evat= $('#extra_vat').val();
+  if (!ename || !checkFloat(ecost) || !checkFloat(evat)) {
+    humanMsg.displayMsg('Please, specify good values (decimal values? use the dot [.])');
+    return;
+  }
   var eperday= $('#extra_perday').val();
   var how= $('#extra_how').val();
   if (!eperday) var atotal= ecost;
@@ -221,7 +233,7 @@ function saveExtra() {
   }
   atotal*= how;
   var aextras= getResExtras();
-  llAddExtra(localStorage.editOccupancyRid, ename, ecost, eperday, how, aextras, atotal,
+  llAddExtra(localStorage.editOccupancyRid, ename, ecost, eperday, evat, how, aextras, atotal,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
       designReservation();
@@ -240,6 +252,7 @@ function assignExtra() {
   var ecost= parseFloat(e.cost);
   var epd= e.perday;
   var ename= e.name;
+  var evat= e.vat;
   console.log(ecost);
   if (epd) {
     var d= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
@@ -259,7 +272,7 @@ function assignExtra() {
     }
   }
   if (!found) {
-    extras.push({name: ename, cost: etotal, id: eid, how: how});
+    extras.push({name: ename, cost: etotal, id: eid, how: how, vat: evat});
   }
   extras= JSON.stringify(extras);
   llModReservation(localStorage.editOccupancyRid, {extras: extras},
