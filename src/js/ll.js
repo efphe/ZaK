@@ -677,10 +677,10 @@ function llGetInvoice(rid, oid, cb) {
   });
 }
 
-function llNewVariation(vt, vl, vn, cb) {
+function llNewVariation(vt, vl, vn, cb, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses, recs) {
-    ses.executeSql('insert into price_function (value,vtype,name) values (?,?,?)', [vl,vt,vn], cb);
+    ses.executeSql('insert into price_function (value,vtype,name) values (?,?,?)', [vl,vt,vn], cb, cbe);
   });
 }
 

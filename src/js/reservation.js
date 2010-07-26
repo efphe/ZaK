@@ -423,8 +423,65 @@ function askVariation() {
   $('#addvariation_div').modal();
 }
 
+function writeVariationRoom(vt, vv, rid) {
+  var icycle= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
+  function _apply(p) {
+    if (vt == 1) 
+      return parseFloat(p) * (100.00 - parseFloat(vv)) / 100.0;
+    if (vt === 2) 
+      return parseFloat(p) + parseFloat(vv);
+    return parseFloat(p) + (parseFloat(vv) / icycle);
+  }
+  for (var i= 0; i< icycle; i++) {
+    var pp= $('#price_' + rid + '_' + i).val();
+    $('#price_' + rid + '_' + i).val(_apply(pp));
+  }
+}
+
+function writeVariationMsg(vt, vv, rooms) {
+  var msgVariation= '';
+  try {
+    var now= $.datepicker.formatDate('D M yy', new Date());
+    var stype, srooms= '?';
+    if (vt == 1) stype= 'Percentage';
+    else if (vt == 2) stype= 'Fixed (daily)';
+    else stype= 'Fixed';
+    if (!rooms) srooms= 'Alls';
+    else {
+      for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+        if (zakEditReservation.rooms[i].id == rooms)
+          srooms= zakEditReservation.rooms[i].code;
+      }
+    }
+    msgVariation= '[ZaK ' + now + '] I applied the following variation: ';
+    msgVariation+= 'Type: ' + stype + ', Value: ' + vv;
+    msgVariation+= ', Rooms: ' + srooms;
+  } catch(e) {console.log(e); msgVariation= ''};
+  return msgVariation;
+}
+
 function writeVariation(vt, vv, rooms) {
-  console.log('I write variation');
+  console.log('writing variation: vt: ' + vt + ', vv: ' + vv + ', rooms: ' + rooms);
+  var msg= writeVariationMsg(vt, vv, rooms);
+  console.log('Message: ' + msg);
+  if (rooms) 
+    writeVariationRoom(vt, vv, rooms);
+  else {
+    for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+      var rid= zakEditReservation.rooms[i].id;
+      writeVariationRoom(vt, vv, rid);
+    }
+  }
+  computeRoomsAmount();
+  var rm= $('#rremarks').val();
+  console.log(msg);
+  rm+= '\n\n' + msg;
+  llModReservation(localStorage.editOccupancyRid, {remarks: rm},
+    function(ses, recs) {
+      $('#rremarks').val(rm);
+    },
+    function(ses, err) {
+    });
 }
 
 function changeVtype() {
@@ -453,16 +510,37 @@ function stepApplyVariation() {
   $('#vapplyapply').show();
 }
 
-function bo() {
+function applyVariation() {
   var vt= $('#vtype').val();
   var vv= $('#vvalue').val();
   if (!checkFloat(vv)) {
     humanMsg.displayMsg('Specify a good variation value before');
     return;
   }
-  var rooms= $('#cmbAlterRoom').val();
+  var rooms= $('#vrooms').val();
   $.modal.close();
   writeVariation(vt, vv, rooms);
+}
+
+function saveVariation() {
+  var vt= $('#vtype').val();
+  var vv= $('#vvalue').val();
+  if (!checkFloat(vv)) {
+    humanMsg.displayMsg('Specify a good variation value before');
+    return;
+  }
+  var vn= $('#vname').val();
+  if (!vn) {
+    humanMsg.displayMsg('Specify a good name to save it!');
+    return;
+  }
+  llNewVariation(vt, vv, vn,
+    function(ses, recs) {
+      humanMsg.displayMsg('Sounds good');
+      $.modal.close();
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error there: '+ err.message, 1);
+    });
 }
 
 function saveApplyVariation() {
@@ -477,11 +555,13 @@ function saveApplyVariation() {
     humanMsg.displayMsg('Specify a good name to save it!');
     return;
   }
-  llNewVariation(vt, vl, vn,
+  llNewVariation(vt, vv, vn,
     function(ses, recs) {
       designVariations();
-      var rooms= $('#cmbAlterRoom').val();
+      var rooms= $('#vrooms').val();
       writeVariation(vt, vv, rooms);
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error there: '+ err.message, 1);
     });
 }
 
