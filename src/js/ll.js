@@ -686,7 +686,24 @@ function llNewVariation(vt, vl, vn, cb, cbe) {
 
 function llGetVariations(cb) {
   var db= zakOpenDb();
-  db.transaction(function(ses, recs) {
+  db.transaction(function(ses) {
     ses.executeSql('select * from price_function', [], cb);
+  });
+}
+
+function llNewMeal(name, price, type, vat, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('insert into meal (name,price,mtype,vat) values (?,?,?,?)', [name,price,type,vat], cb, cbe);
+  });
+}
+
+function llGetMeals(mid, cb) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    if (!mid) 
+      ses.executeSql('select * from meal', [], cb);
+    else
+      ses.executeSql('select * from meal where id = ?', [mid], cb);
   });
 }

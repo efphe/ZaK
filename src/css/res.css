@@ -18,21 +18,21 @@ h1.secacc a {
   color: black;
 }
 
-#tablepricing {
+.tablepricing {
   border: 1px solid black;
   border-radius: 4px;
   margin-top: 20px;
 }
-#tablepricing td {
+.tablepricing td {
   text-align: center;
 }
-#tablepricing th {
+.tablepricing th {
   background-color: #bd0000;
   text-align: center;
   color: white;
   padding: 4px;
 }
-#tablepricing input {
+.tablepricing input {
   width: 80px;
 }
 input.extraHow {

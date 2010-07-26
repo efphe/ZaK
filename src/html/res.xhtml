@@ -146,7 +146,7 @@
         </td>
       </tr>
     </table>
-    <table id="tablepricing"></table>
+    <table id="tablepricing" class="tablepricing"></table>
     <br/>
     <table>
       <tr>
@@ -160,6 +160,33 @@
     </table>
     <br/>
     <input type="submit" value="Save room prices" onclick="saveRoomsPrices()"></input>
+  </div>
+  <br/>
+  <div>
+    <h1>Meals</h1>
+    Add 
+    <select id="howmeals">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+    </select>
+    <select id="cmbmeal"></select>
+    for the day 
+    <select id="cmbdaymeals"><option value="">All days</option></select>
+      <input type="submit" value="Add" onclick="addMeal()"></input>
+      (<b><a href="javascript:askMeal()">Define a new meal</a></b>)
+    <br/>
+    <br/>
+    <div id="mealstable"></div>
   </div>
   </div>
 
@@ -314,7 +341,7 @@
         <b style="color:white">Vat:</b> 
       </td>
       <td>
-        <input type="text" style="width:140px" id="extra_vat"></input>
+        <input type="text" class="vatsettings" style="width:140px" id="extra_vat"></input>
       </td>
     </tr>
     <tr>
@@ -336,6 +363,53 @@
     <tr>
       <td colspan="2" align="center">
         <input type="submit" value="Add" onclick="saveExtra()"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="zakmodalfree" id="addmeal_div">
+  <h1>Add a new meal</h1>
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="mname"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Type:</b> 
+      </td>
+      <td>
+        <select id="mtype">
+          <option value="1" selected="selected">Breakfast</option>
+          <option value="2">Half board</option>
+          <option value="3">Full board</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Price:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:50px" id="mprice"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Vat:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:30px" class="vatsettings" id="mvat"></input>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="submit" value="Add" onclick="saveMeal()"/>
       </td>
     </tr>
   </table>

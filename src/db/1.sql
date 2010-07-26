@@ -44,6 +44,16 @@ create table if not exists price_function (
   name text,
   vtype integer default 0
 );;
+create table meal (
+  id integer primary key asc,
+  name text,
+  price float,
+  -- vtype = 1 -> bb
+  -- vtype = 2 -> hb
+  -- vtype = 3 -> fb
+  mtype integer,
+  vat float
+);;
 create table if not exists room_type (
   id integer primary key asc,
   name text
@@ -101,7 +111,7 @@ create table if not exists reservation (
   remarks text default '', 
   extras text default '',
   custom_pricing text default '',
-  meal default 'bb',
+  meals text default '',
  
   foreign key(id_property) references property(id) on delete cascade 
 );; 

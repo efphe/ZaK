@@ -16,6 +16,16 @@ function getResExtras() {
   } catch(e) {return []};
 }
 
+function getResMeals() {
+  var meals= zakEditReservation.meals;
+  if (!meals) return {};
+  try {
+    meals= JSON.parse(meals);
+    if (!meals) meals= {};
+  } catch(e) {meals= {}};
+  return meals;
+}
+
 function designOccupancy() {
   llLoadOccupancy(localStorage.editOccupancyOid, function(ses, recs) {
     _designOccupancy(recs.rows.item(0));
@@ -156,7 +166,9 @@ function _desingPrices(prices) {
   }
 
   for (var i= 0; i< icycle; i++) {
-    tres= '<tr><td>'+_strDay(i)+'</td>';
+    var std= _strDay(i);
+    tres= '<tr><td>' + std + '</td>';
+    $('#cmbdaymeals').append('<option value="' + i + '">' + std + '</option>');
     for (var j= 0; j< zakEditReservation.rooms.length; j++) {
       var rid= zakEditReservation.rooms[j].id;
       tres+= _inpRoom(i, rid);
@@ -270,12 +282,25 @@ function designCmbPricing() {
   $('.cmbPricingRoom').html(rres);
 }
 
+function designMeals() {
+  llGetMeals(false, function(ses, recs) {
+    var res= '';
+    for (var i= 0; i< recs.rows.length; i++) {
+      var m= recs.rows.item(i);
+      res+= '<option value="' + m.id + '">' + m.name + '</option>';  
+    }
+    $('#cmbmeal').html(res);
+  });
+}
+
 function designMain() {
   $('#rremarks').val(zakEditReservation.remarks || '');
   designCmbPricing();
   designExtras();
   designPrices();
   designVariations();
+  designMeals();
+  designMealTables();
 }
 
 function designVariations() {
@@ -287,6 +312,43 @@ function designVariations() {
     }
     $('#cmbalter').html(res);
   });
+}
+
+function subTableMeals(meals, day) {
+  var sday= strDate(parseInt(day), 'd/m');
+  var res= '';
+  for (var i= 0; i< meals.length; i++) {
+    res+= '<tr><td>' + sday + '</td>';
+    var meal= meals[i];
+    res+= '<td><b>' + meal.name + '</b></td>';
+
+    var mid= day + '_' + meal.id;
+
+    res+= '<td><input id="mhow_' + mid + '" type="text" ';
+    res+= 'style="width:40px" value="' + meal.how + '"></input></td>';
+
+    res+= '<td><input id="mprice_' + mid + '" type="text" ';
+    res+= 'style="width:40px" value="' + meal.price + '"></input></td>';
+
+    res+= '<td><input type="submit" value="Delete" onclick="removeMeal(\'' + mid + '\')"></input></td>';
+
+    res+= '</tr>';
+  }
+  return res;
+}
+
+function designMealTables() {
+  var meals= getResMeals();
+  var res= '<table class="tablepricing"><thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
+  gigi= meals;
+  for (var k in meals) {
+    /*res+= '<b>' + strDate(parseInt(k), 'd/m') + '</b><div class="subCtnt">';*/
+    res+= subTableMeals(meals[k], k);
+    /*res+= '</div>';*/
+  }
+  res+= '<tr><td colspan="5"><input type="submit" value="Update"></input></tr>';
+  res+= '</table>';
+  $('#mealstable').html(res);
 }
 
 function designReservation(noOccupancy) {
@@ -405,6 +467,7 @@ function askExtra() {
     llGetPropertySettings(getActiveProperty(),
       function(ses, recs, sets) {
       _zakYourVat= sets.vatSettingsPerc;
+      $('.vatsettings').val(_zakYourVat);
       askExtra();
       });
     return;
@@ -427,14 +490,14 @@ function writeVariationRoom(vt, vv, rid) {
   var icycle= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
   function _apply(p) {
     if (vt == 1) 
-      return parseFloat(p) * (100.00 - parseFloat(vv)) / 100.0;
+      return parseFloat(p) * (100.00 + parseFloat(vv)) / 100.0;
     if (vt === 2) 
       return parseFloat(p) + parseFloat(vv);
     return parseFloat(p) + (parseFloat(vv) / icycle);
   }
   for (var i= 0; i< icycle; i++) {
     var pp= $('#price_' + rid + '_' + i).val();
-    $('#price_' + rid + '_' + i).val(_apply(pp));
+    $('#price_' + rid + '_' + i).val(_apply(pp).toFixed(2));
   }
 }
 
@@ -483,6 +546,92 @@ function writeVariation(vt, vv, rooms) {
     function(ses, err) {
     });
 }
+
+function askMeal() {
+  $('#addmeal_div').modal();
+}
+
+function saveMeal() {
+  var mname= $('#mname').val();
+  var mtype= $('#mtype').val();
+  var mprice= $('#mprice').val();
+  var mvat= $('#mvat').val();
+  if (!checkFloat(mvat) || !checkFloat(mprice) || !mname) {
+    humanMsg.displayMsg('Please, specify good values');
+    return;
+  }
+  llNewMeal(mname, mprice, mtype, mvat, function(ses, recs) {
+    designMeals();
+    $.modal.close();
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
+}
+
+function addMeal() {
+  console.log('Adding meal');
+  var how= $('#howmeals').val();
+  var mid= $('#cmbmeal').val();
+  var day= $('#cmbdaymeals').val();
+  var meals= getResMeals();
+
+  console.log('Now adding meal');
+
+  llGetMeals(mid, function(ses, recs) {
+    var omeal= recs.rows.item(0);
+    /* add meal for a unique day */
+
+    function _am(when) {
+      console.log('Am: ' + when);
+      var mealday= meals[when];
+
+      /* no meal for this day, simply add */
+      if (!mealday) {
+        var newmeal= jQuery.extend(true, {}, omeal);
+        newmeal.how= how;
+        newmeal.cprice= parseInt(how) * parseFloat(newmeal.price);
+        meals[when]= [newmeal];
+      } else {
+        /* merge meals */
+        var found= false;
+        for (var j= 0; j< mealday.length; j++) {
+          if (mealday[j].id == omeal.id) {
+            found= true;
+            var oldmealday= mealday[j];
+            oldmealday.how= parseFloat(oldmealday.how) + parseInt(how);
+            oldmealday.cprice= parseFloat(oldmealday.cprice) + parseFloat(omeal.price);
+            break;
+          }
+        }
+        if (!found) {
+          var newmeal= jQuery.extend(true, {}, omeal);
+          newmeal.how= how;
+          newmeal.cprice= parseInt(how) * parseFloat(newmeal.price);
+          meals[when].push(newmeal);
+        }
+      }
+    }
+
+    if (day) {
+      _am(day);
+    } else {
+      var now= zakEditReservation.dfrom;
+      for (var i= 0; i< diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto); i++) {
+        _am(parseInt(zakEditReservation.dfrom) + (86400 * i));
+      }
+    }
+
+    llModReservation(localStorage.editOccupancyRid, {meals: JSON.stringify(meals)},
+      function(ses, recs) {
+        humanMsg.displayMsg('Sounds good');
+        designReservation(1);
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+}
+
 
 function changeVtype() {
   if ($('#vtype').val() == 1)
