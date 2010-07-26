@@ -275,6 +275,18 @@ function designMain() {
   designCmbPricing();
   designExtras();
   designPrices();
+  designVariations();
+}
+
+function designVariations() {
+  llGetVariations(function(ses, recs) {
+    var res= '';
+    for (var i= 0; i< recs.rows.length; i++) {
+      var v= recs.rows.item(i);
+      res+= '<option value="' + v.id + '">' + v.name + '</option>';
+    }
+    $('#cmbalter').html(res);
+  });
 }
 
 function designReservation(noOccupancy) {
@@ -401,6 +413,76 @@ function askExtra() {
   var x= el.offset().left;
   var y= el.offset().top;
   $('#addextra_div').modal({position: [y,x]});
+}
+
+function askVariation() {
+  $('#vapply').hide();
+  $('.vsave').hide();
+  $('#vtype').val(1);
+  $('#vpercsym').show();
+  $('#addvariation_div').modal();
+}
+
+function writeVariation(vt, vv, rooms) {
+  console.log('I write variation');
+}
+
+function changeVtype() {
+  if ($('#vtype').val() == 1)
+    $('#vpercsym').show();
+  else
+    $('#vpercsym').hide();
+}
+
+function stepSaveApplyVariation() {
+  $('#vdecide').hide();
+  $('#vsave').show();
+  $('#vapply').show();
+  $('#vsaveapply').show();
+}
+
+function stepSaveVariation() {
+  $('#vdecide').hide();
+  $('#vsave').show();
+  $('#vsavesave').show();
+}
+
+function stepApplyVariation() {
+  $('#vdecide').hide();
+  $('#vapply').show();
+  $('#vapplyapply').show();
+}
+
+function bo() {
+  var vt= $('#vtype').val();
+  var vv= $('#vvalue').val();
+  if (!checkFloat(vv)) {
+    humanMsg.displayMsg('Specify a good variation value before');
+    return;
+  }
+  var rooms= $('#cmbAlterRoom').val();
+  $.modal.close();
+  writeVariation(vt, vv, rooms);
+}
+
+function saveApplyVariation() {
+  var vt= $('#vtype').val();
+  var vv= $('#vvalue').val();
+  if (!checkFloat(vv)) {
+    humanMsg.displayMsg('Specify a good variation value before');
+    return;
+  }
+  var vn= $('#vname').val();
+  if (!vn) {
+    humanMsg.displayMsg('Specify a good name to save it!');
+    return;
+  }
+  llNewVariation(vt, vl, vn,
+    function(ses, recs) {
+      designVariations();
+      var rooms= $('#cmbAlterRoom').val();
+      writeVariation(vt, vv, rooms);
+    });
 }
 
 function saveExtra() {

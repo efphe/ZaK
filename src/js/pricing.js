@@ -279,7 +279,7 @@ function changeActivePricing() {
   designPricing();
 }
 
-$(document).ready(function() {
+function initPricing() {
   llGetRoomTypes(function(ses, recs) {
     for (var i= 0; i< recs.rows.length; i++) {
       var rt= recs.rows.item(i);
@@ -293,7 +293,9 @@ $(document).ready(function() {
           designPricing();
           return;
         }
-        askNewPricing();
+        llNewPricing('Default', function(ses, recs) {
+          initPricing();
+        });
         return;
       });
     }
@@ -301,4 +303,8 @@ $(document).ready(function() {
   }, function(ses, err) {
     humanMsg.displayMsg('Error there: ' + err.message);
   });
+}
+
+$(document).ready(function() {
+  initPricing();
 });

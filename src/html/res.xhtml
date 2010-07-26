@@ -201,6 +201,84 @@
   </table>
 </div>
 
+<div class="zakmodalfree" id="addvariation_div">
+  <h1>New price variation</h1>
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Type:</b>
+      </td>
+      <td>
+        <select id="vtype" onchange="changeVtype()">
+          <option value="1">Percentage</option>
+          <option value="2">Fixed, per day</option>
+          <option value="3">Fixed, per room</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><span style="color:white">Negative values are possible<br/>to define discounts</span></td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Value:</b>
+      </td>
+      <td>
+        <input type="text" id="vvalue" style="width:45px"></input> <b style="color:white" id="vpercsym">%</b>
+      </td>
+    </tr>
+
+    <tr id="vdecide">
+      <td colspan="2" align="center">
+        <br/>
+        <input type="submit" value="Apply" onclick="stepApplyVariation()"></input>
+        <input type="submit" value="Save" onclick="stepSaveVariation()"></input>
+        <input type="submit" value="Save and apply" onclick="stepSaveApplyVariation()"></input>
+      </td>
+    </tr>
+
+    <tr id="vapply" style="display:none">
+      <td>
+        <b style="color:white">ApplyTo:</b>
+      </td>
+      <td>
+        <select id="vrooms" class="cmbPricingRoom">
+        </select>
+      </td>
+    </tr>
+
+    <tr id="vsave" style="display:none">
+      <td>
+        <b style="color:white">Name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="vname"></input>
+      </td>
+    </tr>
+
+    <tr id="vsaveapply" style="display:none">
+      <td colspan="2" align="center">
+        <br/>
+        <input type="submit" value="Save and apply" onclick="saveApplyVariation()"></input>
+      </td>
+    </tr>
+    <tr id="vsavesave" style="display:none">
+      <td colspan="2" align="center">
+        <br/>
+        <input type="submit" value="Save variation" onclick="saveVariation()"></input>
+      </td>
+    </tr>
+    <tr id="vapplyapply" style="display:none">
+      <td colspan="2" align="center">
+        <br/>
+        <input type="submit" value="Apply variation" onclick="applyVariation()"></input>
+      </td>
+    </tr>
+
+  </table>
+</div>
+
 <div class="zakmodalfree" id="addextra_div">
   <h1>Add a new extra</h1>
   <table>

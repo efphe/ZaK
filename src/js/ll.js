@@ -676,3 +676,17 @@ function llGetInvoice(rid, oid, cb) {
     });
   });
 }
+
+function llNewVariation(vt, vl, vn, cb) {
+  var db= zakOpenDb();
+  db.transaction(function(ses, recs) {
+    ses.executeSql('insert into price_function (value,vtype,name) values (?,?,?)', [vl,vt,vn], cb);
+  });
+}
+
+function llGetVariations(cb) {
+  var db= zakOpenDb();
+  db.transaction(function(ses, recs) {
+    ses.executeSql('select * from price_function', [], cb);
+  });
+}

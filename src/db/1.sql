@@ -38,10 +38,10 @@ create table if not exists pricing_periods (
 create table if not exists price_function (
   id integer primary key asc,
   value float,
-  perday integer default 0,
   -- vtype = 1 -> percentage
   -- vtype = 2 -> fix per day
   -- vtype = 3 -> fix global
+  name text,
   vtype integer default 0
 );;
 create table if not exists room_type (
