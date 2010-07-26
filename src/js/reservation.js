@@ -333,7 +333,7 @@ function subTableMeals(meals, day) {
     res+= '<td><input id="mprice_' + mid + '" type="text" ';
     res+= 'style="width:40px" value="' + meal.price + '"></input></td>';
 
-    res+= '<td><input type="submit" value="Delete" onclick="removeMeal(\'' + mid + '\')"></input></td>';
+    res+= '<td><input type="submit" value="Delete" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
 
     res+= '</tr>';
   }
@@ -639,6 +639,33 @@ function addMeal() {
   });
 }
 
+function removeMeal(day, mid) {
+  var meals= getResMeals();
+  var newmeals= {}
+  for (var k in meals) {
+    if (day !=  k) {
+      newmeals[k]= meals[k];
+      continue;
+    }
+    var lmeals= [];
+    for (var i= 0; i< meals[k].length; i++) {
+      var omeal= meals[k][i];
+      if (omeal.id != mid) lmeals.push(omeal);
+    }
+    newmeals[k]= lmeals;
+  }
+  console.log('New meals');
+  console.log(meals);
+
+  llModReservation(localStorage.editOccupancyRid, {meals: JSON.stringify(newmeals)},
+    function(ses, recs) {
+      humanMsg.displayMsg('Sounds good');
+      designReservation(1);
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
+}
 
 function changeVtype() {
   if ($('#vtype').val() == 1)
