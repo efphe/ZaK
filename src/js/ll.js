@@ -684,10 +684,13 @@ function llNewVariation(vt, vl, vn, cb, cbe) {
   });
 }
 
-function llGetVariations(cb) {
+function llGetVariations(vid, cb) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('select * from price_function', [], cb);
+    if (!vid) 
+      ses.executeSql('select * from price_function', [], cb);
+    else
+      ses.executeSql('select * from price_function where id = ?', [vid], cb);
   });
 }
 

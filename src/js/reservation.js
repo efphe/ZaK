@@ -149,7 +149,7 @@ function _desingPrices(prices) {
 
   var icycle= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
   function _strDay(dayidx) {
-    var d= unixDate(zakEditReservation.dfrom) + (86400 * parseInt(dayidx - 1));
+    var d= unixDate(zakEditReservation.dfrom) + (86400 * parseInt(dayidx));
     return  strDate(d, 'd/m');
   }
   function _strPri(dayidx, rid) {
@@ -165,10 +165,12 @@ function _desingPrices(prices) {
     return '<td><input ' + iid + sty + onc + 'type="text" value="' + _strPri(i, rid) + '"></input></td>';
   }
 
+  var cmbdaymeals= '';
   for (var i= 0; i< icycle; i++) {
     var std= _strDay(i);
+    var sv= parseInt(zakEditReservation.dfrom) + (86400 * i);
     tres= '<tr><td>' + std + '</td>';
-    $('#cmbdaymeals').append('<option value="' + i + '">' + std + '</option>');
+    cmbdaymeals+= '<option value="' + sv + '">' + std + '</option>';
     for (var j= 0; j< zakEditReservation.rooms.length; j++) {
       var rid= zakEditReservation.rooms[j].id;
       tres+= _inpRoom(i, rid);
@@ -176,6 +178,7 @@ function _desingPrices(prices) {
     tres+= '</tr>';
     res+= tres;
   }
+  $('#cmbdaymeals').html(cmbdaymeals);
   res+= '<tr><td><b id="total_sum">...</b></td>';
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
     var rid= zakEditReservation.rooms[i].id;
@@ -304,7 +307,7 @@ function designMain() {
 }
 
 function designVariations() {
-  llGetVariations(function(ses, recs) {
+  llGetVariations(false, function(ses, recs) {
     var res= '';
     for (var i= 0; i< recs.rows.length; i++) {
       var v= recs.rows.item(i);
@@ -339,16 +342,18 @@ function subTableMeals(meals, day) {
 
 function designMealTables() {
   var meals= getResMeals();
-  var res= '<table class="tablepricing"><thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
+  var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
+  console.log('meals: ');
   gigi= meals;
+  something= false;
   for (var k in meals) {
-    /*res+= '<b>' + strDate(parseInt(k), 'd/m') + '</b><div class="subCtnt">';*/
+    something= true;
     res+= subTableMeals(meals[k], k);
-    /*res+= '</div>';*/
   }
   res+= '<tr><td colspan="5"><input type="submit" value="Update"></input></tr>';
-  res+= '</table>';
-  $('#mealstable').html(res);
+  $('#tablemeals').html(res);
+  if (something) $('#meals_div').show();
+  else $('#meals_div').hide();
 }
 
 function designReservation(noOccupancy) {
@@ -574,6 +579,8 @@ function addMeal() {
   var mid= $('#cmbmeal').val();
   var day= $('#cmbdaymeals').val();
   var meals= getResMeals();
+  console.log(meals);
+  console.log(day);
 
   console.log('Now adding meal');
 
@@ -583,14 +590,14 @@ function addMeal() {
 
     function _am(when) {
       console.log('Am: ' + when);
-      var mealday= meals[when];
+      var mealday= meals[when + ''];
 
       /* no meal for this day, simply add */
       if (!mealday) {
         var newmeal= jQuery.extend(true, {}, omeal);
         newmeal.how= how;
         newmeal.cprice= parseInt(how) * parseFloat(newmeal.price);
-        meals[when]= [newmeal];
+        meals[when + '']= [newmeal];
       } else {
         /* merge meals */
         var found= false;
@@ -607,7 +614,7 @@ function addMeal() {
           var newmeal= jQuery.extend(true, {}, omeal);
           newmeal.how= how;
           newmeal.cprice= parseInt(how) * parseFloat(newmeal.price);
-          meals[when].push(newmeal);
+          meals[when + ''].push(newmeal);
         }
       }
     }
@@ -685,6 +692,7 @@ function saveVariation() {
   }
   llNewVariation(vt, vv, vn,
     function(ses, recs) {
+      designVariations();
       humanMsg.displayMsg('Sounds good');
       $.modal.close();
     }, function(ses, err) {
@@ -709,9 +717,22 @@ function saveApplyVariation() {
       designVariations();
       var rooms= $('#vrooms').val();
       writeVariation(vt, vv, rooms);
+      $.modal.close();
     }, function(ses, err) {
       humanMsg.displayMsg('Error there: '+ err.message, 1);
     });
+}
+
+function applyFilter() {
+  var vt= $('#cmbalter').val();
+  if (!vt) return;
+  var rooms= $('#cmbAlterRoom').val();
+  llGetVariations(vt, function(ses, recs) {
+    var v= recs.rows.item(0);
+    vt= v.vtype;
+    vv= v.value;
+    writeVariation(vt, vv, rooms);
+  });
 }
 
 function saveExtra() {
