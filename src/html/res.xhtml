@@ -73,7 +73,7 @@
           <input type="submit" value="Save Occupancy" onclick="saveOccupancy()"></input>
         </div>
         <h1>Customers</h1>
-        <div style="float:right;margin:1px">
+        <div style="float:right;margin:1px" id="customers_div">
           <a style="border:none" href="javascript:addCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png"></img></a>
         </div>
         <ul id="lcustomers">
@@ -229,6 +229,104 @@
       </td>
     </tr>
   </table>
+</div>
+
+<div class="zakmodalfree" id="addcustomer_div">
+  <h1>Add a new customer</h1>
+  <table>
+    <tr>
+      <td colspan="2">
+        <h2 style="color:#36ff00">Personal Info</h2>
+      </td>
+      <td colspan="2">
+        <h2 style="color:#36ff00">Contacts</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">First name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_fname"></input> 
+      </td>
+      <td>
+        <b style="color:white">Email:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_email"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Last name:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_lname"></input>
+      </td>
+      <td>
+        <b style="color:white">Phone:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_phone"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Gender:</b> 
+      </td>
+      <td>
+        <select id="gender">
+          <option value="1">Male</option>
+          <option value="0">Female</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Country:</b> 
+      </td>
+      <td id="countrygen">
+        <select id="country"></select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">City:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_city"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Address:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_street"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Zip:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_street"></input>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  Reservation invoice to this customer: <input id="chooseForInvoice" type="checkbox" onchange="eventuallyShowInvoice()"></input><br/>
+  <table>
+    <tr id="row_vat">
+      <td style="vertical-align:top" align="center">
+        <b style="color:white">Invoice header</b><br/><span style="color:grey">(Optional)</span>: 
+      </td>
+      <td><textarea style="width: 300px" rows="4" id="cust_vat"></textarea>
+    </td></tr>
+  </table>
+  <br/>
+  <br/>
+  <input type="submit" value="Save Customer" onclick="assignCustomer()"/>
 </div>
 
 <div class="zakmodalfree" id="addvariation_div">

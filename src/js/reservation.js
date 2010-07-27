@@ -178,7 +178,7 @@ function _desingPrices(prices) {
     tres+= '</tr>';
     res+= tres;
   }
-  $('#cmbdaymeals').html(cmbdaymeals);
+  $('#cmbdaymeals').html('<option value="" selected="selected">Each day</option>' + cmbdaymeals);
   res+= '<tr><td><b id="total_sum">...</b></td>';
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
     var rid= zakEditReservation.rooms[i].id;
@@ -331,7 +331,7 @@ function subTableMeals(meals, day) {
     res+= 'style="width:40px" value="' + meal.how + '"></input></td>';
 
     res+= '<td><input id="mprice_' + mid + '" type="text" ';
-    res+= 'style="width:40px" value="' + meal.price + '"></input></td>';
+    res+= 'style="width:40px" value="' + meal.cprice + '"></input></td>';
 
     res+= '<td><input type="submit" value="Delete" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
 
@@ -350,7 +350,7 @@ function designMealTables() {
     something= true;
     res+= subTableMeals(meals[k], k);
   }
-  res+= '<tr><td colspan="5"><input type="submit" value="Update"></input></tr>';
+  res+= '<tr><td colspan="5"><input type="submit" value="Update" onclick="updateMeals()"></input></tr>';
   $('#tablemeals').html(res);
   if (something) $('#meals_div').show();
   else $('#meals_div').hide();
@@ -639,6 +639,33 @@ function addMeal() {
   });
 }
 
+function updateMeals() {
+  var meals= getResMeals();
+  for (var day in meals) {
+    for (i= 0; i< meals[day].length; i++) {
+      var meal= meals[day][i];
+      var how= $('#mhow_' + day + '_' + meal.id).val();
+      var pri= $('#mprice_' + day + '_' + meal.id).val();
+      if (!checkFloat(pri) || parseInt(how) != how) {
+        console.log(how);
+        console.log(pri);
+        humanMsg.displayMsg('Please, specify good values');
+        return;
+      }
+      meal.cprice= pri;
+      meal.how= how;
+    }
+  }
+  llModReservation(localStorage.editOccupancyRid, {meals: JSON.stringify(meals)},
+    function(ses, recs) {
+      humanMsg.displayMsg('Sounds good');
+      designReservation(1);
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
+}
+
 function removeMeal(day, mid) {
   var meals= getResMeals();
   var newmeals= {}
@@ -872,6 +899,17 @@ function saveUpdatedExtras() {
     });
 }
 
+function addCustomer() {
+  $('#addcustomer_div').modal();
+}
+
+function eventuallyShowInvoice() {
+  if ($('#chooseForInvoice').is(':checked'))
+    $('#row_vat').show();
+  else
+    $('#row_vat').hide();
+}
+
 
 function saveRemarks() {
   var r= $('#rremarks').val();
@@ -906,4 +944,5 @@ function saveRoomsPrices() {
 
 $(document).ready(function() {
   designReservation();
+  /*zakBuildCountrySelection('countrygen');*/
 });
