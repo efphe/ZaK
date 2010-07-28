@@ -20,7 +20,8 @@ $(SRCJSDIR)/cm/pgtab.js: $(PGTAB)
 	rm temp.uncompressed
 
 PGRES= $(SRCJSDIR)/cm/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
-	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js $(SRCJSDIR)/res.js
+	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js \
+	   $(SRCJSDIR)/reservation.js $(SRCJSDIR)/jquery/jquery.bgiframe.min.js $(SRCJSDIR)/lcountries.js
 $(SRCJSDIR)/cm/pgres.js: $(PGRES)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@
