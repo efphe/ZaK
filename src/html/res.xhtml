@@ -76,8 +76,8 @@
         <div style="float:right;margin:1px" id="customers_div">
           <a style="border:none" href="javascript:addCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png"></img></a>
         </div>
-        <ul id="lcustomers">
-        </ul>
+        <table id="lcustomers">
+        </table>
       </div>
     </div>
     <div class="bookright">
@@ -253,9 +253,9 @@
         <b style="color:white">Gender:</b> 
       </td>
       <td>
-        <select id="gender">
+        <select id="cust_gender">
           <option value="1">Male</option>
-          <option value="0">Female</option>
+          <option value="2">Female</option>
         </select>
       </td>
     </tr>
@@ -303,7 +303,7 @@
         <b style="color:white">Address:</b> 
       </td>
       <td>
-        <input type="text" style="width:140px" id="cust_street"></input>
+        <input type="text" style="width:140px" id="cust_address"></input>
       </td>
     </tr>
     <tr>
@@ -311,33 +311,67 @@
         <b style="color:white">Zip:</b> 
       </td>
       <td>
-        <input type="text" style="width:140px" id="cust_street"></input>
+        <input type="text" style="width:140px" id="cust_zip"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Birth:</b> 
+      </td>
+      <td>
+        <select id="cust_birth_month">
+          <option value="1">Jan</option>
+          <option value="2">Feb</option>
+          <option value="3">Mar</option>
+          <option value="4">Apr</option>
+          <option value="5">May</option>
+          <option value="6">Jun</option>
+          <option value="7">Jul</option>
+          <option value="8">Aug</option>
+          <option value="9">Sep</option>
+          <option value="10">Oct</option>
+          <option value="11">Nov</option>
+          <option value="12">Dec</option>
+        </select>
+        <input type="text" id="cust_birth_year" style="width:50px"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Birth place:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_birth_place"></input>
       </td>
     </tr>
   </table>
-
 
   <br/>
   <br/>
   Reservation invoice to this customer: <input id="chooseForInvoice" type="checkbox" onchange="eventuallyShowInvoice()"></input><br/>
-  <table id="row_vat" style="display:none">
-    <tr>
-      <td></td>
-      <td>
-        <span style="color:grey">(Optional, you can edit it during invoicing)</span>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align:top" align="center">
-        <b style="color:white">Invoice header</b>
+  <table>
+    <tr id="row_vat" style="display:none">
+      <td align="center">
+        <b style="color:white">Invoice<br/>header</b>
       </td>
       <td>
+        <span style="color:grey">(Optional, you can edit it during invoicing)</span><br/>
         <textarea style="width: 300px" rows="4" id="cust_vat"></textarea>
       </td>
     </tr>
+    <tr>
+      <td>
+        <b style="color:white">Notes:</b> 
+      </td>
+      <td>
+        <textarea id="cust_notes" style="width:300px" rows="4"></textarea>
+      </td>
+    </tr>
   </table>
+
   <br/>
   <br/>
+  <input type="hidden" id="cust_id" value=""></input>
   <input type="submit" value="Save Customer" style="margin-left: 240px" onclick="assignCustomer()"/>
 </div>
 

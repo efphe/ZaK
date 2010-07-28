@@ -85,16 +85,20 @@ FOR EACH ROW BEGIN
 END;; 
 create table if not exists customer (
   id integer primary key asc,
-  customer text not null,
-  first_name text default '',
-  last_name text default '',
+  name text not null,
+  country text default '',
+  country_code text default '',
+  city text default '',
+  address text default '',
+  zip text default '',
+  bmonth integer default 1,
+  byear text default '',
+  bplace text default '',
+  gender integer default 1,
   email text default '',
   phone text default '',
-  vat text default '',
-  street text default '',
-  city text default '',
-  male integer default 1,
-  country text default '--'
+  notes text default '',
+  vat text default ''
 );;
 CREATE TRIGGER if not exists customer_d
 BEFORE DELETE ON customer  
@@ -126,6 +130,7 @@ create table if not exists rcustomer (
   id integer primary key asc, 
   id_customer integer not null,
   id_reservation integer not null,
+  maininvoice integer default 0,
   foreign key(id_customer) references customer(id) on delete cascade,
   foreign key(id_reservation) references reservation(id) on delete cascade
 );;

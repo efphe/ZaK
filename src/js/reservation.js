@@ -304,6 +304,7 @@ function designMain() {
   designVariations();
   designMeals();
   designMealTables();
+  designCustomers();
 }
 
 function designVariations() {
@@ -899,8 +900,124 @@ function saveUpdatedExtras() {
     });
 }
 
-function addCustomer() {
+function addCustomer(cid) {
+  if (!cid) {
+    $('#ac_country').val('Type something...');
+    $('#ac_country_hidden').val('');
+    $('#cust_name').val('');
+    $('#cust_city').val('');
+    $('#cust_zip').val('');
+    $('#cust_address').val('');
+    $('#cust_vat').val('');
+    $('#cust_birth_place').val('');
+    $('#cust_birth_month').val('1');
+    $('#cust_birth_year').val('');
+    $('#cust_gender').val('1');
+    $('#cust_phone').val('');
+    $('#cust_notes').val('');
+    $('#cust_email').val('');
+    $('#chooseForInvoice').attr('checked', false);
+    $('#row_vat').hide();
+    $('#cust_id').val('');
+  } else $('#cust_id').val(cid);
   $('#addcustomer_div').modal();
+}
+
+function editCustomer(cid) {
+  llGetCustomer(cid, zakEditReservation.id,
+    function(ses, recs) {
+      var cust= recs.rows.item(0);
+      console.log(cust);
+      $('#ac_country').val(cust.country);
+      $('#ac_country_hidden').val(cust.country_code);
+      $('#cust_name').val(cust.name);
+      $('#cust_city').val(cust.city);
+      $('#cust_zip').val(cust.zip);
+      $('#cust_address').val(cust.address);
+      $('#cust_vat').val(cust.vat);
+      $('#cust_birth_place').val(cust.bplace);
+      $('#cust_birth_month').val(cust.bmonth);
+      $('#cust_birth_year').val(cust.byear);
+      $('#cust_gender').val(cust.gender);
+      $('#cust_phone').val(cust.phone);
+      $('#cust_notes').val(cust.notes);
+      $('#cust_email').val(cust.mail);
+      if (cust.maininvoice) {
+        $('#chooseForInvoice').attr('checked', true);
+        $('#row_vat').show();
+      } else {
+        $('#chooseForInvoice').attr('checked', false);
+        $('#row_vat').hide();
+      }
+      addCustomer(cid);
+    });
+}
+
+function assignCustomer() {
+  var bname= $('#cust_name').val() || '';
+  if (!bname) {
+    humanMsg.displayMsg('Customer name is required');
+    return;
+  }
+  var cntry= $('#ac_country').val() || '';
+  if (cntry.indexOf('Enter') == 0) {
+    cntry= '';
+    var cntryc= '';
+  } else 
+    var cntryc= $('#ac_country_hidden').val() || '';
+  var city= $('#cust_city').val() || '';
+  var street= $('#cust_address').val() || '';
+  var zip= $('#cust_zip').val() || '';
+  var bmonth= $('#cust_birth_month').val() || '';
+  var byear= $('#cust_birth_year').val() || '';
+  var bplace= $('#cust_birth_place').val() || '';
+  var bgender= $('#cust_gender').val() || '';
+  var bemail= $('#cust_email').val() || '';
+  var bphone= $('#cust_phone').val() || '';
+  var bnotes= $('#cust_notes').val() || '';
+  var bvat= $('#cust_vat').val() || '';
+  if ($('#chooseForInvoice').is(':checked')) 
+    var binvoice= 1;
+  else var binvoice= 0;
+
+  var cdict= {
+   name: bname,
+   country: cntry,
+   country_code: cntryc,
+   city: city,
+   address: street,
+   zip: zip,
+   bmonth: bmonth,
+   byear: byear,
+   bplace: bplace,
+   gender: bgender,
+   email: bemail,
+   phone: bphone,
+   notes: bnotes,
+   vat: bvat
+  }
+
+  var cid= $('#cust_id').val();
+  if (cid) 
+    llModCustomer(cid, cdict, zakEditReservation.id, $('#chooseForInvoice').is(':checked'),
+      function(ses, recs) {
+        humanMsg.displayMsg('Sounds good');
+        designCustomers();
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  else
+    llAssignCustomer(zakEditReservation.id, cdict, $('#chooseForInvoice').is(':checked'),
+      function(ses, recs) {
+        humanMsg.displayMsg('Sounds good');
+        designCustomers();
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
 }
 
 function eventuallyShowInvoice() {
@@ -942,7 +1059,28 @@ function saveRoomsPrices() {
     });
 }
 
+function designCustomer() {
+  zakDesignAcCountries();
+}
+function designCustomers() {
+  llGetReservationCustomers(zakEditReservation.id, 
+    function(ses, recs) {
+      var res= '';
+      for (var i= 0; i< recs.rows.length; i++) {
+        var cust= recs.rows.item(i);
+        var cid= cust.id;
+        res+= '<tr>';
+        res+= '<td><a href="javascript:delCustomer(' + cid + ')">';
+        res+= '<img src="/imgs/minus.png"/></a></td>';
+        res+= '<td><b><a href="javascript:editCustomer(' + cid + ')">';
+        res+= cust.name + '</a></b></td>';
+      }
+      $('#lcustomers').html(res);
+    });
+}
+
 $(document).ready(function() {
   designReservation();
+  designCustomer();
   /*zakBuildCountrySelection('countrygen');*/
 });

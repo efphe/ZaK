@@ -703,10 +703,77 @@ function llNewMeal(name, price, type, vat, cb, cbe) {
 
 function llGetMeals(mid, cb) {
   var db= zakOpenDb();
-  db.transaction(function(ses) {
+  db.readTransaction(function(ses) {
     if (!mid) 
       ses.executeSql('select * from meal', [], cb);
     else
       ses.executeSql('select * from meal where id = ?', [mid], cb);
+  });
+}
+
+function llAssignCustomer(rid, cdict, mainInvoice, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    sd= insertStatement(cdict);
+    ses.executeSql('insert into customer ' + sd['qry'], sd['qarr'], 
+      function(ses, recs) {
+        var cid= recs.insertId;
+        if (mainInvoice) var mainin= 1;
+        else var mainin= 0;
+        ses.executeSql('insert into rcustomer (id_customer,id_reservation,maininvoice) values (?,?,?)', 
+                        [cid,rid,mainin],
+          function(ses, recs) {
+            if (mainin) 
+              ses.executeSql('update rcustomer set maininvoice= 0 where id_customer != ? and id_reservation = ?', 
+                [cid,rid], cb, cbe);
+            else cb(ses, recs);
+          }, 
+          cbe);
+      }, cbe);
+  });
+}
+
+function llGetReservationCustomers(rid, cb) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from customer join rcustomer on rcustomer.id_customer = customer.id where rcustomer.id_reservation = ?', [rid], cb);
+  });
+}
+
+function llGetCustomer(cid, rid, cb) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    if (rid) {
+      ses.executeSql('select customer.*,rcustomer.* from customer join rcustomer on rcustomer.id_customer = customer.id where customer.id = ? and rcustomer.id_reservation = ?', [cid, rid], cb);
+      console.log('Loading reservatin customer');
+      }
+    else
+      ses.executeSql('select * from customer where id = ?', [cid], cb);
+  });
+}
+
+function llModCustomer(cid, cdict, rid, maininvoice, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var up= updateStatement(cdict);
+    var upa= up.qarr;
+    upa.push(cid);
+    if (!rid) {
+      ses.executeSql('update customer set ' + up.qry + ' where id = ?', upa, cb, cbe);
+      return;
+    }
+    ses.executeSql('update customer set ' + up.qry + ' where id = ?', upa,
+      function(ses, recs) {
+        if (maininvoice) {
+          ses.executeSql('update rcustomer set maininvoice = 0 where id_reservation =?', [rid],
+            function(ses, recs) {
+              ses.executeSql('update rcustomer set maininvoice = 1 where id_customer = ? and id_reservation =?', 
+                [cid, rid], cb, cbe);
+            }, cbe);
+        } else {
+          ses.executeSql('update rcustomer set maininvoice = 0 where id_customer = ? and id_reservation =?', 
+            [cid, rid], cb, cbe);
+        }
+      }, cbe);
   });
 }
