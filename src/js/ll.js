@@ -752,6 +752,16 @@ function llGetCustomer(cid, rid, cb) {
   });
 }
 
+function llDelCustomer(cid, rid, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    if (!rid) 
+      ses.executeSql('delete from customer where id = ?', [cid], cb, cbe);
+    else
+      ses.executeSql('delete from rcustomer where id_customer = ? and id_reservation = ?', [cid, rid], cb, cbe);
+  });
+}
+
 function llModCustomer(cid, cdict, rid, maininvoice, cb, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {

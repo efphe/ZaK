@@ -953,6 +953,32 @@ function editCustomer(cid) {
     });
 }
 
+function _delCustomer() {
+  llDelCustomer(delCustomerId, false, function(ses, recs) {
+    designCustomers();
+    humanMsg.displayMsg('Sounds good');
+    $.modal.close();
+  }, function(ses, err) {
+    humanMsg.displayMsg('Error there: ' + err.message, 1);
+  });
+}
+
+function _delRCustomer() {
+  llDelCustomer(delCustomerId, zakEditReservation.id, function(ses, recs) {
+    designCustomers();
+    humanMsg.displayMsg('Sounds good');
+    $.modal.close();
+  }, function(ses, err) {
+    humanMsg.displayMsg('Error there: ' + err.message, 1);
+  });
+}
+
+
+function delCustomer(cid) {
+  delCustomerId= cid;
+  $('#delcustomer_div').modal();
+}
+
 function assignCustomer() {
   var bname= $('#cust_name').val() || '';
   if (!bname) {
