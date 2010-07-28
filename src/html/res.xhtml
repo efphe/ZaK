@@ -75,6 +75,7 @@
         <h1>Customers</h1>
         <div style="float:right;margin:1px" id="customers_div">
           <a style="border:none" href="javascript:addCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png"></img></a>
+          <a style="border:none" href="javascript:existCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus_yellow.png"></img></a>
         </div>
         <table id="lcustomers">
         </table>
@@ -135,6 +136,9 @@
   <h1 id="reservationTitle"></h1>
   <div>
     <h1>Rooms pricing</h1>
+    <input id="accountry"></input>
+    <br/>
+    <br/>
     <table>
       <tr>
         <td>
@@ -234,12 +238,37 @@
 <div class="zakmodalfree" id="delcustomer_div">
   <h1>Deleting customer</h1>
   <h2>Sure?</h2>
-  Are you sure you want delete permanently this customer?
+  Are you sure you want delete permanently this customer?<br/>
+  If you want, you can simply deassociate the customer from this<br/>
+  reservation, without removing it from your contacts.
   <br/>
   <br/>
-  <input type="submit" value="Delete from reservation" onclick="javascript:_delRCustomer()"></input>
-  <input type="submit" value="Delete forever" onclick="javascript:_delCustomer()"></input>
+  <input type="submit" value="Remove from reservation" onclick="javascript:_delRCustomer()"></input>
+  <input type="submit" value="Delete contact" onclick="javascript:_delCustomer()"></input>
   <input type="submit" value="Uh, oh, cancel" onclick="javascript:$.modal.close()"></input>
+</div>
+
+<div class="zakmodalfree" id="existcustomer_div">
+  <h1>Existing customer</h1>
+  <h2>Find an existent customer</h2>
+  <table>
+    <tr>
+      <td>
+        <b style="color:white">Name or Email:</b> 
+      </td>
+      <td id="td_finder">
+        <input type="text" id="cust_finder" style="width:200px"></input>
+        <input id="cust_finder_hidden" type="hidden"></input>
+      </td>
+    </tr>
+    <tr id="button_cust_finder" style="display:none">
+      <td>
+      </td>
+      <td>
+        <input type="submit" value="Add this customer" onclick="assignExistingCustomer()"></input>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <div class="zakmodalfree" id="addcustomer_div">
@@ -299,6 +328,7 @@
       </td>
       <td id="countrygen">
         <input type="text" id='ac_country' style="width:140px" name='country' value='Enter country letters' />
+        <input type="hidden" id='ac_country_hidden'></input>
       </td>
     </tr>
     <tr>

@@ -733,6 +733,16 @@ function llAssignCustomer(rid, cdict, mainInvoice, cb, cbe) {
   });
 }
 
+function llAssignExistingCustomer(rid, cid, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('delete from rcustomer where id_customer = ? and id_reservation = ?',
+      [cid,rid], function(ses, recs) {
+        ses.executeSql('insert into rcustomer (id_customer,id_reservation) values (?,?)', [cid,rid], cb, cbe);
+      }, cbe);
+  });
+}
+
 function llGetReservationCustomers(rid, cb) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
@@ -785,5 +795,12 @@ function llModCustomer(cid, cdict, rid, maininvoice, cb, cbe) {
             [cid, rid], cb, cbe);
         }
       }, cbe);
+  });
+}
+
+function llGetAllCustomers(cb) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select id,name,email from customer', [], cb);
   });
 }

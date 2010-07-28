@@ -900,10 +900,56 @@ function saveUpdatedExtras() {
     });
 }
 
-function addCustomer(cid) {
+function existCustomer() {
+  $.modal.close();
+  $('#cust_finder').remove();
+  $('#td_finder').append('<input type="text" id="cust_finder" style="width:200px"></input>');
+  llGetAllCustomers(function(ses, recs) {
+    var data= [];
+    for (var i= 0; i < recs.rows.length; i++) {
+      var rec= recs.rows.item(i);
+      console.log('Email: ' + rec.email);
+      if (rec.email) 
+        data.push({label: rec.name + '(' + rec.email + ')', code: rec.id});
+      else
+        data.push({label: rec.name, code: rec.id});
+    }
+    $('#cust_finder').autocomplete({
+      source: data,
+      minLength: 2,
+      select: function(event, ui) {
+        $('#cust_finder').val(ui.item.label);
+        $('#cust_finder_hidden').val(ui.item.code);
+        $('#button_cust_finder').show();
+        return false;
+      }
+    });
+    $('#existcustomer_div').modal();
+  });
+}
+
+function assignExistingCustomer() {
+  var cid= $('#cust_finder_hidden').val();
   if (!cid) {
-    $('#ac_country').val('Type something...');
-    $('#ac_country_hidden').val('');
+    humanMsg.displayMsg('Invalid customer', 1);
+    return;
+  }
+  llAssignExistingCustomer(zakEditReservation.id, cid,
+    function(ses, recs) {
+      designCustomers();
+      humanMsg.displayMsg('Sounds good');
+      $.modal.close();
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
+}
+
+function addCustomer(cid) {
+  $.modal.close();
+  if (!cid) {
+    /*$('#ac_country').val('Type something...');*/
+    /*$('#ac_country_hidden').val('');*/
     $('#cust_name').val('');
     $('#cust_city').val('');
     $('#cust_zip').val('');
@@ -919,7 +965,10 @@ function addCustomer(cid) {
     $('#chooseForInvoice').attr('checked', false);
     $('#row_vat').hide();
     $('#cust_id').val('');
-  } else $('#cust_id').val(cid);
+  } else {
+    $('#cust_id').val(cid);
+  }
+  designCustomerCountries();
   $('#addcustomer_div').modal();
 }
 
@@ -941,7 +990,7 @@ function editCustomer(cid) {
       $('#cust_gender').val(cust.gender);
       $('#cust_phone').val(cust.phone);
       $('#cust_notes').val(cust.notes);
-      $('#cust_email').val(cust.mail);
+      $('#cust_email').val(cust.email);
       if (cust.maininvoice) {
         $('#chooseForInvoice').attr('checked', true);
         $('#row_vat').show();
@@ -982,7 +1031,7 @@ function delCustomer(cid) {
 function assignCustomer() {
   var bname= $('#cust_name').val() || '';
   if (!bname) {
-    humanMsg.displayMsg('Customer name is required');
+    humanMsg.displayMsg('Customer name is required', 1);
     return;
   }
   var cntry= $('#ac_country').val() || '';
@@ -1088,6 +1137,33 @@ function saveRoomsPrices() {
 function designCustomer() {
   zakDesignAcCountries();
 }
+
+function designCustomerCountries() {
+  $('#ac_country').autocomplete({
+    minLength: 2,
+    focus: function(ev, ui) {$('#ac_country').val(ui.item.label);return false;},
+    select: function(event, ui) {
+      $('#ac_country').val(ui.item.label);
+      $('#ac_country_hidden').val(ui.item.code);
+      return false;
+    },
+    source: zakCountries
+  }).data('autocomplete')._renderItem= function(ul, item) {
+    return $( '<li style="font-size:16px"></li>' )
+      .data( "item.autocomplete", item )
+      .append( '<img style="float:left;margin-right:5px;margin-top:6px" src="/imgs/flags/' + item.code.toLowerCase() + '.gif"></img>' + '<a style="font-size:14px">' + item.label + '</a>')
+      .appendTo( ul );
+  };
+  $('#ac_country').focus(function() {
+    if ($(this).val().indexOf('Enter') == 0) {
+      $(this).val('');
+    }
+  });
+    /*select: function(event, ui) {console.log('select:');console.log(ui);return false;}*/
+    /*}).data('autocomplete')._renderItem= function(foo, bar) {};*/
+}
+
+
 function designCustomers() {
   llGetReservationCustomers(zakEditReservation.id, 
     function(ses, recs) {
@@ -1107,6 +1183,7 @@ function designCustomers() {
 
 $(document).ready(function() {
   designReservation();
-  designCustomer();
+  /*designCustomerCountries();*/
+  /*designCustomer();*/
   /*zakBuildCountrySelection('countrygen');*/
 });
