@@ -65,7 +65,7 @@ class AdminSettings(AdminTemplate):
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
   xmlfile= 'src/html/res.xhtml'
-  cssorigin= '/css/tab.css', '/css/res.css'
+  cssorigin= '/css/tab.css', '/css/res.css', '/css/flags/jquery.autocomplete.css'
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/property_invoice.xhtml')

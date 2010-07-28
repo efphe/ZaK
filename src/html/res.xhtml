@@ -233,41 +233,19 @@
 
 <div class="zakmodalfree" id="addcustomer_div">
   <h1>Add a new customer</h1>
-  <table>
+
+  <table style="float:right">
     <tr>
-      <td colspan="2">
-        <h2 style="color:#36ff00">Personal Info</h2>
-      </td>
-      <td colspan="2">
-        <h2 style="color:#36ff00">Contacts</h2>
+      <td colspan="2" align="center">
+        <h2 style="color:#36ff00">Contact</h2>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">First name:</b> 
+        <b style="color:white">Name:</b> 
       </td>
       <td>
-        <input type="text" style="width:140px" id="cust_fname"></input> 
-      </td>
-      <td>
-        <b style="color:white">Email:</b> 
-      </td>
-      <td>
-        <input type="text" style="width:140px" id="cust_email"></input>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <b style="color:white">Last name:</b> 
-      </td>
-      <td>
-        <input type="text" style="width:140px" id="cust_lname"></input>
-      </td>
-      <td>
-        <b style="color:white">Phone:</b> 
-      </td>
-      <td>
-        <input type="text" style="width:140px" id="cust_phone"></input>
+        <input type="text" style="width:140px" id="cust_name"></input> 
       </td>
     </tr>
     <tr>
@@ -283,10 +261,33 @@
     </tr>
     <tr>
       <td>
+        <b style="color:white">Email:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_email"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b style="color:white">Phone:</b> 
+      </td>
+      <td>
+        <input type="text" style="width:140px" id="cust_phone"></input>
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td colspan="2" align="center">
+        <h2 style="color:#36ff00">Personal Info</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <b style="color:white">Country:</b> 
       </td>
       <td id="countrygen">
-        <select id="country"></select>
+        <input type="text" id='ac_country' style="width:140px" name='country' value='Enter country letters' />
       </td>
     </tr>
     <tr>
@@ -314,19 +315,30 @@
       </td>
     </tr>
   </table>
+
+
+  <br/>
   <br/>
   Reservation invoice to this customer: <input id="chooseForInvoice" type="checkbox" onchange="eventuallyShowInvoice()"></input><br/>
-  <table>
-    <tr id="row_vat" style="display:none">
-      <td style="vertical-align:top" align="center">
-        <b style="color:white">Invoice header</b><br/><span style="color:grey">(Optional)</span>: 
+  <table id="row_vat" style="display:none">
+    <tr>
+      <td></td>
+      <td>
+        <span style="color:grey">(Optional, you can edit it during invoicing)</span>
       </td>
-      <td><textarea style="width: 300px" rows="4" id="cust_vat"></textarea>
-    </td></tr>
+    </tr>
+    <tr>
+      <td style="vertical-align:top" align="center">
+        <b style="color:white">Invoice header</b>
+      </td>
+      <td>
+        <textarea style="width: 300px" rows="4" id="cust_vat"></textarea>
+      </td>
+    </tr>
   </table>
   <br/>
   <br/>
-  <input type="submit" value="Save Customer" onclick="assignCustomer()"/>
+  <input type="submit" value="Save Customer" style="margin-left: 240px" onclick="assignCustomer()"/>
 </div>
 
 <div class="zakmodalfree" id="addvariation_div">
