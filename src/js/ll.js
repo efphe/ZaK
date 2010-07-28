@@ -736,9 +736,11 @@ function llAssignCustomer(rid, cdict, mainInvoice, cb, cbe) {
 function llAssignExistingCustomer(rid, cid, cb, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('delete from rcustomer where id_customer = ? and id_reservation = ?',
+    ses.executeSql('select id from rcustomer where id_customer = ? and id_reservation = ?',
       [cid,rid], function(ses, recs) {
-        ses.executeSql('insert into rcustomer (id_customer,id_reservation) values (?,?)', [cid,rid], cb, cbe);
+        if (recs.rows.length == 0)
+          ses.executeSql('insert into rcustomer (id_customer,id_reservation) values (?,?)', [cid,rid], cb, cbe);
+        else cb(ses, recs);
       }, cbe);
   });
 }

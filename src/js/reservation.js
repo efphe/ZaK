@@ -948,6 +948,7 @@ function assignExistingCustomer() {
 function addCustomer(cid) {
   $.modal.close();
   if (!cid) {
+    designCustomerCountries();
     /*$('#ac_country').val('Type something...');*/
     /*$('#ac_country_hidden').val('');*/
     $('#cust_name').val('');
@@ -968,11 +969,11 @@ function addCustomer(cid) {
   } else {
     $('#cust_id').val(cid);
   }
-  designCustomerCountries();
   $('#addcustomer_div').modal();
 }
 
 function editCustomer(cid) {
+  designCustomerCountries();
   llGetCustomer(cid, zakEditReservation.id,
     function(ses, recs) {
       var cust= recs.rows.item(0);
@@ -1139,6 +1140,8 @@ function designCustomer() {
 }
 
 function designCustomerCountries() {
+  $('#ac_country').remove();
+  $('#countrygen').append('<input type="text" id="ac_country" style="width:140px" name="country" value="Enter country..." />');
   $('#ac_country').autocomplete({
     minLength: 2,
     focus: function(ev, ui) {$('#ac_country').val(ui.item.label);return false;},
@@ -1159,8 +1162,6 @@ function designCustomerCountries() {
       $(this).val('');
     }
   });
-    /*select: function(event, ui) {console.log('select:');console.log(ui);return false;}*/
-    /*}).data('autocomplete')._renderItem= function(foo, bar) {};*/
 }
 
 
@@ -1183,7 +1184,4 @@ function designCustomers() {
 
 $(document).ready(function() {
   designReservation();
-  /*designCustomerCountries();*/
-  /*designCustomer();*/
-  /*zakBuildCountrySelection('countrygen');*/
 });

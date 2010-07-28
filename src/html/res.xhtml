@@ -136,32 +136,27 @@
   <h1 id="reservationTitle"></h1>
   <div>
     <h1>Rooms pricing</h1>
-    <input id="accountry"></input>
-    <br/>
-    <br/>
     <table>
       <tr>
         <td>
-          <b>Pricing:</b> edit
+          <b>Pricing</b> edit
           <select id="cmbpricing"><option value="1">Standard</option></select> 
-          <input type="submit" value="Cancel" id="restorePrices" style="display:none" onclick="javascript:recomputePrices()"></input>
           for room <select class="cmbPricingRoom" id="cmbPricingRoom"></select>
           <input type="submit" onclick="changePricing()" value="Edit"></input>
         </td>
       </tr>
     </table>
-    <table id="tablepricing" class="tablepricing"></table>
-    <br/>
     <table>
       <tr>
         <td>
-          Apply <select id="cmbalter"></select>
+          <b>Filter</b> Apply <select id="cmbalter"></select>
           for room <select class="cmbPricingRoom" id="cmbAlterRoom"></select>
           <input type="submit" onclick="applyFilter()" value="Apply"></input> 
           (<b><a href="javascript:askVariation()">New</a></b>)
         </td>
       </tr>
     </table>
+    <table id="tablepricing" class="tablepricing"></table>
     <br/>
     <input type="submit" value="Save room prices" onclick="saveRoomsPrices()"></input>
   </div>
@@ -327,7 +322,7 @@
         <b style="color:white">Country:</b> 
       </td>
       <td id="countrygen">
-        <input type="text" id='ac_country' style="width:140px" name='country' value='Enter country letters' />
+        <input type="text" id="ac_country" style="width:140px" name="country" value="Enter country..." />
         <input type="hidden" id='ac_country_hidden'></input>
       </td>
     </tr>
