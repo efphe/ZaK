@@ -34,14 +34,6 @@ function _addNewReservation() {
         humanMsg.displayMsg('Not enough days space for this reservation', 1);
         return;
       }
-      /*var iroom= zakTableau.rooms[rid];*/
-      /*var oid= recs.insertId;*/
-      /*console.log('Inserted Oid Occupancy: ' + oid);*/
-      /*var dfrom= unixDate(sday);*/
-      /*var dto= unixDate(dateAddDays(sday, nights));*/
-      /*iroom.addOccupancy({id: oid, dfrom: dfrom, dto: dto, customer: cust, status: sta});*/
-      /*console.log('Trying to desing ' + rid);*/
-      /*zakTableau.designMe([rid]);*/
       zakTableau.loadRooms([rid]);
       $.modal.close();
       humanMsg.displayMsg('Welcome ' + cust);

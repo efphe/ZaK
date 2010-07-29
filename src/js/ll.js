@@ -204,6 +204,7 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
   llCheckOccupancyChance(false, rid, udfrom, ndays, args,
     function(ses, newargs) {
       if (!newargs) {
+        console.log('Impossible occupancy');
         /* you're requesting an impossible reservation */
         /* callback with false as first arg*/
         cbs(false);
@@ -218,6 +219,7 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
       if (resid) 
         return _addOcc(udfrom, udto, rid, customer, stat, resid, ses, cbs, cbe);
 
+      console.log('Fresh reservation');
       /* Add a new reservation */
       var s= 'insert into reservation (dfrom,dto,customer,status,id_property) values ';
       s+= '(?,?,?,?,?)';
@@ -225,8 +227,7 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
         function(ses, recs) {
           resid= recs.insertId;
           return _addOcc(udfrom, udto, rid, customer, stat, resid, ses, cbs, cbe);
-        }
-      );
+        }, cbe);
     },
     function(ses, err) {
       cbe(ses, err);
