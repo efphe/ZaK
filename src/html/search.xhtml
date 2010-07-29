@@ -1,0 +1,97 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:nevow="http://nevow.com/ns/nevow/0.1" manifest="/manifest">
+  <div id="pcont" style="margin-top:10px">
+    <div id="mcont" style="overflow:auto">
+      <div id="mmenu">
+        <div class="immenu">
+          <b>Looking for...</b>
+          <img src="/imgs/lgear.gif" style="float:right;margin:4px;display:none" id="zakIsearch"></img>
+          <br/>
+          <input type="text" id="zakSearch" style="border-radius:10px;height: 20px"></input>
+          <br/>
+          <br/>
+          <b>Include:</b>
+          <br/>
+          <table>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_customers" checked="checked"></input>
+              </td>
+              <td>
+                Customers
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_reservations" checked="checked"></input>
+              </td>
+              <td>
+                Reservations
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_extras" checked="checked"></input>
+              </td>
+              <td>
+                Extras
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_meals" checked="checked"></input>
+              </td>
+              <td>
+                Meals
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_pricing" checked="checked"></input>
+              </td>
+              <td>
+                Pricing
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_setup" checked="checked"></input>
+              </td>
+              <td>
+                Room setups
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div id="contents">
+        <div class="immenu">
+          <h1>Results</h1>
+          <span id="zakHint">Type something to the left to begin your research...</span>
+          <div id="zakResults">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+<div class="zakmodal" style="display:none" id="newIType">
+  <h1>New invoice type</h1>
+  <b style="color:white">Name:</b> <input type="text" id="newitypename" style="width:80px"/>
+  <input type="submit" value="Add" onclick="addNewIType()"/>
+</div>
+<div class="zakmodal" style="display:none" id="delItypeDiv">
+  <h1>Deleting invoice type</h1>
+  <h2>Please, confirm your wishes</h2>
+  Are you sure to delete this invoice type? By deleting it, the enumeration of 
+  your previous invoices of this types will be interrupeted forever.
+  <br/>
+  <br/>
+  <input type="hidden" id="iid_delete"></input>
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delItype()">Yes, I know, continue</a> 
+  <br/>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+</div>
+</div>

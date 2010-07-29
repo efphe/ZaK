@@ -65,7 +65,12 @@ class AdminSettings(AdminTemplate):
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
   xmlfile= 'src/html/res.xhtml'
-  cssorigin= '/css/tab.css', '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+
+class AdminSearch(AdminTemplate):
+  jsorigin= '/js/cm/pgsearch.js'
+  xmlfile= 'src/html/search.xhtml'
+  cssorigin= '/css/search.css'
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/property_invoice.xhtml')
@@ -113,5 +118,6 @@ class ZakAdmin(rend.Page):
         'invoice': AdminInvoice(),
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),
+        'search': AdminSearch(),
         '': self,
         }

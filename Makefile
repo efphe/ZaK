@@ -40,6 +40,13 @@ $(SRCJSDIR)/cm/pgpricing.js: $(PGPRICES)
 	jszip temp.uncompressed $@
 	rm temp.uncompressed
 
+PGSEARCH= $(SRCJSDIR)/cm/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/ll.js \
+		  $(SRCJSDIR)/propsbase.js $(SRCJSDIR)/llsearch.js $(SRCJSDIR)/search.js
+$(SRCJSDIR)/cm/pgsearch.js: $(PGSEARCH)
+	cat $^ > temp.uncompressed
+	jszip temp.uncompressed $@
+	rm temp.uncompressed
+
 PGINV= $(SRCJSDIR)/cm/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
 	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js $(SRCJSDIR)/invoice.js
 $(SRCJSDIR)/cm/pginvoice.js: $(PGINV)
@@ -67,5 +74,6 @@ jspages:
 	make $(SRCJSDIR)/cm/pgpricing.js
 	make $(SRCJSDIR)/cm/pginvoice.js
 	make $(SRCJSDIR)/cm/pgsettings.js
+	make $(SRCJSDIR)/cm/pgsearch.js
 	cp src/js/jquery/jquery.js src/js/
 
