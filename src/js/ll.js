@@ -91,6 +91,7 @@ function llNewRoomAndType(pid, rcode, rname, rtype, cbs, cbe) {
     ses.executeSql('insert into room_type (name) values (?)', [rtype], 
       function(ses, recs) {
         var rtypeid= recs.insertId;
+        console.log([rcode,rname,pid,rtypeid]);
         ses.executeSql('insert into room (code,name,id_property,id_room_type) values (?,?,?,?)', [rcode,rname,pid,rtypeid], cbs, cbe);
       }, cbe);
   });

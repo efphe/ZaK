@@ -108,6 +108,7 @@ function designPricingPeriods() {
 
 function designPricing() {
 
+  console.log('Designing now pricing');
   /* cmb pricing */
   llLoadPricings(function(ses, recs) {
     var rres= '';
@@ -117,11 +118,13 @@ function designPricing() {
     }
     $('#selplan').empty().html(rres);
     $('#selplan').val(getActivePricing());
+    console.log('Main designed');
   }, function(ses, err) {humanMsg.displayMsg('Error there: '+ err.message)});
 
   /* base pricing */
   llLoadPricing(getActivePricing(), 
     function(ses, recs) {
+      console.log('Various design');
       var p= recs.rows.item(0);
       var prices= _decompressPricing(p.prices);
       var res= '';
@@ -280,26 +283,28 @@ function changeActivePricing() {
 }
 
 function initPricing() {
+  console.log('Initializing pricing');
+  _zakRtypes= [];
   llGetRoomTypes(function(ses, recs) {
     for (var i= 0; i< recs.rows.length; i++) {
       var rt= recs.rows.item(i);
       _zakRtypes.push(rt);
     }
-    var ap= getActivePricing();
-    if (!ap) {
-      llLoadPricings(function(ses, recs) {
-        if (recs.rows.length != 0) {
-          setActivePricing(recs.rows.item(0));
-          designPricing();
-          return;
-        }
+    llLoadPricings(function(ses, recs) {
+      console.log('Ready pricings: ' + recs.rows.length);
+      if (recs.rows.length != 0) {
+        var ap= getActivePricing();
+        if (!ap) 
+          setActivePricing(recs.rows.item(0).id);
+        designPricing();
+        return;
+      } else {
+        console.log('Inserting new pricing');
         llNewPricing('Default', function(ses, recs) {
           initPricing();
-        });
-        return;
-      });
-    }
-    else designPricing();
+        }, function(ses, err) {humanMsg.displayMsg('Error there: ' + err.message, 1);});
+      }
+    });
   }, function(ses, err) {
     humanMsg.displayMsg('Error there: ' + err.message);
   });

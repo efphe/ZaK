@@ -8,8 +8,8 @@ function repeatedRoomCode(code, rid) {
   return false;
 }
 
-function _roomTd(rid, rname, rcode) {
-  var res= '<td>' + rname + '</td><td>' + rcode + '</td>';
+function _roomTd(rid, rname, rcode, rtype) {
+  var res= '<td>' + rname + '</td><td>' + rcode + '</td><td>' + rtype + '</td>';
   res+= '<td><a href="javascript:delRoom(\'' + rid + '\')">Delete</a></td>';
   var args= [rid,rname,rcode].join("','");
   args= "'" + args + "'";
@@ -52,7 +52,7 @@ function designRoomTypes() {
   llGetRoomTypes(function(ses, recs) {
     for (var i= 0;i < recs.rows.length;i ++) {
       var rec= recs.rows.item(i);
-      res+= '<option value="' + rec.id + ' +">' + rec.name + '</option>';
+      res+= '<option value="' + rec.id + '">' + rec.name + '</option>';
     }
     $('#newroomtype').empty().append(res);
   });
@@ -62,6 +62,7 @@ function addNewRoomWithType() {
   var rname= $('#tempnewroomname').val();
   var rcode= $('#tempnewroomcode').val();
   var rtype= $('#rtype').val();
+  console.log('Rtype: ' + rtype);
   if (!rname || !rcode) {
     humanMsg.displayMsg('Please, insert a room name and a Unique Room Code', 1);
     return;
@@ -75,11 +76,12 @@ function addNewRoomWithType() {
     console.log(recs);
     for (var i= 0;i< recs.rows.length; i++) {
       if (recs.rows.item(i).name == rtype) {
+        var rec= recs.rows.item(i);
         console.log('Existing rtype!!!');
-        llNewRoom(getActiveProperty()['id'], rcode, rname, recs.rows.item(i).id,
+        llNewRoom(getActiveProperty()['id'], rcode, rname, rec.id,
           function(ses, recs) {
             var rid= recs.insertId;
-            $('#roomsbody').append(_roomTd(rid, rname, rcode));
+            initRooms(1);
             _rcodes[rid]= rcode;
             humanMsg.displayMsg('Sounds Good!');
             $.modal.close();
@@ -92,10 +94,10 @@ function addNewRoomWithType() {
     }
 
     console.log('New rtype');
-    llNewRoomAndType(getActiveProperty()['id'], rname, rcode, rtype,
+    llNewRoomAndType(getActiveProperty()['id'], rcode, rname, rtype,
       function(ses, recs) {
         var rid= recs.insertId;
-        $('#roomsbody').append(_roomTd(rid, rname, rcode));
+        initRooms(1);
         _rcodes[rid]= rcode;
         humanMsg.displayMsg('Sounds Good!');
         designRoomTypes();
@@ -130,7 +132,8 @@ function addNewRoom() {
   llNewRoom(getActiveProperty()['id'], rcode, rname, rtype,
     function(ses, recs) {
       var rid= recs.insertId;
-      $('#roomsbody').append(_roomTd(rid, rname, rcode));
+      initRooms(1);
+      /*$('#roomsbody').append(_roomTd(rid, rname, rcode));*/
       _rcodes[rid]= rcode;
       humanMsg.displayMsg('Sounds Good!');
     },
@@ -177,20 +180,31 @@ function initRooms(reset) {
   _rcodes= {};
   if (reset) $('#roomsbody').empty();
   var pid= parseInt(getActiveProperty()['id']);
-  llLoadRooms(pid,
-    function(ses, recs) {
-      var i= 0;
-      for(i=0;i<recs.rows.length;i++) {
-        var room= recs.rows.item(i);
-        var rname= room.name;
-        var rcode= room.code;
-        var rid= room.id;
-        $('#roomsbody').append(_roomTd(rid, rname, rcode));
-        _rcodes[rid]= rcode;
-      }
-    },
-    function(ses, err) {
-      alert(err);
+  llGetRoomTypes(function(ses, recs) {
+    var rmap= {};
+    for (var i= 0; i< recs.rows.length; i++) {
+      var rt= recs.rows.item(i);
+      rmap[rt.id]= rt.name;
+    }
+    console.log(rmap);
+
+    llLoadRooms(pid,
+      function(ses, recs) {
+        var i= 0;
+        var res= '';
+        for(i=0;i<recs.rows.length;i++) {
+          var room= recs.rows.item(i);
+          var rname= room.name;
+          var rcode= room.code;
+          var rid= room.id;
+          res+= _roomTd(rid, rname, rcode, rmap[room.id_room_type]);
+          _rcodes[rid]= rcode;
+        }
+        $('#roomsbody').html(res);
+      },
+      function(ses, err) {
+        alert(err);
+      });
     });
 }
 
