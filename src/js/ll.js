@@ -808,3 +808,4 @@ function llGetAllCustomers(cb) {
     ses.executeSql('select id,name,email from customer', [], cb);
   });
 }
+

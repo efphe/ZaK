@@ -83,7 +83,7 @@ function designPricingPeriods() {
         var pprices= _decompressPricing(pp.prices);
         ppres+= '<tr><td>' + strDate(pp.dfrom) + '</td><td>' + strDate(pp.dto) + '</td>';
         for (var z= 0; z< _zakRtypes.length; z++ ) {
-          ppres+= '<td>' + _getRtPricing(pprices, zt.id) + '</td>';
+          ppres+= '<td>' + _getRtPricing(pprices, _zakRtypes[z].id) + '</td>';
         }
         ppres+= '<td><input type="submit" value="Delete" onclick="delPricingPeriod(' + pp.id + ')"/></td></tr>';
       }
@@ -166,9 +166,26 @@ function saveBasePrices() {
 }
 
 function savePeriodPricing() {
-  var prices= {};
+  if (_zakRtypes.length == 0) {
+    humanMsg.displayMsg('You have no room type yet');
+    return;
+  }
   var dfrom= $('#pdfrom').val();
   var dto= $('#pdto').val();
+  if (!dfrom || !dto) {
+    humanMsg.displayMsg('Please, specify valid dates');
+    return;
+  }
+  try {
+    if (unixDate(dto) < unixDate(dfrom)) {
+      humanMsg.displayMsg('Please, specify valid dates');
+      return;
+    }
+  } catch(e) {
+    humanMsg.displayMsg('Please, specify valid dates');
+    return;
+  }
+  var prices= {};
   for (var i= 0; i< _zakRtypes.length; i++) {
     var rt= _zakRtypes[i];
     var p= $('#pprice_' + rt.id).val();

@@ -576,8 +576,12 @@ function saveMeal() {
 
 function addMeal() {
   console.log('Adding meal');
-  var how= $('#howmeals').val();
   var mid= $('#cmbmeal').val();
+  if (!mid) {
+    humanMsg.displayMsg('Select a valid meal or define a new one');
+    return;
+  }
+  var how= $('#howmeals').val();
   var day= $('#cmbdaymeals').val();
   var meals= getResMeals();
   console.log(meals);
@@ -799,14 +803,17 @@ function saveExtra() {
     return;
   }
   var eperday= $('#extra_perday').val();
-  var how= $('#extra_how').val();
-  if (!eperday) var atotal= ecost;
+  var how= $('#extra_how').val() || 1;
+  if (eperday == 0 || !eperday) var atotal= ecost;
   else {
+    console.log('Eperday');
+    console.log(eperday);
     var n= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
-    var atotal= ecost * n;
+    var atotal= parseFloat(ecost) * parseInt(n);
   }
-  atotal*= how;
+  atotal*= parseInt(how);
   var aextras= getResExtras();
+  console.log('Atotal: ' + atotal);
   llAddExtra(localStorage.editOccupancyRid, ename, ecost, eperday, evat, how, aextras, atotal,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
@@ -821,6 +828,10 @@ function saveExtra() {
 
 function assignExtra() {
   var eid= $('#selectExtra').val();
+  if (!eid) {
+    humanMsg.displayMsg('Select a valid extra or define a new one');
+    return;
+  }
   var how= $('#selectExtraHow').val();
   var e= _tempExtras[eid];
   var ecost= parseFloat(e.cost);

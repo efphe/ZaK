@@ -265,3 +265,4 @@ function initProperties() {
 $(document).ready(function() {
   initProperties();
 });
+
