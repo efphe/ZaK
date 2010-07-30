@@ -33,11 +33,11 @@ create table price_function (
 );;
 create table meal (
   id integer primary key asc,
-  name text,
-  price float,
   -- vtype = 1 -> bb
   -- vtype = 2 -> hb
   -- vtype = 3 -> fb
+  name text,
+  price float,
   mtype integer,
   vat float
 );;

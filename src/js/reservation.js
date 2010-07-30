@@ -1085,7 +1085,8 @@ function assignCustomer() {
   }
 
   var cid= $('#cust_id').val();
-  if (cid) 
+  if (cid) {
+    console.log('Modifying existing customer');
     llModCustomer(cid, cdict, zakEditReservation.id, $('#chooseForInvoice').is(':checked'),
       function(ses, recs) {
         humanMsg.displayMsg('Sounds good');
@@ -1095,7 +1096,9 @@ function assignCustomer() {
       function(ses, err) {
         humanMsg.displayMsg('Error there: ' + err.message);
       });
-  else
+  }
+  else {
+    console.log('Adding new customer');
     llAssignCustomer(zakEditReservation.id, cdict, $('#chooseForInvoice').is(':checked'),
       function(ses, recs) {
         humanMsg.displayMsg('Sounds good');
@@ -1105,6 +1108,7 @@ function assignCustomer() {
       function(ses, err) {
         humanMsg.displayMsg('Error there: ' + err.message);
       });
+  }
 }
 
 function eventuallyShowInvoice() {
