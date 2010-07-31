@@ -1,9 +1,10 @@
 zakLookStatus= {
   look_customers: true,
-  look_setup: true,
+  look_room_setup: true,
   look_meals: true,
   look_extras: true,
   look_reservations: true,
+  look_room_type: true,
   look_pricing: true
 };
 
@@ -59,6 +60,12 @@ function putSearchResult(s, rec) {
     }
     return r;
   };
+
+  if (rec.fromtable == 'room_setup') {
+    res+= _preamble('/imgs/room_setup.png', rec.name, 'delRoomSetup');
+    res+= '<b>' + rec.name + '</b>';
+    res+= '</div>';
+  }
 
   if (rec.fromtable == 'meal') {
     res+= _preamble('/imgs/meal.png', rec.name, 'delMeal');
@@ -181,7 +188,7 @@ function generalLook(f, s, tbl) {
 
 zakLookStatusf= {
   look_customers: function(s) {generalLook(llSearchCustomers, s, 'customer');},
-  look_setup: function(s) {generalLook(llSearchSetups, s, 'setup');},
+  look_room_setup: function(s) {generalLook(llSearchRoomSetup, s, 'room_setup');},
   look_meals: function(s) {generalLook(llSearchMeals, s, 'meal');}, 
   look_extras: function(s) {generalLook(llSearchExtras, s, 'extra');}, 
   look_reservations: function(s) {generalLook(llSearchReservations, s, 'reservation');},

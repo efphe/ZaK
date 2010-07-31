@@ -50,6 +50,10 @@ function llSearchMeals(s, cb, cbe) {
   _stupidSearch(s, 'meal', cb, cbe);
 }
 
+function llSearchRoomSetup(s, cb, cbe) {
+  _stupidSearch(s, 'room_setup', cb, cbe);
+}
+
 function delExtra(eid) {
   $('#deleting_link').attr('href', 'javascript:_delExtra(' + eid + ')');
   $('#deleting_div').modal();
