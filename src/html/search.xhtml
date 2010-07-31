@@ -85,20 +85,25 @@
 
   </div>
 
-<div class="zakmodal" style="display:none" id="newIType">
-  <h1>New invoice type</h1>
-  <b style="color:white">Name:</b> <input type="text" id="newitypename" style="width:80px"/>
-  <input type="submit" value="Add" onclick="addNewIType()"/>
+<div class="zakmodal" style="display:none" id="delcustomer_div">
+  <h1>Delete customer</h1>
+  <h2>Pay attention</h2>
+  Are you sure you want to delete the customer? His references on your reservations will
+  be deleted too.
+  <br/>
+  <br/>
+  <input type="hidden" id="delcustomer_id"></input>
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delCustomer()">Yes, I know, continue</a> 
+  <br/>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
 </div>
-<div class="zakmodal" style="display:none" id="delItypeDiv">
-  <h1>Deleting invoice type</h1>
-  <h2>Please, confirm your wishes</h2>
-  Are you sure to delete this invoice type? By deleting it, the enumeration of 
-  your previous invoices of this types will be interrupeted forever.
+<div class="zakmodal" style="display:none" id="deleting_div">
+  <h1>Deletion</h1>
+  Are you sure you want to delete it?
   <br/>
   <br/>
-  <input type="hidden" id="iid_delete"></input>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delItype()">Yes, I know, continue</a> 
+  <input type="hidden" id="deleting_id"></input>
+  <a style="color:#36ff00;font-weight:bold" id="deleting_link" href="javascript:_delCustomer()">Yes, sure</a> 
   <br/>
   <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
 </div>
