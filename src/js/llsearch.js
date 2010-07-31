@@ -1,27 +1,3 @@
-function _likeZakSearch(ar) {
-  var res= [];
-  for (var i= 0; i< ar.length; i++) {
-    res.push( '%' + ar[i] + '%');
-  }
-  return res;
-};
-function llSearchCustomers(s, cb, cbe) {
-  var db= zakOpenDb();
-  db.readTransaction(function(ses) {
-    console.log(s);
-    ses.executeSql('select * from customer where name like ? or email like ?', 
-      _likeZakSearch([s,s]), cb, cbe);
-  });
-}
-
-function _stupidSearch(s, t, cb, cbe) {
-  var db= zakOpenDb();
-  db.readTransaction(function(ses) {
-    ses.executeSql('select * from ' + t + ' where name like ?', 
-      _likeZakSearch([s]), cb, cbe);
-  });
-}
-
 function _stupidDelete(i,t,cb,cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
@@ -38,6 +14,30 @@ function _stupidDelete(i,t,cb,cbe) {
   });
 }
 
+function _stupidSearch(s, t, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from ' + t + ' where name like ?', 
+      _likeZakSearch([s]), cb, cbe);
+  });
+}
+
+function _likeZakSearch(ar) {
+  var res= [];
+  for (var i= 0; i< ar.length; i++) {
+    res.push( '%' + ar[i] + '%');
+  }
+  return res;
+};
+function llSearchCustomers(s, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    console.log(s);
+    ses.executeSql('select * from customer where name like ? or email like ?', 
+      _likeZakSearch([s,s]), cb, cbe);
+  });
+}
+
 function llSearchExtras(s, cb, cbe) {
   _stupidSearch(s, 'extra', cb, cbe);
 }
@@ -46,14 +46,58 @@ function llSearchPricing(s, cb, cbe) {
   _stupidSearch(s, 'pricing', cb, cbe);
 }
 
+function llSearchMeals(s, cb, cbe) {
+  _stupidSearch(s, 'meal', cb, cbe);
+}
 
 function delExtra(eid) {
   $('#deleting_link').attr('href', 'javascript:_delExtra(' + eid + ')');
   $('#deleting_div').modal();
 }
 
+function delMeal(mid) {
+  $('#deleting_link').attr('href', 'javascript:_delMeal(' + mid + ')');
+  $('#deleting_div').modal();
+}
+
+function _delMeal(mid) {
+  _stupidDelete(mid, 'meal');
+}
+
 function _delExtra(eid) {
   _stupidDelete(eid, 'extra');
+}
+
+function updateMeal(mid) {
+  var name= $('#m_name_' + mid).val();
+  var price= $('#m_price_' + mid).val();
+  var vat= $('#m_vat_' + mid).val();
+  var mtype= $('#m_mtype_' + mid).val();
+  if (!checkFloat(price) || !checkFloat(vat)) {
+    humanMsg.displayMsg('Specify good values: for decimal values, use the DOT "."');
+    return;
+  }
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var ob= {
+      name: name,
+      price: price,
+      vat: vat,
+      mtype: mtype
+    }
+    var q= updateStatementWhere(ob, 'where id = ?', [mid], 'meal');
+    console.log(q);
+    ses.executeSql(q.qry, q.qarr,
+    function(ses, recs) {
+      $.modal.close();
+      /*document.location.reload(false);*/
+      humanMsg.displayMsg('Sounds good');
+    },
+    function(ses, err) {
+      $.modal.close();
+      humanMsg.displayMsg('Error there: ' + err.message, 1);
+    });
+  });
 }
 
 function updateExtra(eid) {

@@ -60,6 +60,30 @@ function putSearchResult(s, rec) {
     return r;
   };
 
+  if (rec.fromtable == 'meal') {
+    res+= _preamble('/imgs/meal.png', rec.name, 'delMeal');
+    res+= '<b>' + rec.name + '</b>';
+    res+= '<table><tr>';
+    res+= '<td>Name</td>';
+    res+= '<td><input type="text" value="' + rec.name + '" id="m_name_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td>Cost</td>';
+    res+= '<td><input style="width:60px" type="text" value="' + rec.price + '" id="m_price_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td>Vat</td>';
+    res+= '<td><input style="width:40px" type="text" value="' + rec.vat + '" id="m_vat_' + rec.id + '">';
+    res+= '</input></td></tr>';
+    res+= '<tr><td>Type:</td><td><select id="m_mtype_' + rec.id + '">';
+    var amtype= rec.mtype;
+    var amtypes= ['BB', 'Half board', 'Full board'];
+    for (var j= 1; j< 4; j++) {
+      if (j == amtype) res+= '<option selected="selected" value="' + j + '">' + amtypes[j-1] + '</option>';
+      else res+= '<option value="' + j + '">' + amtypes[j-1] + '</option>';
+    }
+    res+= '</select></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update meal"';
+    res+= ' onclick="updateMeal(' + rec.id + ')"></td></tr></table>';
+    res+= '</div>';
+  }
+
   if (rec.fromtable == 'extra') {
     res+= _preamble('/imgs/extra.png', rec.name, 'delExtra');
     res+= '<b>' + rec.name + '</b>';
