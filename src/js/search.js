@@ -1,12 +1,12 @@
 zakLookStatus= {
-  look_customers: true,
+  look_customer: true,
+  look_reservation: true,
+  look_extra: true,
+  look_meal: true,
+  look_pricing: true,
   look_room_setup: true,
   look_room_type: true,
-  look_meals: true,
-  look_extras: true,
-  look_reservations: true,
-  look_room_type: true,
-  look_pricing: true
+  look_room: true,
 };
 
 zakLookResults= {};
@@ -74,6 +74,18 @@ function putSearchResult(s, rec) {
     }
     return r;
   };
+
+  if (rec.fromtable == 'room') {
+    res+= _preamble('/imgs/room.png', rec.name, 'delRoom');
+    res+= '<b>' + rec.name + '</b>';
+    res+= '<table><tr><td>Name</td>';
+    res+= '<td><input type="text" value="' + rec.name + '" id="room_name_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td>Code</td>';
+    res+= '<td><input type="text" value="' + rec.code + '" id="room_code_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update room" onclick="updateRoom(' + rec.id + ')"></input></td></tr>';
+    res+= '</table>';
+    res+= '</div>';
+  }
 
   if (rec.fromtable == 'room_setup') {
     res+= _preamble('/imgs/room_setup.png', rec.name, 'delRoomSetup');
@@ -221,12 +233,13 @@ function generalLook(f, s, tbl) {
 }
 
 zakLookStatusf= {
-  look_customers: function(s) {generalLook(llSearchCustomers, s, 'customer');},
+  look_customer: function(s) {generalLook(llSearchCustomers, s, 'customer');},
   look_room_setup: function(s) {generalLook(llSearchRoomSetup, s, 'room_setup');},
   look_room_type: function(s) {generalLook(llSearchRoomType, s, 'room_type');},
-  look_meals: function(s) {generalLook(llSearchMeals, s, 'meal');}, 
-  look_extras: function(s) {generalLook(llSearchExtras, s, 'extra');}, 
-  look_reservations: function(s) {generalLook(llSearchReservations, s, 'reservation');},
+  look_room: function(s) {generalLook(llSearchRoom, s, 'room');},
+  look_meal: function(s) {generalLook(llSearchMeals, s, 'meal');}, 
+  look_extra: function(s) {generalLook(llSearchExtras, s, 'extra');}, 
+  look_reservation: function(s) {generalLook(llSearchReservations, s, 'reservation');},
   look_pricing: function(s) {generalLook(llSearchPricing, s, 'pricing');}
 }
 

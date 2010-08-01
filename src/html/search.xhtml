@@ -14,7 +14,7 @@
           <table>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_customers" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_customer" checked="checked"></input>
               </td>
               <td>
                 Customers
@@ -22,7 +22,7 @@
             </tr>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_reservations" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_reservation" checked="checked"></input>
               </td>
               <td>
                 Reservations
@@ -30,7 +30,7 @@
             </tr>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_extras" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_extra" checked="checked"></input>
               </td>
               <td>
                 Extras
@@ -38,7 +38,7 @@
             </tr>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_meals" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_meal" checked="checked"></input>
               </td>
               <td>
                 Meals
@@ -54,7 +54,7 @@
             </tr>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_setup" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_room_setup" checked="checked"></input>
               </td>
               <td>
                 Room setups
@@ -62,10 +62,18 @@
             </tr>
             <tr>
               <td>
-                <input class="lookingi" type="checkbox" id="look_rtypes" checked="checked"></input>
+                <input class="lookingi" type="checkbox" id="look_room_type" checked="checked"></input>
               </td>
               <td>
                 Room types
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="lookingi" type="checkbox" id="look_room" checked="checked"></input>
+              </td>
+              <td>
+                Rooms
               </td>
             </tr>
           </table>
@@ -87,13 +95,24 @@
 
 <div class="zakmodal" style="display:none" id="delcustomer_div">
   <h1>Delete customer</h1>
-  <h2>Pay attention</h2>
+  <h2>Pay attention!!!</h2>
   Are you sure you want to delete the customer? His references on your reservations will
   be deleted too.
   <br/>
   <br/>
   <input type="hidden" id="delcustomer_id"></input>
   <a style="color:#36ff00;font-weight:bold" href="javascript:_delCustomer()">Yes, I know, continue</a> 
+  <br/>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+</div>
+<div class="zakmodal" style="display:none" id="delroom_div">
+  <h1>Delete Room</h1>
+  <h2>Pay attention!!</h2>
+  Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too. 
+  <br/>
+  <br/>
+  <input type="hidden" id="delroom_id"></input>
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()">Yes, I know, continue</a> 
   <br/>
   <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
 </div>

@@ -38,6 +38,15 @@ function llSearchCustomers(s, cb, cbe) {
   });
 }
 
+function llSearchRoom(s, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    console.log(s);
+    ses.executeSql('select * from room where name like ? or code like ?', 
+      _likeZakSearch([s,s]), cb, cbe);
+  });
+}
+
 function llSearchExtras(s, cb, cbe) {
   _stupidSearch(s, 'extra', cb, cbe);
 }
@@ -60,6 +69,53 @@ function llSearchRoomType(s, cb, cbe) {
 function delRoomType(rtid) {
   $('#deleting_link').attr('href', 'javascript:_delRoomType(' + rtid + ')');
   $('#deleting_div').modal();
+}
+
+function delRoom(rid) {
+  $('#delroom_id').val(rid);
+  $('#delroom_div').modal();
+}
+
+function _delRoom() {
+  var rid= $('#delroom_id').val();
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('delete from room where id = ?', [rid],
+    function(ses, recs) {
+      $.modal.close();
+      /*document.location.reload(false);*/
+      humanMsg.displayMsg('Sounds good');
+    },
+    function(ses, err) {
+      $.modal.close();
+      humanMsg.displayMsg('Error there: ' + err.message, 1);
+    });
+  });
+}
+
+function updateRoom(rid) {
+  var name= $('#room_name_' + rid).val();
+  var code= $('#room_code_' + rid).val();
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select id from room where code = ? and id != ?', [code, rid],
+      function(ses, recs) {
+        if (recs.rows.length > 0) {
+          humanMsg.displayMsg('Room code already in use');
+          return;
+        }
+        ses.executeSql('update room set name = ?, code = ? where id = ?', [name, code, rid],
+          function(ses, recs) {
+            $.modal.close();
+            /*document.location.reload(false);*/
+            humanMsg.displayMsg('Sounds good');
+            },
+            function(ses, err) {
+              $.modal.close();
+              humanMsg.displayMsg('Error there: ' + err.message, 1);
+          });
+      });
+  });
 }
 
 function _delRoomType(rtid) {
