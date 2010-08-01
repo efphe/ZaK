@@ -8,19 +8,21 @@ function repeatedRoomCode(code, rid) {
   return false;
 }
 
-function _roomTd(rid, rname, rcode, rtype) {
+function _roomTd(rid, rname, rcode, rtype, rtypeid) {
   var res= '<td>' + rname + '</td><td>' + rcode + '</td><td>' + rtype + '</td>';
   res+= '<td><a href="javascript:delRoom(\'' + rid + '\')">Delete</a></td>';
-  var args= [rid,rname,rcode].join("','");
+  var args= [rid,rname,rcode,rtypeid].join("','");
   args= "'" + args + "'";
   res+= '<td><a href="javascript:askModRoom(' + args + ')">Modify</a></td>';
   return '<tr>' + res + '</tr>';
 }
 
-function askModRoom(rid, rname, rcode) {
+function askModRoom(rid, rname, rcode, rtype) {
   modroom= rid;
   $('#modroom_name').val(rname);
   $('#modroom_code').val(rcode);
+  $('#modroom_code').val(rcode);
+  $('#modroom_rtype').val(rtype);
   $('#modRoom').modal();
 }
 
@@ -28,19 +30,38 @@ function modRoom() {
   var rid= modroom;
   var rname= $('#modroom_name').val();
   var rcode= $('#modroom_code').val();
+  var rtype= $('#modroom_rtype').val();
   if (repeatedRoomCode(rcode, rid)) {
     humanMsg.displayMsg('Room code specified already in use', 1);
     return;
   }
-  llModRoom(rid, rname, rcode,
-    function(ses, recs) {
-      initRooms(1);
-      humanMsg.displayMsg('Sounds good');
-      $.modal.close();
-    },
-    function(ses, err) {
-      humanMsg.displayMsg('Error: ' + err.message, 1);
-    });
+  if (rtype) {
+    llModRoom(rid, rname, rcode, rtype,
+      function(ses, recs) {
+        initRooms(1);
+        humanMsg.displayMsg('Sounds good');
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error: ' + err.message, 1);
+      });
+    return;
+  }
+  var newtypename= $('#modroom_newtype').val();
+  if (!newtypename) {
+    humanMsg.displayMsg('Please, specify a valid room type');
+    return;
+  }
+  llUpdRoomAndType(rid, rname, rcode, newtypename,
+      function(ses, recs) {
+        designRoomTypes();
+        initRooms(1);
+        humanMsg.displayMsg('Sounds good');
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error: ' + err.message, 1);
+      });
 }
 
 function askNewRoomType() {
@@ -54,7 +75,7 @@ function designRoomTypes() {
       var rec= recs.rows.item(i);
       res+= '<option value="' + rec.id + '">' + rec.name + '</option>';
     }
-    $('#newroomtype').empty().append(res);
+    $('.newroomtype').empty().append(res);
   });
 }
 
@@ -197,7 +218,7 @@ function initRooms(reset) {
           var rname= room.name;
           var rcode= room.code;
           var rid= room.id;
-          res+= _roomTd(rid, rname, rcode, rmap[room.id_room_type]);
+          res+= _roomTd(rid, rname, rcode, rmap[room.id_room_type], room.id_room_type);
           _rcodes[rid]= rcode;
         }
         $('#roomsbody').html(res);
@@ -206,6 +227,11 @@ function initRooms(reset) {
         alert(err);
       });
     });
+}
+
+function modRoomType() {
+  if (!$('#modroom_rtype').val()) $('#showNewType').show();
+  else $('#showNewType').hide();
 }
 
 function addNewProperty() {
@@ -237,13 +263,16 @@ function askNewProperty() {
 function initProperties() {
   console.log('Initializing Properties...');
   designRoomTypes();
-  llGetRoomTypes(function(ses, recs) {
-    $('#newroomtype').empty();
-    for (var i= 0;i < recs.rows.length;i++) {
-      var rec= recs.rows.item(i);
-      $('#newroomtype').append('<option value="' + rec.id + '">' + rec.name + '</option>');
-    }
-  });
+  /*llGetRoomTypes(function(ses, recs) {*/
+  /**//*$('#newroomtype').empty();*/
+  /*var res= '';*/
+  /*for (var i= 0;i < recs.rows.length;i++) {*/
+  /*var rec= recs.rows.item(i);*/
+  /**//*$('#newroomtype').append('<option value="' + rec.id + '">' + rec.name + '</option>');*/
+  /*res+= '<option value="' + rec.id + '">' + rec.name + '</option>';*/
+  /*}*/
+  /*$('.newroomtype').html(res);*/
+  /*});*/
   llGetProperties(
     function(ses, recs) {
       if (recs.rows.length < 1) {

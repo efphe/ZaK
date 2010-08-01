@@ -53,6 +53,57 @@ function llSearchMeals(s, cb, cbe) {
 function llSearchRoomSetup(s, cb, cbe) {
   _stupidSearch(s, 'room_setup', cb, cbe);
 }
+function llSearchRoomType(s, cb, cbe) {
+  _stupidSearch(s, 'room_type', cb, cbe);
+}
+
+function delRoomType(rtid) {
+  $('#deleting_link').attr('href', 'javascript:_delRoomType(' + rtid + ')');
+  $('#deleting_div').modal();
+}
+
+function _delRoomType(rtid) {
+  var newrt= $('#rt_newrtype_' + rtid).val();
+  if (!newrt || newrt == rtid) {
+    humanMsg.displayMsg('You must associate orphaned rooms to a new, valid room type');
+    return;
+  }
+  var cbe= function(ses, err) {humanMsg.displayMsg('Error there: '+ err.message); return };
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('update room set id_room_type = ? where id_room_type = ?', [newrt, rtid],
+      function(ses, recs) {
+        ses.executeSql('delete from room_type where id = ?', [rtid],
+          function(ses, recs) {
+            humanMsg.displayMsg('Sounds good');
+            $.modal.close();
+            return;
+          }, cbe);
+      }, cbe);
+  });
+}
+
+function updateRoomType(rsid) {
+  var name= $('#rt_name_' + rsid).val();
+  if (!name) {
+    humanMsg.displayMsg('Please, specify a valid name');
+    return;
+  }
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('update room_type set name = ? where id = ?', [name, rsid],
+    function(ses, recs) {
+      $.modal.close();
+      /*document.location.reload(false);*/
+      humanMsg.displayMsg('Sounds good');
+    },
+    function(ses, err) {
+      $.modal.close();
+      humanMsg.displayMsg('Error there: ' + err.message, 1);
+    });
+  });
+
+}
 
 function delExtra(eid) {
   $('#deleting_link').attr('href', 'javascript:_delExtra(' + eid + ')');
@@ -151,6 +202,10 @@ function _delPricing(pid) {
 
 function updatePricing(pid) {
   var name= $('#p_name_' + pid).val();
+  if (!name) {
+    humanMsg.displayMsg('Please, specify a valid name');
+    return;
+  }
   var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('update pricing set name = ? where id = ?', [name, pid],

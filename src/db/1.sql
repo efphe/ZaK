@@ -53,7 +53,7 @@ create table room (
   name text, 
  
   unique (code,id_property), 
-  foreign key(id_room_type) references room_type(id) on delete cascade,
+  foreign key(id_room_type) references room_type(id) on delete set null,
   foreign key(id_property) references property(id) on delete cascade 
 );; 
 create table room_setup ( 

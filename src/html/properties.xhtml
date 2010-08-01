@@ -23,7 +23,7 @@
           <div class="subCtnt">
             <b>Name:</b><input type="text" id="newroomname"></input>
             <b>Code:</b><input type="text" style="width:50px" id="newroomcode"></input>
-            <b>Type:</b><select id="newroomtype"></select>
+            <b>Type:</b><select id="newroomtype" class="newroomtype"></select>
             <input type="submit" value="Add room" onclick="return addNewRoom()"></input>
             <br/>
             <br/>
@@ -63,7 +63,7 @@
   </div>
 
   <div id="askRoomType" class="zakmodal">
-    <h1>New roomt type</h1>
+    <h1>New room type</h1>
     <h2>Define a new room type</h2>
     Organize your rooms grouping them by types (double, double superior, single and so on). You will have
     the chance to define faster your prices and to manage internt, better.
@@ -149,6 +149,22 @@
         </td>
         <td>
           <input type="text" id="modroom_code" style="width:60px"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Room type:
+        </td>
+        <td>
+          <select id="modroom_rtype" class="newroomtype" style="width:60px" onchange="modRoomType()"></select>
+        </td>
+      </tr>
+      <tr id="showNewType" style="display:none">
+        <td>
+          New room type: 
+        </td>
+        <td>
+          <input type="text" id="modroom_newtype" style="width:60px"></input>
         </td>
       </tr>
     </table>

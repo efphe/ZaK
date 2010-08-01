@@ -1,6 +1,7 @@
 zakLookStatus= {
   look_customers: true,
   look_room_setup: true,
+  look_room_type: true,
   look_meals: true,
   look_extras: true,
   look_reservations: true,
@@ -20,6 +21,8 @@ function _i(iid, ivl, attrs) {
   return res;
 }
 
+cmbrtypes= false;
+
 function _cmbMonths(iid) {
   return '<select id="' + iid + '">' + 
     '<option value="1">Jan</option>' + 
@@ -38,6 +41,17 @@ function _cmbMonths(iid) {
 var _cmbGender= function(iid, m) {
     if (m==1) return '<select id="' + iid + '"><option value="1" selected="selected">Male</option><option value="2">Female</option></select>';
     return '<select id="' + iid + '"><option value="1">Male</option><option selected="selected" value="2">Female</option></select>';
+}
+
+var _cmbRtypes= function(rtid) {
+  var res= '<select id="rt_newrtype_' + rtid + '">';
+  for (var i= 0; i< cmbrtypes.length; i++) {
+    var rt= cmbrtypes[i];
+    if (rt.id == rtid) continue;
+    res+= '<option value="' + rt.id + '">' + rt.name + '</option>';
+  }
+  res+= '</select>';
+  return res;
 }
 
 function putSearchResult(s, rec) {
@@ -64,6 +78,26 @@ function putSearchResult(s, rec) {
   if (rec.fromtable == 'room_setup') {
     res+= _preamble('/imgs/room_setup.png', rec.name, 'delRoomSetup');
     res+= '<b>' + rec.name + '</b>';
+    res+= '<table><tr>';
+    res+= '<td>Name</td>';
+    res+= '<td><input type="text" value="' + rec.name + '" id="rs_name_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Name" onclick="updateRoomSetup(' + rec.id + ')"></input></td></tr>';
+    res+= '</table>';
+    res+= '</div>';
+  }
+
+  if (rec.fromtable == 'room_type') {
+    res+= _preamble('/imgs/room_type.png', rec.name);
+    res+= '<b>' + rec.name + '</b>';
+    res+= '<table><tr>';
+    res+= '<td>Name</td>';
+    res+= '<td><input type="text" value="' + rec.name + '" id="rt_name_' + rec.id + '"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Name" onclick="updateRoomType(' + rec.id + ')"></input></td></tr>';
+    res+= '</table>';
+    res+= '<br/>';
+    res+= 'Delete this room type and set orphaned rooms to this: ';
+    res+= _cmbRtypes(rec.id);
+    res+= '<input type="submit" value="Delete" onclick="delRoomType(' + rec.id + ')"></input>';
     res+= '</div>';
   }
 
@@ -189,6 +223,7 @@ function generalLook(f, s, tbl) {
 zakLookStatusf= {
   look_customers: function(s) {generalLook(llSearchCustomers, s, 'customer');},
   look_room_setup: function(s) {generalLook(llSearchRoomSetup, s, 'room_setup');},
+  look_room_type: function(s) {generalLook(llSearchRoomType, s, 'room_type');},
   look_meals: function(s) {generalLook(llSearchMeals, s, 'meal');}, 
   look_extras: function(s) {generalLook(llSearchExtras, s, 'extra');}, 
   look_reservations: function(s) {generalLook(llSearchReservations, s, 'reservation');},
@@ -216,14 +251,20 @@ $(document).ready(function() {
     zakLookStatus[$(this).attr('id')]= $(this).is(':checked');
   });
 
-  $('#zakSearch').keyup(function() {
-    console.log('change');
-    var ss= $('#zakSearch').val();
-    if (ss == zakSearchedNow) return;
-    else zakSearchedNow= ss;
-    if (ss.length >= 2) {
-      $('#zakIsearch').show();
-      goWithSearch(ss);
-    }
-    });
+  llGetRoomTypes(function(ses, recs) {
+
+    cmbrtypes= arrayFromRecords(recs);
+    $('#zakSearch').keyup(function() {
+      console.log('change');
+      var ss= $('#zakSearch').val();
+      if (ss == zakSearchedNow) return;
+      else zakSearchedNow= ss;
+      if (ss.length >= 0) {
+        $('#zakIsearch').show();
+        goWithSearch(ss);
+      }
+      });
+
+  });
+
 });
