@@ -374,7 +374,7 @@ function designReservation(noOccupancy) {
       for (var k= 0; k< recs.rows.length; k++) {
         var e= recs.rows.item(k);
         eres+= '<option value="' + e.id + '">' + e.name + '</option>';
-        _tempExtras[e.id]= {cost: e.cost, perday: e.perday, name: e.name};
+        _tempExtras[e.id]= {cost: e.cost, perday: e.perday, name: e.name, vat: e.vat};
       }
       $('#selectExtra').empty().html(eres);
     });

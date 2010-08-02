@@ -10,12 +10,24 @@ function _zakRoomName(rid) {
   return '??';
 }
 
-function designFinal() {};
+function designFinal() {
+  var tot= 0.0;
+  var nettot= 0.0;
+  for (var i= 0; i< invoiceItems.length; i++) {
+    var ii= invoiceItems[i];
+    var itot= parseFloat(ii.tot);
+    tot+= itot;
+    nettot+= itot / (1.0 + (ii.vat/100.0));
+  }
+  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Total', 'margin-left:30px'));
+};
 
-function _getPartial(tot, vat, name) {
+function _getPartial(tot, vat, name, addst) {
   var netrate= tot / (1.0 + (vat/100.0));
   var netvat= tot - netrate;
-  var res= '<div style="float:right;margin-top:10px"><table><tr><td>' + name;
+  var st= 'float:right;margin-top:10px;';
+  if (addst) st+= addst;
+  var res= '<div style="' + st + '"><table><tr><td>' + name;
   res+= '</td><td>' + netrate.toFixed(2) + '</td></tr>';
   res+= '<tr><td>Vat taxes:</td><td>' + netvat.toFixed(2) + '</td></tr>';
   res+= '<tr><td><b>Total:</b></td><td><b>' + tot.toFixed(2) + '</b></td></tr>';
@@ -97,6 +109,7 @@ function designMeals() {
     return;
   }
   var tot= 0.0;
+  var nettot= 0.0;
   var res= '<table>';
   for (var day in meals) {
     var sday= strDate(parseInt(day), 'd/m');
@@ -105,6 +118,7 @@ function designMeals() {
       var daymeal= daymeals[i];
       var pri= parseFloat(daymeal.price);
       tot+= pri;
+      nettot+= pri / (1.0 + (daymeal.vat/100.0));
       if (i == 0)
         res+= '<tr><td>' + sday + '</td>';
       else
@@ -118,7 +132,8 @@ function designMeals() {
   res+= '<tr><td colspan="2" align="center">Total</td><td><b>' + tot + '</b></td>';
   res+= '</table>';
   $('#meals_table').html(res);
-  $('#title_meals').prepend(_getPartial(tot, 20, 'Meals'));
+  $('#title_meals').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Meals'));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Meals'} ); 
   /*console.log(meals);*/
   checkFinal();
 }
@@ -145,7 +160,22 @@ function designExtras() {
     checkFinal();
     return;
   };
-  console.log(extras);
+  var tot= 0.0;
+  var nettot= 0.0;
+  var res= '<table>';
+  for (var i= 0; i< extras.length; i++) {
+    var ex= extras[i];
+    var pri= parseFloat(ex.cost);
+    tot+= pri;
+    nettot+= pri / (1.0 + (ex.vat/100.0));
+    res+= '<tr><td>' + ex.name + '(' + ex.how + 'x)</td><td>' + pri.toFixed(2) + '</td></tr>';
+  }
+  res+= '<tr><td>Total</td><td><b>' + tot.toFixed(2) + '</b></td>';
+  res+= '</table>';
+  $('#extras_table').html(res);
+  $('#title_extras').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Extras'));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Extras'} ); 
+  /*console.log(extras);*/
   checkFinal();
 }
 

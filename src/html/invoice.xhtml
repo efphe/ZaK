@@ -23,20 +23,18 @@
         max-width: 280px;
       }
       #iheader {
-        margin: 6px;
+        margin-left: 26px;
       }
     </style>
   </head>
   <body>
     <div id="invoice_div">
       <div id="hotel_header_div">
-        <span id="iname">Invoice</span> N: <b id="inumber">1</b>
+        <span id="iname">Invoice</span> N: <b id="inumber">1</b><br/>
       </div>
-      <pre id="iheader">
-WuBook Srl,
-via dell'abbazia 7/1
-61032 Fano Pu
-      </pre>
+      <textarea id="iheader" style="width:300px;height:60px">Hotel Dio Cane</textarea>
+      <br/>
+      <textarea id="cheader" style="width:300px;height:70px">Gigi cucchi</textarea>
       <div id="rooms_div">
 
         <h1 id="title_rooms">Rooms</h1>
@@ -51,6 +49,10 @@ via dell'abbazia 7/1
         <h1 id="title_extras">Extras</h1>
         <table id="extras_table">
         </table>
+
+        <div style="float:right;margin:20px;padding:6px;border: 1px solid black" id="itotal">
+          <b>Total:</b><br/>
+        </div>
 
       </div>
     </div>
