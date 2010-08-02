@@ -197,23 +197,38 @@ function llCopyOccupancy(occ, cust, udfrom, udto, rid, cbs, cbe) {
       var audt= args.udto;
       var acust= args.customer;
       console.log(acust);
-      _addOcc(audf, audt, arid, acust, aocc['status'], aocc['id_reservation'], ses, cbs, cbe);
+      _addOcc(audf, audt, arid, acust, false, aocc['status'], aocc['id_reservation'], ses, cbs, cbe);
       }, cbe);
 }
 
-function _addOcc(udfrom, udto, rid, customer, stat, resid, ses, cbs, cbe) {
+function _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs, cbe) {
   var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
   ss+= ' values (?,?,?,?,?,?)';
   ses.executeSql(ss, [unixDate(udfrom), unixDate(udto), rid, customer, stat, resid],
     function(ses, recs) {
-      var newoid= recs.insertId;
-      ses.executeSql('select code from room where id = ?', [rid], cbs, cbe);
+      if (excustomer) {
+        console.log('Linking customer: ' + excustomer);
+        llAssignExistingCustomer(rid, excustomer, function(ses, recs) {
+          ses.executeSql('select code from room where id = ?', [rid], cbs, cbe);
+        }, cbe);
+      } else 
+        ses.executeSql('select code from room where id = ?', [rid], cbs, cbe);
     });
 }
 
 /* cbs(okocc) */
 /* resid is eventually the reservation id */
-function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe) {
+function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, excustomer, cbs, cbe) {
+  if (excustomer && !customer) {
+    console.log('Loading customer (pre booking) ' + excustomer);
+    llGetCustomer(excustomer, false, function(ses, recs) {
+      var lc= recs.rows.item(0);
+      console.log('Inserting new reservation with existcustomer customer');
+      console.log(lc);
+      llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, lc.name, excustomer, cbs, cbe);
+        }, cbe);
+    return;
+  }
   var args= {pid: pid, resid: resid, stat: stat, rid: rid, udfrom: udfrom, ndays: ndays, customer: customer};
   llCheckOccupancyChance(false, rid, udfrom, ndays, args,
     function(ses, newargs) {
@@ -231,7 +246,7 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
       var customer= newargs['customer'];
       var stat= newargs['stat'];
       if (resid) 
-        return _addOcc(udfrom, udto, rid, customer, stat, resid, ses, cbs, cbe);
+        return _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs, cbe);
 
       console.log('Fresh reservation');
       /* Add a new reservation */
@@ -239,8 +254,9 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, cbs, cbe
       s+= '(?,?,?,?,?)';
       ses.executeSql(s, [udfrom,udto,customer,stat,pid],
         function(ses, recs) {
+          console.log('Now adding occupancy');
           resid= recs.insertId;
-          return _addOcc(udfrom, udto, rid, customer, stat, resid, ses, cbs, cbe);
+          return _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs, cbe);
         }, cbe);
     },
     function(ses, err) {

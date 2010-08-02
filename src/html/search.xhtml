@@ -126,4 +126,62 @@
   <br/>
   <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
 </div>
+<div class="zakmodal" style="display:none" id="newreservation_div">
+  <h1>New reservation</h1>
+  Adding a new reservation
+  <br/>
+  <br/>
+  <table>
+    <tr>
+      <td>
+        Arrival:
+      </td>
+      <td id="nra_cnt">
+        <input type="text" id="newreservation_arrival"></input>
+        <input type="hidden" id="newreservation_customer" style="width:60px"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Nights:
+      </td>
+      <td>
+        <input type="text" id="newreservation_nights" style="width:30px"></input>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Room:
+      </td>
+      <td>
+        <select id="newreservation_room"></select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Status:
+      </td>
+      <td>
+        <select id="newreservation_status">
+            <option value="1" selected="selected">Confirmed</option>
+            <option value="2">Not confirmed</option>
+            <option value="3">Checkin'ed</option>
+            <option value="4">Option</option>
+        </select>
+      </td>
+    </tr>
+    <tr id="newreservation_check" style="display:none">
+      <td colspan="2" align="center"><input type="submit" value="Check availability" onclick="checkAvailability()"></input></td>
+    </tr>
+    <tr id="newreservation_continue" style="display:none">
+      <td colspan="2" align="center">
+        <b style="color:#36ff00">Good, there is availability</b><br/>
+        <input type="submit" value="Insert reservation" onclick="insertReservation()"></input>
+      </td>
+    </tr>
+    <tr id="newreservation_noavail" style="display:none">
+      <td colspan="2" align="center"><b style="color:red">No availability for this room</b></td>
+    </tr>
+  </table>
+</div>
 </div>

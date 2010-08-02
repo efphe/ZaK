@@ -75,6 +75,13 @@ function putSearchResult(s, rec) {
     return r;
   };
 
+  if (rec.fromtable == 'reservation') {
+    res+= _preamble('/imgs/reservation.png', rec.rname || rec.customer, 'delReservation');
+    res+= '<b>' + rec.customer + '</b>';
+    res+= 'to display in a good way reservation you must keep utd dfrom dto when you modify occupancied';
+    res+= '</div>';
+  }
+
   if (rec.fromtable == 'room') {
     res+= _preamble('/imgs/room.png', rec.name, 'delRoom');
     res+= '<b>' + rec.name + '</b>';
@@ -187,6 +194,7 @@ function putSearchResult(s, rec) {
       res+= '<img src="/imgs/flags/' + rec.country_code.toLowerCase() + '.gif"></img> ' + rec.name;
     else
       res+= rec.name;
+    res+= '<input type="submit" style="float:right" value="New reservation" onclick="newReservation(' + rid + ')"></input>';
     res+= '<table>';
     res+= '<tr><td>Name:</td><td>' + _ii('name') +'</td>' + '<td colspan="2">' + _cmbGender('c_gender_' + rid, rec.gender) + '</td></tr>';
     res+= '<tr><td>Mail:</td><td>' + _ii('email') + '</td>';
@@ -217,12 +225,20 @@ function afterLook(s) {
 }
 
 function _eatRecords(tbl, s, recs) {
-  var rl= recs.rows.length;
-  for (var i= 0; i< rl; i++) {
-    var rec= recs.rows.item(i);
-    rec.fromtable= tbl;
-    putSearchResult(s, rec);
-  }
+  if (recs.rows) {
+    var rl= recs.rows.length;
+    for (var i= 0; i< rl; i++) {
+      var rec= recs.rows.item(i);
+      rec.fromtable= tbl;
+      putSearchResult(s, rec);
+    }
+  } else {
+    for (var i= 0; i< recs.length; i++) {
+      rec= recs[i];
+      rec.fromtable= tbl;
+      putSearchResult(s, rec);
+  }}
+      
 }
 
 function generalLook(f, s, tbl) {
@@ -255,6 +271,71 @@ function goWithSearch(s) {
         zakLookStatusf[k](s);
       } catch(e) {console.log('Error searching: ' + e); afterLook(s);}
     }
+}
+
+function newReservation(cid) {
+  $('#newreservation_customer').val(cid);
+  $('#newreservation_continue').hide();
+  $('#newreservation_check').show();
+  $("#newreservation_arrival").remove();
+  $('#newreservation_nights').val('');
+  $('#nra_cnt').append('<input type="text" id="newreservation_arrival"></input>');
+  $("#newreservation_arrival").datepicker({showAnim: '', dateFormat: 'dd/mm/yy'});
+  llLoadRooms(getActiveProperty()['id'], 
+    function(ses, recs) {
+      var res= '';
+      for (var i= 0; i< recs.rows.length; i++) {
+        var room= recs.rows.item(i);
+        res+= '<option value="' + room.id + '">' + room.code + '</option>';
+      }
+      $('#newreservation_room').empty().html(res);
+      $('#newreservation_div').modal();
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+      return;
+    });
+}
+
+function checkAvailability() {
+  var rid= $('#newreservation_room').val();
+  var ard= $('#newreservation_arrival').val();
+  var nights= $('#newreservation_nights').val();
+  if (!rid || parseInt(nights) != nights || nights < 1 || !ard) {
+    humanMsg.displayMsg('Please, specify good values');
+    return;
+  }
+  llCheckOccupancyChance(false, rid, ard, nights, {foo: 'bar'},
+    function(ses, args) {
+      if (!args) {
+       $('#newreservation_check').hide();
+       $('#newreservation_noavail').show();
+       return;
+      }
+     $('#newreservation_check').hide();
+     $('#newreservation_continue').show();
+    });
+}
+
+function insertReservation() {
+  var rid= $('#newreservation_room').val();
+  var cid= $('#newreservation_customer').val();
+  console.log('New reservation cid: ' + cid);
+  var ard= $('#newreservation_arrival').val();
+  var nights= $('#newreservation_nights').val();
+  var stat= $('#newreservation_status').val() || 1;
+  llNewOccupancy(getActiveProperty()['id'], false, stat, rid, ard, nights, false, cid,
+    function(ses, recs) {
+      if (!ses) {
+        humanMsg.displayMsg('Error there');
+        return;
+      }
+      humanMsg.displayMsg('Welcome back!');
+      $.modal.close();
+      $.modal.close();
+    }, 
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message);
+    });
 }
 
 $(document).ready(function() {

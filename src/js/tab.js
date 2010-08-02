@@ -28,7 +28,7 @@ function _addNewReservation() {
   var rid= addNewReservationRid;
   var sday= dateAddDays(zakTableau.dfrom, addNewReservationDay);
   console.log('Adding new Reservation: from ' + strDate(sday) + ', nights= ' + nights);
-  llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust,
+  llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust, false,
     function(ses, recs) {
       if (!ses) {
         humanMsg.displayMsg('Not enough days space for this reservation', 1);

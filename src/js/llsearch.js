@@ -47,6 +47,26 @@ function llSearchRoom(s, cb, cbe) {
   });
 }
 
+function llSearchReservations(s, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    var bqry= 'select reservation.*,customer.name as rname from reservation ';
+    bqry+= 'left join rcustomer on rcustomer.id_reservation = reservation.id left join customer ';
+    bqry+= 'on customer.id= rcustomer.id_customer';
+    ses.executeSql('select * from (' + bqry + ') where rname like ? or customer like ?',
+      _likeZakSearch([s,s]), 
+      function(ses, recs) {
+        var res= [];
+        for (var i= 0; i< recs.rows.length; i++) {
+          var r= recs.rows.item(i);
+          if (!res.indexOf(r.id) >= 0) res.push(r);
+        }
+        cb(ses, res); 
+      },
+      function(ses, err) {console.log('Error: ' + err.message); cbe(ses, err);});
+  });
+}
+
 function llSearchExtras(s, cb, cbe) {
   _stupidSearch(s, 'extra', cb, cbe);
 }

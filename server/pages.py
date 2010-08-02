@@ -70,7 +70,7 @@ class AdminReservation(AdminTemplate):
 class AdminSearch(AdminTemplate):
   jsorigin= '/js/cm/pgsearch.js'
   xmlfile= 'src/html/search.xhtml'
-  cssorigin= '/css/search.css'
+  cssorigin= '/css/search.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/property_invoice.xhtml')
