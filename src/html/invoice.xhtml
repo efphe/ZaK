@@ -1,6 +1,11 @@
 <html>
   <head>
+    <script src="/js/cm/pginvoice.js"></script>
+    <title>Zak Invoice</title>
     <style>
+      #humanMsgLog, #humanMsgErr, #humanMsg, #tmplmadd {
+        display:none;
+      }
       #invoice_div {
         border-radius: 5px;
         border: 2px solid black;
@@ -34,44 +39,17 @@ via dell'abbazia 7/1
       </pre>
       <div id="rooms_div">
 
-        <h1 id="title_rooms" style="display:none">Rooms</h1>
+        <h1 id="title_rooms">Rooms</h1>
         <table id="rooms_table">
-          <tr>
-            <td></td><td>Dbl</td><td></td>
-          </tr>
-          <tr>
-            <td>12/12</td><td>12.23</td><td></td>
-          </tr>
-          <tr>
-            <td></td><td>12.23</td><td>43.34</td>
-          </tr>
         </table>
 
-        <h1 id="title_rooms">Meals</h1>
-        <table id="rooms_table">
-          <tr>
-            <td></td><td>Dbl</td><td></td>
-          </tr>
-          <tr>
-            <td>12/12</td><td>12.23</td><td></td>
-          </tr>
-          <tr>
-            <td></td><td>12.23</td><td>43.34</td>
-          </tr>
+        <h1 id="title_meals">Meals</h1>
+        <table id="meals_table">
         </table>
 
 
-        <h1 id="title_rooms">Extras</h1>
-        <table id="rooms_table">
-          <tr>
-            <td></td><td>Dbl</td><td></td>
-          </tr>
-          <tr>
-            <td>12/12</td><td>12.23</td><td></td>
-          </tr>
-          <tr>
-            <td></td><td>12.23</td><td>43.34</td>
-          </tr>
+        <h1 id="title_extras">Extras</h1>
+        <table id="extras_table">
         </table>
 
       </div>
