@@ -1,5 +1,6 @@
 invoiceReservation= false;
 invoiceItems= [];
+invoiceSettings= '';
 invoiceN= 0;
 
 function _zakRoomName(rid) {
@@ -85,8 +86,9 @@ function designInvoiceRooms() {
   }
   res+= '<td><b>' + tot + '</b></td></tr>';
   $('#rooms_table').html(res);
-  $('#title_rooms').prepend(_getPartial(tot, 20, 'Rooms'));
-  invoiceItems.push( {tot: tot, vat: 20, title: 'Rooms'} ); 
+  var rvat= parseFloat(invoiceSettings.vatSettingsPerc);
+  $('#title_rooms').prepend(_getPartial(tot, rvat, 'Rooms'));
+  invoiceItems.push( {tot: tot, vat: rvat, title: 'Rooms'} ); 
   checkFinal();
 }
 
@@ -190,6 +192,31 @@ $(document).ready(function() {
   llGetReservationFromRid(localStorage.editOccupancyRid,
     function(reservation) {
       invoiceReservation= reservation;
-      designInvoice();
+      llGetPropertySettings(getActiveProperty()['id'], 
+        function(ses, recs, sets) {
+          invoiceSettings= sets;
+          $('#iheader').val(sets.vatSettingsHeader || '');
+          designInvoice();
+        });
+    });
+  llGetItypes(function(ses, recs) {
+    for (var j= 0; j< recs.rows.length; j++) {
+      var it= recs.rows.item(j);
+      var dit= '';
+      if (it.id == localStorage.editInvoiceItype) {
+        $('#iname').html(it.name);
+        dit= it.id;
+      }
+    }
+  });
+  llGetReservationInvoiceHeader(localStorage.editOccupancyRid,
+    function(ses, recs) {
+      if (recs.rows.length > 0) {
+        $('#cheader').val(recs.rows.item(0).vat);
+      }
+    });
+  llGetInvoiceN(getActiveProperty()['id'], localStorage.editInvoiceItype,
+    function(n) {
+      $('#inumber').val(n);
     });
 });

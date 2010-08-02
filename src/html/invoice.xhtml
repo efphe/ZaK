@@ -3,13 +3,18 @@
     <script src="/js/cm/pginvoice.js"></script>
     <title>Zak Invoice</title>
     <style>
+      #invoice_buttons {
+        width: 540px;
+        margin-bottom: 10px;
+        text-align: right;
+      }
       #humanMsgLog, #humanMsgErr, #humanMsg, #tmplmadd {
         display:none;
       }
       #invoice_div {
         border-radius: 5px;
         border: 2px solid black;
-        width: 600px;
+        width: 540px;
         padding: 5px;
         overflow: auto;
       }
@@ -25,28 +30,45 @@
       #iheader {
         margin-left: 26px;
       }
+      table {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        margin-left: 10px;
+      }
+      h3 {
+        margin: 0;
+        padding: 0;
+        margin-left: 10px;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
+    <div id="invoice_buttons">
+      <input type="submit" value="Exit" onclick="exitInvoice()"></input>
+      <input type="submit" value="Save invoice" onclick="saveInvoice()" id="bSaveInvoice"></input>
+      <input type="submit" value="Print" onclick="print()"></input>
+    </div>
     <div id="invoice_div">
       <div id="hotel_header_div">
         <span id="iname">Invoice</span> N: <b id="inumber">1</b><br/>
       </div>
       <textarea id="iheader" style="width:300px;height:60px">Hotel Dio Cane</textarea>
       <br/>
-      <textarea id="cheader" style="width:300px;height:70px">Gigi cucchi</textarea>
+      <textarea id="cheader" style="width:300px;height:70px">Customer invoice header</textarea>
       <div id="rooms_div">
 
-        <h1 id="title_rooms">Rooms</h1>
+        <h3 id="title_rooms">Rooms</h3>
         <table id="rooms_table">
         </table>
 
-        <h1 id="title_meals">Meals</h1>
+        <h3 id="title_meals">Meals</h3>
         <table id="meals_table">
         </table>
 
 
-        <h1 id="title_extras">Extras</h1>
+        <h3 id="title_extras">Extras</h3>
         <table id="extras_table">
         </table>
 
