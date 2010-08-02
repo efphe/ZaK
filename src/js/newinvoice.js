@@ -188,6 +188,10 @@ function designInvoice() {
   designExtras();
 }
 
+function exitInvoice() {
+  goToSameDirPage('book');
+}
+
 $(document).ready(function() {
   llGetReservationFromRid(localStorage.editOccupancyRid,
     function(reservation) {

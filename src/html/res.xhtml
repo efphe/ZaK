@@ -80,7 +80,7 @@
     <div class="bookright">
       <div style="float:right;text-align:center" id="resinvoice">
         <b style="color:black;font-size:12px">Reservation</b><br/>
-        <input type="submit" value="Build invoice" onclick="buildReservationInvoice()"></input>
+        <input id="ibuilder" type="submit" value="Build invoice" onclick="buildReservationInvoice()"></input>
       </div>
       <div>
         <h1>Extras</h1>
@@ -588,10 +588,15 @@
     </tr>
     <tr>
       <td colspan="2" align="center">
-        <input type="submit" value="Add" onclick="saveMeal()"/>
+        <input type="submit" value="Add" onclick="saveMeal()"/> 
       </td>
     </tr>
   </table>
+</div>
+<div id="whichinvoice" class="zakmodalfree">
+  <h2>Invoice type</h2>
+  <select id="cmbwhichinvoice"><option value="">Classic Invoice</option></select>
+  <input type="submit" value="Edit Invoice" onclick="editInvoice()"/> 
 </div>
 
 </div>

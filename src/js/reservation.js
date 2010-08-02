@@ -1198,6 +1198,23 @@ function designCustomers() {
 }
 
 function buildReservationInvoice() {
+  llGetItypes(
+    function(ses, recs) {
+      var res= '<option value="">Classic Invoice</option>';
+      for (var i= 0; i< recs.rows.length; i++) {
+        var it= recs.rows.item(i);
+        res+= '<option value="' + it.id + '">' + it.name + '</option>';
+      }
+      $('#cmbwhichinvoice').html(res);
+      $('#whichinvoice').modal({position: [y,x]});
+    });
+  var el= $('#ibuilder');
+  var x= el.offset().left;
+  var y= el.offset().top;
+}
+
+function editInvoice() {
+  localStorage.editInvoiceItype= $('#cmbwhichinvoice').val();
   goToSameDirPage('invoice');
 }
 
