@@ -1197,6 +1197,10 @@ function designCustomers() {
     });
 }
 
+function buildReservationInvoice() {
+  goToSameDirPage('invoice');
+}
+
 $(document).ready(function() {
   designReservation();
 });

@@ -73,9 +73,7 @@ class AdminSearch(AdminTemplate):
   cssorigin= '/css/search.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminInvoice(rend.Page):
-  docFactory= loaders.xmlfile(_bdir + 'src/html/property_invoice.xhtml')
-class ShowInvoice(rend.Page):
-  docFactory= loaders.xmlfile(_bdir + 'src/html/property_oinvoice.xhtml')
+  docFactory= loaders.xmlfile(_bdir + 'src/html/invoice.xhtml')
 
 class AdminInit(rend.Page):
   docFactory= None
@@ -114,7 +112,7 @@ class ZakAdmin(rend.Page):
         'imgs': ImgDispenser,
         'init': AdminInit(),
         'pricing': AdminPricing(),
-        'oinvoice': ShowInvoice(),
+        #'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),

@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <style>
+      #invoice_div {
+        border-radius: 5px;
+        border: 2px solid black;
+        width: 600px;
+        padding: 5px;
+        overflow: auto;
+      }
+      #rooms_table td {
+        text-align: center;
+      }
+      #hotel_header_div {
+        text-align: right;
+        float:right;
+        margin: 6px;
+        max-width: 280px;
+      }
+      #iheader {
+        margin: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="invoice_div">
+      <div id="hotel_header_div">
+        <span id="iname">Invoice</span> N: <b id="inumber">1</b>
+      </div>
+      <pre id="iheader">
+WuBook Srl,
+via dell'abbazia 7/1
+61032 Fano Pu
+      </pre>
+      <div id="rooms_div">
+
+        <h1 id="title_rooms" style="display:none">Rooms</h1>
+        <table id="rooms_table">
+          <tr>
+            <td></td><td>Dbl</td><td></td>
+          </tr>
+          <tr>
+            <td>12/12</td><td>12.23</td><td></td>
+          </tr>
+          <tr>
+            <td></td><td>12.23</td><td>43.34</td>
+          </tr>
+        </table>
+
+        <h1 id="title_rooms">Meals</h1>
+        <table id="rooms_table">
+          <tr>
+            <td></td><td>Dbl</td><td></td>
+          </tr>
+          <tr>
+            <td>12/12</td><td>12.23</td><td></td>
+          </tr>
+          <tr>
+            <td></td><td>12.23</td><td>43.34</td>
+          </tr>
+        </table>
+
+
+        <h1 id="title_rooms">Extras</h1>
+        <table id="rooms_table">
+          <tr>
+            <td></td><td>Dbl</td><td></td>
+          </tr>
+          <tr>
+            <td>12/12</td><td>12.23</td><td></td>
+          </tr>
+          <tr>
+            <td></td><td>12.23</td><td>43.34</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </body>
+</html>
