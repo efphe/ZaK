@@ -412,7 +412,8 @@ function nextDays() {
 }
 
 $(document).ready(function() {
-  initTableau();
+  
+  initTableau(parseInt(localStorage.zakTableauDate) || '');
   $(function() {
     $("#datepicker").datepicker({showAnim: '', dateFormat: 'dd/mm/yy', onSelect: function(d,i) 
       {goToTableauDate(d);}

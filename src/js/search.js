@@ -78,7 +78,33 @@ function putSearchResult(s, rec) {
   if (rec.fromtable == 'reservation') {
     res+= _preamble('/imgs/reservation.png', rec.rname || rec.customer, 'delReservation');
     res+= '<b>' + rec.customer + '</b>';
-    res+= 'to display in a good way reservation you must keep utd dfrom dto when you modify occupancied';
+    res+= '<table>';
+    res+= '<tr>';
+    res+= '<td>Arrival Date:</td>';
+    res+= '<td>' + strDate(rec.dfrom) + '</td>';
+    res+= '</tr>';
+    res+= '<tr>';
+    res+= '<td>Departure Date:</td>';
+    res+= '<td>' + strDate(rec.dto) + '</td>';
+    res+= '</tr>';
+    res+= '<tr>';
+    res+= '<td>Status:</td>';
+    res+= '<td><select id="res_status_' + rec.id + '">'; 
+    var _stats= ['Confirmed', 'Not confirmed', 'Checkin\'ed', 'Option'];
+    for (var i= 1; i< 5; i++) {
+      if (i == rec.status) res+= '<option value="' + i + '" selected="selected">' + _stats[i-1] + '</option>';
+      else res+= '<option value="' + i + '">' + _stats[i-1] + '</option>';
+    }
+    res+= '</select>';
+    /*res+= '<tr><td colspan="2" align="center">';*/
+    res+= '<input type="submit" value="Update status" onclick="changeResevationStatus(' + rec.id + ')"></input>';
+    res+= '</td>';
+    res+= '</tr>';
+    /*res+= '</td></tr>';*/
+    res+= '</table>';
+    res+= 'Actions<br/>';
+    res+= '<input type="submit" onclick="goTableau(' + rec.id + ')" value="Go to tableau"></input>';
+    res+= '<input type="submit" onclick="goDetails(' + rec.id + ')" value="Go to details"></input>';
     res+= '</div>';
   }
 
@@ -296,6 +322,24 @@ function newReservation(cid) {
     });
 }
 
+function changeResevationStatus(rid) {
+  var newst= $('#res_status_' + rid).val();
+  if (newst != parseInt(newst)) {
+    return;
+  }
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('update occupancy set status = ? where id_reservation = ?', [newst,rid],
+      function(ses, recs) {
+        humanMsg.displayMsg('Sounds good');
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+
+}
+
 function checkAvailability() {
   var rid= $('#newreservation_room').val();
   var ard= $('#newreservation_arrival').val();
@@ -353,7 +397,7 @@ $(document).ready(function() {
       var ss= $('#zakSearch').val();
       if (ss == zakSearchedNow) return;
       else zakSearchedNow= ss;
-      if (ss.length >= 0) {
+      if (ss.length >= 2) {
         $('#zakIsearch').show();
         goWithSearch(ss);
       }

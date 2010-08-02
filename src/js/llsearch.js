@@ -356,3 +356,56 @@ function updateCustomer(cid) {
       humanMsg.displayMsg('Error there: ' + err.message, 1);
     });
 }
+
+function delReservation(rid) {
+  $('#delreservation_id').val(rid);
+  $('#delreservation_div').modal();
+}
+
+function _delReservation() {
+  var rid= $('#delreservation_id').val();
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('delete from reservation where id = ?', [rid],
+      function(ses, recs) {
+        humanMsg.displayMsg('Reservation deleted');
+        $.modal.close();
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+}
+
+function goTableau(rid) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select dfrom from reservation where id = ?', [rid],
+      function(ses, recs) {
+        var dfrom= recs.rows.item(0).dfrom;
+        dfrom= parseInt(dfrom) - (86400 *2) ;
+        localStorage.zakTableauDate= dfrom;
+        goToSameDirPage('tableau');
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+}
+
+function goDetails(rid) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select id from occupancy where id_reservation = ?', [rid],
+      function(ses, recs) {
+        var oid= recs.rows.item(0).id;
+        localStorage.editOccupancyOid= oid;
+        localStorage.editOccupancyRid= rid;
+        goToSameDirPage('book');
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+}
+
