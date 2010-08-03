@@ -130,18 +130,14 @@ create table invoice_type (
 create table invoice (
   id integer primary key asc,
   n integer,
-  id_property integer,
-  id_reservation integer,
-  id_occupancy integer default null,
-  icustomer text,
-  idate text,
-  ivat text,
-  iheader text,
+  html text,
+  year integer not null,
+  head text,
+  chead text,
   id_invoice_type integer,
+  id_reservation integer,
   foreign key(id_invoice_type) references invoice_type(id) on delete set null,
-  foreign key(id_reservation) references reservation(id) on delete cascade,
-  foreign key(id_occupancy) references occupancy(id) on delete cascade,
-  foreign key(id_property) references property(id) on delete cascade 
+  foreign key(id_reservation) references reservation(id) on delete set null
 );;
 -- triggers --
 create trigger property_d

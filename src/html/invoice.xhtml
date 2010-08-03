@@ -2,6 +2,11 @@
   <head>
     <script src="/js/cm/pginvoice.js"></script>
     <title>Zak Invoice</title>
+    <style media="print">
+      #invoice_buttons {
+        display:none;
+      }
+    </style>
     <style>
       #invoice_buttons {
         width: 540px;
@@ -53,8 +58,12 @@
     <div id="invoice_div">
       <div id="hotel_header_div">
         <span id="iname">Invoice</span> N: <b id="inumber">1</b><br/>
+        <div style="float:right;border: 1px solid black" id="itotal">
+          <b style="float:left">Total:</b><br/>
+        </div>
+
       </div>
-      <textarea id="iheader" style="width:300px;height:60px">Hotel Dio Cane</textarea>
+      <textarea id="iheader" style="width:300px;height:60px">Hotel altrove</textarea>
       <br/>
       <textarea id="cheader" style="width:300px;height:70px">Customer invoice header</textarea>
       <div id="rooms_div">
@@ -71,10 +80,6 @@
         <h3 id="title_extras">Extras</h3>
         <table id="extras_table">
         </table>
-
-        <div style="float:right;margin:20px;padding:6px;border: 1px solid black" id="itotal">
-          <b>Total:</b><br/>
-        </div>
 
       </div>
     </div>

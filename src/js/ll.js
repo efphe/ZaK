@@ -847,17 +847,33 @@ function llGetInvoiceN(pid, it, cb) {
   db.transaction(function(ses) {
     var now= jsDate();
     var year= now.getFullYear();
-    ses.executeSql('select max(n) as nfrom invoice where year = ? and it = ? and id_property = ?', 
-      [year, it, pid],
+    var q= 'select max(n) as n from invoice join reservation on ';
+    q+= 'reservation.id= invoice.id_reservation join property on ';
+    q+= 'property.id = reservation.id_property where property.id = ? ';
+    q+= 'and invoice.year = ? and invoice.id_invoice_type = ?';
+    console.log(q);
+    console.log([pid,year,it]);
+    ses.executeSql(q, [pid, year, it],
       function(ses, recs) {
-        if (recs.rows.length == 0) cb(1);
-        else 
-          cb(parseInt(recs.rows.item(0).n + 1));
+        if (recs.rows.length == 0) {
+          cb(1);
+          return;
+        }
+        var n= parseInt(recs.rows.item(0).n);
+        console.log('Last invoice: ' + n);
+        cb(n+1);
       },
       function(ses, err) {
         console.log('Error getIn: ' + err.message);
         cb(1);
       });
+  });
+}
+
+function llGetReservationInvoice(rid, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    ses.executeSql('select * from invoice where id_reservation = ?', [rid], cb, cbe);
   });
 }
 
@@ -868,3 +884,11 @@ function llGetAllCustomers(cb) {
   });
 }
 
+function llSaveInvoice(rid, html, n, year, head, chead, itype, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var q= 'insert into invoice (n,html,id_reservation,year,head,chead,id_invoice_type) ';
+    q+= 'values (?,?,?,?,?,?,?)';
+    ses.executeSql(q, [n,html,rid,year,head,chead,itype], cb, cbe);
+  });
+}

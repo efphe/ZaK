@@ -358,6 +358,13 @@ function designMealTables() {
 }
 
 function designReservation(noOccupancy) {
+  llGetReservationInvoice(localStorage.editOccupancyRid,
+    function(ses, recs) {
+      if (recs.rows.length > 0) 
+        $('#iviewer').show();
+      else
+        $('#ibuilder').show();
+    });
   llLoadRoomSetups(function(ses, recs) {
     for (var i= 0; i< recs.rows.length; i++ ) 
       zakRoomsSetups.push(recs.rows.item(i));
@@ -1200,6 +1207,11 @@ function designCustomers() {
 function buildReservationInvoice() {
   llGetItypes(
     function(ses, recs) {
+      if (recs.rows.length == 0) {
+        localStorage.editInvoiceItype= '';
+        goToSameDirPage('invoice');
+        return;
+      }
       var res= '<option value="">Classic Invoice</option>';
       for (var i= 0; i< recs.rows.length; i++) {
         var it= recs.rows.item(i);

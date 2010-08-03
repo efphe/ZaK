@@ -7,6 +7,7 @@ zakLookStatus= {
   look_room_setup: true,
   look_room_type: true,
   look_room: true,
+  look_invoice: true
 };
 
 zakLookResults= {};
@@ -74,6 +75,23 @@ function putSearchResult(s, rec) {
     }
     return r;
   };
+
+  if (rec.fromtable == 'invoice') {
+    res+= _preamble('/imgs/invoice.png', 'Invoice ' + rec.n);
+    res+= '<b>Invoice</b>';
+    res+= '<table>';
+    res+= '<tr>';
+    res+= '<td>Year</td><td>' + rec.year + '</td>';
+    res+= '</tr>';
+    res+= '<tr>';
+    res+= '<td>Number</td><td>' + rec.n + '</td>';
+    res+= '</tr>';
+    res+= '<tr><td colspan="2" align="center">';
+    res+= '<input type="submit" value="Go to invoice" onclick="goInvoice(' + rec.id_reservation + ')"></input>';
+    res+= '<input type="submit" value="Go to reservation" onclick="goDetails(' + rec.id_reservation + ')"></input>';
+    res+= '</td></tr>';
+    res+= '</div>';
+  }
 
   if (rec.fromtable == 'reservation') {
     res+= _preamble('/imgs/reservation.png', rec.rname || rec.customer, 'delReservation');
@@ -282,14 +300,17 @@ zakLookStatusf= {
   look_meal: function(s) {generalLook(llSearchMeals, s, 'meal');}, 
   look_extra: function(s) {generalLook(llSearchExtras, s, 'extra');}, 
   look_reservation: function(s) {generalLook(llSearchReservations, s, 'reservation');},
+  look_invoice: function(s) {generalLook(llSearchInvoice, s, 'invoice');},
   look_pricing: function(s) {generalLook(llSearchPricing, s, 'pricing');}
 }
 
 function goWithSearch(s) {
   zakLookingResultsN= 0;
   console.log('Beginning search: ' + s);
-  for (var k  in zakLookStatus)
+  var something= false;
+  for (var k  in zakLookStatus) {
     if (zakLookStatus[k]) {
+      something= true;
       $('#zakHint').hide();
       $('#zakResults').empty();
       zakLookingResultsN+= 1;
@@ -297,6 +318,8 @@ function goWithSearch(s) {
         zakLookStatusf[k](s);
       } catch(e) {console.log('Error searching: ' + e); afterLook(s);}
     }
+  }
+  if (!something) $('#zakIsearch').hide();
 }
 
 function newReservation(cid) {
@@ -380,6 +403,15 @@ function insertReservation() {
     function(ses, err) {
       humanMsg.displayMsg('Error there: ' + err.message);
     });
+}
+
+function invertSearchSel() {
+  for (var k in zakLookStatus) {
+    var kk= '#' + k;
+    var s= $(kk).is(':checked');
+    zakLookStatus[k]= !s;
+    $(kk).attr('checked', !s);
+  }
 }
 
 $(document).ready(function() {

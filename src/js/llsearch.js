@@ -38,6 +38,15 @@ function llSearchCustomers(s, cb, cbe) {
   });
 }
 
+function llSearchInvoice(s, cb, cbe) {
+  var db= zakOpenDb();
+  db.readTransaction(function(ses) {
+    console.log(s);
+    ses.executeSql('select * from invoice where chead like ?',
+      _likeZakSearch([s]), cb, cbe);
+  });
+}
+
 function llSearchRoom(s, cb, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
@@ -402,6 +411,22 @@ function goDetails(rid) {
         localStorage.editOccupancyOid= oid;
         localStorage.editOccupancyRid= rid;
         goToSameDirPage('book');
+      },
+      function(ses, err) {
+        humanMsg.displayMsg('Error there: ' + err.message);
+      });
+  });
+}
+
+function goInvoice(rid) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select id from occupancy where id_reservation = ?', [rid],
+      function(ses, recs) {
+        var oid= recs.rows.item(0).id;
+        localStorage.editOccupancyOid= oid;
+        localStorage.editOccupancyRid= rid;
+        goToSameDirPage('invoice');
       },
       function(ses, err) {
         humanMsg.displayMsg('Error there: ' + err.message);

@@ -20,13 +20,13 @@ function designFinal() {
     tot+= itot;
     nettot+= itot / (1.0 + (ii.vat/100.0));
   }
-  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Total', 'margin-left:30px'));
+  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Total', 'margin-left:30px;margin-top:2px'));
 };
 
 function _getPartial(tot, vat, name, addst) {
   var netrate= tot / (1.0 + (vat/100.0));
   var netvat= tot - netrate;
-  var st= 'float:right;margin-top:10px;';
+  var st= 'float:right;margin-top:20px;';
   if (addst) st+= addst;
   var res= '<div style="' + st + '"><table><tr><td>' + name;
   res+= '</td><td>' + netrate.toFixed(2) + '</td></tr>';
@@ -95,6 +95,8 @@ function designInvoiceRooms() {
 function designMeals() {
   var meals= invoiceReservation.meals;
   if (!meals) {
+    $('#meals_table').hide();
+    $('#title_meals').hide();
     checkFinal();
     return;
   }
@@ -192,7 +194,25 @@ function exitInvoice() {
   goToSameDirPage('book');
 }
 
-$(document).ready(function() {
+function saveInvoice() {
+  var year= jsDate().getFullYear();
+  var html= $('#invoice_div').html();
+  var n= $('#inumber').html();
+  var head= $('#iheader').val();
+  var chead= $('#cheader').val();
+  var rid= localStorage.editOccupancyRid;
+  var it= localStorage.editInvoiceItype;
+  llSaveInvoice(rid, html, n, year, head, chead, it,
+    function(ses, recs) {
+      window.location.reload(false);
+    },
+    function(ses, err) {
+      console.log('Error: ' + err.message);
+      alert('Error: ' + err.message);
+    });
+}
+
+function _buildNew() {
   llGetReservationFromRid(localStorage.editOccupancyRid,
     function(reservation) {
       invoiceReservation= reservation;
@@ -221,6 +241,23 @@ $(document).ready(function() {
     });
   llGetInvoiceN(getActiveProperty()['id'], localStorage.editInvoiceItype,
     function(n) {
-      $('#inumber').val(n);
+      console.log('Last invoice: ' + n);
+      $('#inumber').html(n);
+    });
+}
+
+function _buildOld(i) {
+  $('#invoice_div').html(i.html);
+  $('#iheader').val(i.head);
+  $('#cheader').val(i.chead);
+  $('#bSaveInvoice').hide();
+  $('textarea').attr('readonly', 'readonly');
+}
+
+$(document).ready(function() {
+  llGetReservationInvoice(localStorage.editOccupancyRid,
+    function(ses, recs) {
+      if (recs.rows.length == 0) _buildNew();
+      else _buildOld(recs.rows.item(0));
     });
 });
