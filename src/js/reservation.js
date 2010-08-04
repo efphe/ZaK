@@ -1208,11 +1208,15 @@ function buildReservationInvoice() {
   llGetItypes(
     function(ses, recs) {
       if (recs.rows.length == 0) {
-        localStorage.editInvoiceItype= '';
+        llNewInvoiceType('Invoice', function(ses, recs) {buildReservationInvoice()});
+        return;
+      }
+      if (recs.rows.length == 1) {
+        localStorage.editInvoiceItype= recs.rows.item(0).id;
         goToSameDirPage('invoice');
         return;
       }
-      var res= '<option value="">Classic Invoice</option>';
+      var res= '';
       for (var i= 0; i< recs.rows.length; i++) {
         var it= recs.rows.item(i);
         res+= '<option value="' + it.id + '">' + it.name + '</option>';

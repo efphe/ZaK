@@ -674,6 +674,13 @@ function llNewInvoiceType(name, cb) {
   });
 }
 
+function llModInvoiceType(iid, name, cb) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('update invoice_type set name = ? where id = ?', [name, iid], cb);
+  });
+}
+
 function llGetItypes(cb) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
@@ -714,7 +721,9 @@ function llGetInvoice(rid, oid, cb) {
       d.qarr= [rid];
     }
     ses.executeSql(d.qry, d.qarr, function(ses, recs) {
-      cb(recs.rows.item(0));
+      var ii= recs.rows.item(0);
+      ii.html= $.base64Decode(ii.html);
+      cb(ii);
     });
   });
 }
@@ -855,11 +864,15 @@ function llGetInvoiceN(pid, it, cb) {
     console.log([pid,year,it]);
     ses.executeSql(q, [pid, year, it],
       function(ses, recs) {
+        console.log(recs);
         if (recs.rows.length == 0) {
           cb(1);
           return;
         }
         var n= parseInt(recs.rows.item(0).n);
+        if (!n) {
+          cb(1);return;
+        }
         console.log('Last invoice: ' + n);
         cb(n+1);
       },
@@ -884,11 +897,13 @@ function llGetAllCustomers(cb) {
   });
 }
 
-function llSaveInvoice(rid, html, n, year, head, chead, itype, cb, cbe) {
+function llSaveInvoice(rid, html, n, head, chead, itype, cb, cbe) {
+  var year= jsDate().getFullYear();
   var db= zakOpenDb();
+  var h= $.base64Encode(html);
   db.transaction(function(ses) {
     var q= 'insert into invoice (n,html,id_reservation,year,head,chead,id_invoice_type) ';
     q+= 'values (?,?,?,?,?,?,?)';
-    ses.executeSql(q, [n,html,rid,year,head,chead,itype], cb, cbe);
+    ses.executeSql(q, [n,h,rid,year,head,chead,itype], cb, cbe);
   });
 }

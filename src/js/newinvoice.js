@@ -195,14 +195,13 @@ function exitInvoice() {
 }
 
 function saveInvoice() {
-  var year= jsDate().getFullYear();
   var html= $('#invoice_div').html();
   var n= $('#inumber').html();
   var head= $('#iheader').val();
   var chead= $('#cheader').val();
   var rid= localStorage.editOccupancyRid;
   var it= localStorage.editInvoiceItype;
-  llSaveInvoice(rid, html, n, year, head, chead, it,
+  llSaveInvoice(rid, html, n, head, chead, it,
     function(ses, recs) {
       window.location.reload(false);
     },
@@ -247,7 +246,7 @@ function _buildNew() {
 }
 
 function _buildOld(i) {
-  $('#invoice_div').html(i.html);
+  $('#invoice_div').html($.base64Decode(i.html));
   $('#iheader').val(i.head);
   $('#cheader').val(i.chead);
   $('#bSaveInvoice').hide();

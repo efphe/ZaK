@@ -36,13 +36,37 @@ function saveVatSettings() {
 function askAddType() {
   $('#newIType').modal();
 }
-
-function _itypefRow() {
-  return '<tr><td><b>Classic Invoice</b></td><td><b>( <a href="javascript:askAddType()">Add</a> )</b></td></tr>';
+function askModType(iid) {
+  llGetItypes(function(ses, recs) {
+    for (var i= 0; i< recs.rows.length; i++) {
+      var ii= recs.rows.item(i);
+      if (ii.id == iid) {
+        $('#moditypename').val(ii.name);
+        $('#moditypeid').val(ii.id);
+        $('#modIType').modal();
+      }
+    }
+  });
 }
+
+function modIType() {
+  var iid= $('#moditypeid').val();
+  var iname= $('#moditypename').val();
+  llModInvoiceType(iid, iname,
+    function(ses, recs) {
+      $.modal.close();
+      showItypes();
+    });
+}
+
+/*function _itypefRow() {*/
+/*return '<tr><td><b>Classic Invoice</b></td><td><b>( <a href="javascript:askAddType()">Add</a> )</b></td></tr>';*/
+/*}*/
 function _itypeRow(iid, name) {
-  res= '<tr><td><b>'+name+ '</b></td>'; 
-  res+= '<td><b>( <a href="javascript:delItype(' + iid + ')">Del</a> )</b></td></tr>';
+  res= '<tr><td>'+name+ '</td>'; 
+  res+= '<td><input type="submit" value="Delete" onclick="delItype(' + iid + ')"></input>';
+  res+= '<td><input type="submit" value="Update" onclick="askModType(' + iid + ')"></input></td></tr>';
+  /*res+= '<td><b>( <a href="javascript:delItype(' + iid + ')">Del</a> )</b></td></tr>';*/
   return res;
 }
 
@@ -77,9 +101,14 @@ function _delItype() {
 
 function showItypes() {
   llGetItypes(function(ses, recs) {
+    if (recs.rows.length == 0) {
+      llNewInvoiceType('Invoice', function(ses, recs) {showItypes();});
+      return;
+    }
     $('#titypes').empty();
     var i;
-    var res= _itypefRow();
+    /*var res= _itypefRow();*/
+    var res= '<tr></tr>';
     console.log(ses);
     console.log(recs);
     console.log('designing itypes: ' + recs.rows.length);

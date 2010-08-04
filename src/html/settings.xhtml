@@ -9,16 +9,16 @@
           With vat settings, you have control on
           your invoices. You can setup the right vat
           percentage and vat name.
-          <br/>
-          <br/>
-          <b>Reservation settings</b>
-          <br/>
-          <br/>
-          If you set a default meal plan, when you
-          insert a new reservation the meal plan
-          will be automatically assigned. If (also) a
-          default pricing is chosen, when a
-          reservaton is inserted the pricing is built.
+          <!--<br/>-->
+          <!--<br/>-->
+          <!--<b>Reservation settings</b>-->
+          <!--<br/>-->
+          <!--<br/>-->
+          <!--If you set a default meal plan, when you-->
+          <!--insert a new reservation the meal plan-->
+          <!--will be automatically assigned. If (also) a-->
+          <!--default pricing is chosen, when a-->
+          <!--reservaton is inserted the pricing is built.-->
         </div>
       </div>
 
@@ -63,57 +63,13 @@
           </div>
           <h2>Invoices: enumeration types</h2>
           <div class="subctnt">
-            <table>
-              <tr>
-                <td style="vertical-align: top">Invoice types</td>
-                <td>
-                  <table id="titypes">
-                    <tr>
-                      <td>
-                        <b>Classic Invoice</b>
-                      </td>
-                      <td>
-                        <b>(<a href="javascript:askAddType()">+Add</a>)</b>
-                      </td>
-                    </tr>
+            <b>Invoice types:</b> <input type="submit" value="Add new" onclick="askAddType()"></input>
+                  <table id="titypes" style="margin-left:20px">
                   </table>
-                </td>
-              </tr>
-            </table>
           </div>
-          <h2>Reservation settings</h2>
-          <div class="subctnt">
-            <table>
-              <tr>
-                <td>
-                  Default meal plan:
-                </td>
-                <td>
-                  <select id="defmealplan">
-                    <option value="">None</option>
-                    <option value="ro">Room only</option>
-                    <option value="bb">BB</option>
-                    <option value="hb">Half board</option>
-                    <option value="fb">Full board</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Default pricing:
-                </td>
-                <td>
-                  <select id="defpricing">
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" align="right">
-                  <input type="submit" value="Save"></input>
-                </td>
-              </tr>
-            </table>
-          </div>
+          <!--<h2>Reservation settings</h2>-->
+          <!--<div class="subctnt">-->
+            <!--</div>-->
         </div>
 
         </div>
@@ -127,6 +83,13 @@
   <h1>New invoice type</h1>
   <b style="color:white">Name:</b> <input type="text" id="newitypename" style="width:80px"/>
   <input type="submit" value="Add" onclick="addNewIType()"/>
+</div>
+<div class="zakmodal" style="display:none" id="modIType">
+  <h1>Modify invoice type</h1>
+  <b style="color:white">Name:</b> <input type="text" id="moditypename" style="width:80px"/>
+  <input type="hidden" id="moditypeid"></input>
+  <input type="submit" value="Update" onclick="modIType()"/>
+  <input type="submit" value="Cancel" onclick="$.modal.close()"/>
 </div>
 <div class="zakmodal" style="display:none" id="delItypeDiv">
   <h1>Deleting invoice type</h1>

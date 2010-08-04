@@ -48,7 +48,8 @@ $(SRCJSDIR)/cm/pgsearch.js: $(PGSEARCH)
 	rm temp.uncompressed
 
 PGINV= $(SRCJSDIR)/cm/j.js $(SRCJSDIR)/commons.js $(SRCJSDIR)/propsbase.js \
-	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js $(SRCJSDIR)/tabbase.js $(SRCJSDIR)/resbase.js $(SRCJSDIR)/invoice.js
+	   $(SRCJSDIR)/ll.js $(SRCJSDIR)/dates.js \
+	   $(SRCJSDIR)/newinvoice.js $(SRCJSDIR)/jquery/jquery.base64.js
 $(SRCJSDIR)/cm/pginvoice.js: $(PGINV)
 	cat $^ > temp.uncompressed
 	jszip temp.uncompressed $@

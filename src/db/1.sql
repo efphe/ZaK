@@ -174,11 +174,6 @@ for each row begin
     delete from invoice where id_reservation= OLD.id; 
     delete from rcustomer where id_reservation= OLD.id; 
 end;; 
-create trigger occupancy_d
-before delete on occupancy 
-for each row begin  
-    delete from invoice where id_occupancy= OLD.id; 
-end;; 
 create trigger invoice_type_d
 before delete on invoice_type for each row begin
   update invoice set id_invoice_type = null where id_invoice_type = OLD.id;
