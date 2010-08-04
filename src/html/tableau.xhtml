@@ -49,12 +49,12 @@
           <a href="#edit" style="background-image:url(/imgs/mns/newres.png)">Add new</a>
       </li>
   </ul>
-  <ul id="menuRc" class="contextMenu">
+  <ul id="menuRes" class="contextMenu">
       <li class="edit">
           <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
       </li>
       <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Checkin</a>
+          <a href="#status" style="background-image:url(/imgs/mns/modres.png)">Status</a>
       </li>
       <li class="edit">
           <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
@@ -66,63 +66,77 @@
           <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
       </li>
   </ul>
-  <ul id="menuRi" class="contextMenu">
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
-      </li>
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/ckores.png)">Checkout</a>
-      </li>
-      <li class="edit">
-          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
-      </li>
-      <li class="edit">
-          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
-      </li>
-      <li class="edit">
-          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
-      </li>
-  </ul>
-  <ul id="menuRn" class="contextMenu">
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>
-      </li>
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/ckires.png)">Checkin</a>
-      </li>
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
-      </li>
-      <li class="edit">
-          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
-      </li>
-      <li class="edit">
-          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
-      </li>
-      <li class="edit">
-          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
-      </li>
-  </ul>
-  <ul id="menuRp" class="contextMenu">
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>
-      </li>
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/ckires.png)">Checkin</a>
-      </li>
-      <li class="edit">
-          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
-      </li>
-      <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
-      </li>
-      <li class="edit">
-          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
-      </li>
-      <li class="edit">
-          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
-      </li>
-  </ul>
+  <!--<ul id="menuRc" class="contextMenu">-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#status" style="background-image:url(/imgs/mns/modres.png)">Status</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+  <!--<ul id="menuRi" class="contextMenu">-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+  <!--<ul id="menuRn" class="contextMenu">-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#status" style="background-image:url(/imgs/mns/modres.png)">Status</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+  <!--<ul id="menuRp" class="contextMenu">-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/cnfres.png)">Confirm</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#status" style="background-image:url(/imgs/mns/modres.png)">Status</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>-->
+    <!--</li>-->
+    <!--<li class="edit">-->
+    <!--<a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>-->
+    <!--</li>-->
+    <!--</ul>-->
 </div>
 
 <div id="addNewReservation" style="display:none" class="zakmodal">
@@ -236,12 +250,28 @@
   <br/>
   <b style="color:white">New lenght:</b> <input readonly="readonly" type="text" id="new_days" style="width:40px"/>
   <div style="margin:5px 0 5px 0;" id="slider"><div id="true_slider"></div></div>
+  <input type="hidden" id="resize_rid"></input>
+  <input type="hidden" id="resize_oid"></input>
   <input type="submit" value="Change lenght" onclick="changeOccupancyLenght()"/>
+</div>
+
+<div class="zakmodal" style="display:none" id="statusdiv">
+  <b style="color:white">New status:</b> <select id="cmbstatus_mod">
+      <option value="1">Confirmed</option>
+      <option value="2">Not confirmed</option>
+      <option value="3">Checkin'ed</option>
+      <option value="4">Option</option>
+    </select>
+  <input type="submit" value="Update" onclick="updateReservationStatus()"></input>
+  <input type="hidden" id="status_rrid"></input>
+  <input type="hidden" id="status_rid"></input>
 </div>
 
 <div class="zakmodal" style="display:none" id="postpone_div">
   <b style="color:white">Days:</b> <select id="postpone_days"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
   <br/>
+  <input type="hidden" id="postpone_rid"></input>
+  <input type="hidden" id="postpone_oid"></input>
   <input type="submit" value="Postpone" onclick="postponeOccupancy()"/>
 </div>
 

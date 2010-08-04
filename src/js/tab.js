@@ -152,9 +152,10 @@ function initDrag() {
 function _menuOidRidXY(e) {
   oid= parseInt($(e).attr('data-oid'));
   rid= parseInt($(e).parent().attr('data-rid'));
+  resid= parseInt($(e).attr('data-rid'));
   x= $(e).offset().left;
   y= $(e).offset().top;
-  return {oid: oid, rid: rid, x: x, y: y};
+  return {resid: resid, oid: oid, rid: rid, x: x, y: y};
 }
 
 function _menuDeleteOcc(a,e,p) {
@@ -191,9 +192,9 @@ function _menuResizeOcc(a,e,p) {
   y= $(e).offset().top;
   $('#actual_days').html('Actual days: ' + oclen);
   $('#new_days').val(oclen);
+  $('#resize_rid').val(rid);
+  $('#resize_oid').val(oid);
   $('#sliderdiv').modal({position: [y,x]});
-  localStorage.resizeOccupancyOid= oid;
-  localStorage.resizeOccupancyRid= rid;
 }
 
 function _menuPostpone(a,e,p) {
@@ -202,27 +203,56 @@ function _menuPostpone(a,e,p) {
   var rid= d['rid'];
   var x= d['x'];
   var y= d['y'];
-  localStorage.postponeOccupancyOid= oid;
-  localStorage.postponeOccupancyRid= rid;
+  $('#postpone_rid').val(rid);
+  $('#postpone_oid').val(oid);
   $('#postpone_div').modal({position: [y,x]});
+}
+function _menuStatus(a,e,p) {
+  var d= _menuOidRidXY(e);
+  var oid= d['oid'];
+  var rid= d['resid'];
+  var x= d['x'];
+  var y= d['y'];
+  var roomid= false;
+  for (var rrid in zakTableau.rooms) {
+    var occ= zakTableau.rooms[rrid].getOccupancy(oid);
+    if (occ) {
+      $('#cmbstatus_mod').val(occ.status);
+      roomid= rrid;
+      break
+    }
+  }
+  $('#status_rid').val(rid);
+  $('#status_rrid').val(roomid);
+  $('#statusdiv').modal({position: [y,x]});
+}
+
+function updateReservationStatus() {
+  var rid= $('#status_rid').val();
+  var rrid= $('#status_rrid').val();
+  var s= $('#cmbstatus_mod').val();
+  console.log('Updating rstatus: ' + rid);
+  llChangeReservationStatus(rid, s,
+    function(ses, recs) {
+      humanMsg.displayMsg('Sounds good');
+      /*window.location.reload(false);*/
+      zakTableau.loadRooms([rrid], function() {humanMsg.displayMsg('Sounds good');});
+      $.modal.close();
+    },
+    function(ses, err) {
+      humanMsg.displayMsg('Error there: ' + err.message, 1);
+      $.modal.close();
+    });
 }
 
 function postponeOccupancy() {
-  var oid= localStorage.postponeOccupancyOid;
-  var rid= localStorage.postponeOccupancyRid;
+  var oid= $('#postpone_oid').val();
+  var rid= $('#postpone_rid').val();
   var ndays= $('#postpone_days').val();
   $.modal.close();
   var occ= zakTableau.rooms[rid].getOccupancy(oid);
   var newdfrom= dateAddDays(occ['dfrom'], ndays);
   var newdto= dateAddDays(occ['dto'], ndays);
-
-  /*llModOccupancy(oid, {dfrom: unixDate(newdfrom), dto: unixDate(newdto)},*/
-  /*function(ses, recs) {*/
-  /*zakTableau.loadRooms([rid]);*/
-  /*},*/
-  /*function(ses, err) {*/
-  /*humanMsg.displayMsg('Error: ' + err.message);*/
-  /*});*/
 
   llMoveOccupancy(oid, newdfrom, newdto, rid, 
     function(ses, recs) {
@@ -250,6 +280,8 @@ function _sameMenu(a,e,p) {
     return _menuResizeOcc(a,e,p);
   if (a == 'postpone') 
     return _menuPostpone(a,e,p);
+  if (a == 'status')
+    return _menuStatus(a,e,p);
 }
 
 function initMenu() {
@@ -260,23 +292,23 @@ function initMenu() {
       addNewReservation();
     }
   );
-  $('td.menurc').contextMenu({menu: 'menuRc'}, function(a,e,p) {
+  $('td.menurc').contextMenu({menu: 'menuRes'}, function(a,e,p) {
     return _sameMenu(a,e,p);
   });
-  $('td.menuri').contextMenu({menu: 'menuRi'}, function(a,e,p) {
+  $('td.menuri').contextMenu({menu: 'menuRes'}, function(a,e,p) {
     return _sameMenu(a,e,p);
   });
-  $('td.menurn').contextMenu({menu: 'menuRi'}, function(a,e,p) {
+  $('td.menurn').contextMenu({menu: 'menuRes'}, function(a,e,p) {
     return _sameMenu(a,e,p);
   });
-  $('td.menurp').contextMenu({menu: 'menuRi'}, function(a,e,p) {
+  $('td.menurp').contextMenu({menu: 'menuRes'}, function(a,e,p) {
     return _sameMenu(a,e,p);
   });
 }
 
 function changeOccupancyLenght() {
-  var oid= localStorage.resizeOccupancyOid;
-  var rid= localStorage.resizeOccupancyRid;
+  var oid= $('#resize_oid').val();
+  var rid= $('#resize_rid').val();
   var newlen= $('#new_days').val();
   console.log('Destroying slider...');
   $('#true_slider').slider('destroy');

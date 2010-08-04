@@ -433,4 +433,3 @@ function goInvoice(rid) {
       });
   });
 }
-

@@ -907,3 +907,15 @@ function llSaveInvoice(rid, html, n, head, chead, itype, cb, cbe) {
     ses.executeSql(q, [n,h,rid,year,head,chead,itype], cb, cbe);
   });
 }
+
+function llChangeReservationStatus(rid, s, cb, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    console.log([s,rid]);
+    ses.executeSql('update occupancy set status = ? where id_reservation = ?', [s,rid], 
+      function(ses, recs) {
+        ses.executeSql('update reservation set status = ? where id = ?', [s, rid], cb, cbe);
+      }, 
+      cbe);
+  });
+}

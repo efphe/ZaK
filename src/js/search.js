@@ -350,17 +350,13 @@ function changeResevationStatus(rid) {
   if (newst != parseInt(newst)) {
     return;
   }
-  var db= zakOpenDb();
-  db.transaction(function(ses) {
-    ses.executeSql('update occupancy set status = ? where id_reservation = ?', [newst,rid],
+  llChangeReservationStatus(rid, newst,
       function(ses, recs) {
         humanMsg.displayMsg('Sounds good');
       },
       function(ses, err) {
         humanMsg.displayMsg('Error there: ' + err.message);
       });
-  });
-
 }
 
 function checkAvailability() {
