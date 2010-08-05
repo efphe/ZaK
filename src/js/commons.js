@@ -40,11 +40,18 @@ function zakOpenDb(v, sync) {
 };
 
 function _zakloop(tx, queries, cbs, cbe) {
-  if (zakCountArrayDb == zakCountArrayNb -1 ) return;
+  /*if (zakCountArrayDb == zakCountArrayNb ) return;*/
+  /*console.log(queries);*/
+  /*console.log(queries);*/
+  /*return;*/
   var s= queries[zakCountArrayDb];
+  /*console.log('Now query loop');*/
+  /*console.log(s);*/
   zakCountArrayDb+= 1;
-  if (zakCountArrayDb == zakCountArrayNb -1 ) 
+  if (zakCountArrayDb == zakCountArrayNb) {
+    /*console.log(queries);*/
     tx.executeSql(s, new Array(), cbs, cbe);
+  }
   else
     tx.executeSql(s, new Array(), function(tx, recs) {_zakloop(tx, queries, cbs, cbe)}, cbe);
 };
@@ -54,7 +61,12 @@ function safeExecuteSql(ses, sql, params, scb) {
 }
 
 function arrayQueries(ses, ssql, cbs, cbe) {
-  var queries= ssql.split(';;');
+  var _queries= ssql.split(';;');
+  var queries= [];
+  for (var i= 0; i< _queries.length; i++) {
+    var q= _queries[i];
+    if (q.trim()) queries.push(q);
+  }
   zakCountArrayDb= 0;
   zakCountArrayNb= queries.length;
   _zakloop(ses, queries, function(ses, recs) {cbs(ses, recs);}, function(ses, err) {cbe(ses, err);});
@@ -65,7 +77,7 @@ function changeZakVersion(sqlstr, tov, cbs, cbe) {
   dbv= db.version;
   console.log('Migrating Version: ' + dbv + ' to ' + tov);
   db.changeVersion(dbv, tov, function(t) {
-    arrayQueries(t, sqlstr, function(ses, recs) {cbs(ses, recs);}, function(ses, err) {cbe(ses, err);});
+    arrayQueries(t, sqlstr, cbs, cbe);
   });
 }
 

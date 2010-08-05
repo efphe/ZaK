@@ -145,7 +145,6 @@ before delete on property for each row begin
     delete from room WHERE room.id_property = OLD.id;  
     delete from reservation where reservation.id_property= OLD.id; 
     delete from psettings where psettings.id_property = OLD.id;
-    delete from invoice where id_property= OLD.id; 
 end;; 
 create trigger pricing_d
 before delete on pricing  
