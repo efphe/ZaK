@@ -140,40 +140,40 @@ create table invoice (
   foreign key(id_reservation) references reservation(id) on delete set null
 );;
 -- triggers --
-create trigger property_d
+create trigger if not exists property_d
 before delete on property for each row begin  
     delete from room WHERE room.id_property = OLD.id;  
     delete from reservation where reservation.id_property= OLD.id; 
     delete from psettings where psettings.id_property = OLD.id;
 end;; 
-create trigger pricing_d
+create trigger if not exists pricing_d
 before delete on pricing  
 for each row begin  
     delete from pricing_periods WHERE pricing_periods.id_pricing = OLD.id;  
 end;; 
-create trigger room_d
+create trigger if not exists room_d
 before delete on room  
 for each row begin  
     delete from occupancy where id_room = OLD.id;  
 end;; 
-create trigger room_setup_d
+create trigger if not exists room_setup_d
 before delete on room_setup  
 for each row begin  
     update occupancy set id_room_setup= null where occupancy.id_room_setup = OLD.id; 
 end;; 
-create trigger customer_d
+create trigger if not exists customer_d
 before delete on customer  
 for each row begin  
   delete from rcustomer where id_customer = OLD.id;
 end;; 
-create trigger reservation_d
+create trigger if not exists reservation_d
 before delete on reservation 
 for each row begin  
     delete from occupancy where id_reservation= OLD.id; 
     delete from invoice where id_reservation= OLD.id; 
     delete from rcustomer where id_reservation= OLD.id; 
 end;; 
-create trigger invoice_type_d
+create trigger if not exists invoice_type_d
 before delete on invoice_type for each row begin
   update invoice set id_invoice_type = null where id_invoice_type = OLD.id;
 end;;

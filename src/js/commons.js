@@ -159,7 +159,7 @@ function selectPropertiesInit() {
       });
     },
     function(ses, err) {
-      humanMsg('Error Select Properties', 1);
+      humanMsg.displayMsg('Error Select Properties', 1);
     }
   );
 }
