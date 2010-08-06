@@ -138,7 +138,7 @@ function selectPropertiesInit() {
       var res= '';
       var i= 0;
       var aprop= getActiveProperty();
-      console.log('Selecting with active= ' + aprop);
+      /*console.log('Selecting with active= ' + aprop);*/
       $('.putPropertyname').each(function(idx, el) {
         $(this).append(aprop['name'] || 'Property');
       });

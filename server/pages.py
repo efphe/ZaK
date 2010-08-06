@@ -93,11 +93,19 @@ class AdminNotSupported(rend.Page):
 class ZakAdmin(rend.Page):
   docFactory= loaders.xmlstr("""<html> 
   <head> 
+    <style>
+      #humanMsgLog, #humanMsgErr, #humanMsg, #tmplmadd {
+        display:none;
+      }
+    </style>
     <script src="/js/cm/pginit.js"></script> 
   </head> 
   <body> 
-    Welcome there.<br /> 
-    Now initializing Zak <span id="dots"></span> 
+  <div>
+    <img src="http://localhost:11311/imgs/zak.png"></img>
+  </div>
+  <br/>
+    <b>Welcome</b>:<br/> please wait, Zak is loading... <img src="/imgs/lgear.gif"></img>
   </body> 
 </html>""")
 
