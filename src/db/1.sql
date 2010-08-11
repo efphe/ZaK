@@ -87,6 +87,7 @@ create table reservation (
   remarks text default '', 
   extras text default '',
   custom_pricing text default '',
+  provenience text default '',
   meals text default '',
  
   foreign key(id_property) references property(id) on delete cascade 
@@ -110,6 +111,7 @@ create table occupancy (
   remarks text, 
   id_room_setup integer default null, 
   occupancy text,
+  provenience text default '',
   invoiced integer default 0,
  
   foreign key(id_room_setup) references room_setup(id) on delete set null, 

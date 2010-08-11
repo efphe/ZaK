@@ -263,16 +263,6 @@ function askNewProperty() {
 function initProperties() {
   console.log('Initializing Properties...');
   designRoomTypes();
-  /*llGetRoomTypes(function(ses, recs) {*/
-  /**//*$('#newroomtype').empty();*/
-  /*var res= '';*/
-  /*for (var i= 0;i < recs.rows.length;i++) {*/
-  /*var rec= recs.rows.item(i);*/
-  /**//*$('#newroomtype').append('<option value="' + rec.id + '">' + rec.name + '</option>');*/
-  /*res+= '<option value="' + rec.id + '">' + rec.name + '</option>';*/
-  /*}*/
-  /*$('.newroomtype').html(res);*/
-  /*});*/
   llGetProperties(
     function(ses, recs) {
       if (recs.rows.length < 1) {

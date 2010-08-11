@@ -34,7 +34,9 @@ class AdminTemplate(rend.Page):
   def render_contents(self, ctx, data):
     return loaders.xmlfile(_bdir + self.xmlfile)
   def render_js(self, ctx, data):
-    return self.jsorigin
+    if isinstance(self.jsorigin, list):
+      return [T.script(src= i) for i in self.jsorigin]
+    return [T.script(src= self.jsorigin)]
   def render_css(self, ctx, data):
     if self.cssorigin:
       if isinstance(self.cssorigin, str):

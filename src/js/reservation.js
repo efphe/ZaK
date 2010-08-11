@@ -9,6 +9,7 @@ _tempChildren= new Array();
 _tempExtras= {};
 _zakYourVat= false;
 _tempPricing= {};
+_tempTotal= 0.0;
 
 function getResExtras() {
   try {
@@ -75,27 +76,37 @@ function _designOccupancy(aocc) {
   }
 }
 
-function designExtras() {
+function designExtras(where) {
   var extras= getResExtras();
   if (extras.length == 0) {
-    $('#assignedExtras').empty();
+    $(where || '#assignedExtras').empty();
     return;
   }
   var res= '<table class="assignedExtras">', e;
   for (var i= 0; i< extras.length; i++) {
     e= extras[i];
-    res+= '<tr><td><b id="extra_id_' + e.id +'">' + e.name + '</b>:</td>'; 
-    res+= '<td><input class="extraHow" type="text" id="extra_how_' + e['id'];
-    res+= '" value="' + e['how'] + '"></input></td>'; 
-    res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'];
-    res+= '" value="' + parseFloat(e['cost']).toFixed(2) + '"></input></td>'; 
-    res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
-    res+= '</tr>';
+    if (!where) {
+      res+= '<tr><td><b id="extra_id_' + e.id +'">' + e.name + '</b>:</td>'; 
+      res+= '<td><input class="extraHow" type="text" id="extra_how_' + e['id'];
+      res+= '" value="' + e['how'] + '"></input></td>'; 
+      res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'];
+      res+= '" value="' + parseFloat(e['cost']).toFixed(2) + '"></input></td>'; 
+      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
+      res+= '</tr>';
+    } else {
+      res+= '<tr><td>' + e.name + '</td>'; 
+      res+= '<td>' + e.how + '</td>';
+      res+= '<td>' + parseFloat(e['cost']).toFixed(2) + '</td>';
+      res+= '</tr>';
+    }
+    _tempTotal+= parseFloat(e['cost']);
   }
-  res+= '<tr><td colspan="4" style="text-align:center">';
-  res+= '<input type="submit" value="Update extras" onclick="saveUpdatedExtras()">';
-  res+= '</input></td></tr></table>';
-  $('#assignedExtras').html(res);
+  if (!where) {
+    res+= '<tr><td colspan="4" style="text-align:center">';
+    res+= '<input type="submit" value="Update extras" onclick="saveUpdatedExtras()"></input></td></tr>';
+  }
+  res+= '</table>';
+  $(where || '#assignedExtras').html(res);
 }
 
 function loadRoomPricing(rid, prid) {
@@ -139,8 +150,8 @@ function getRoomPricing(room, prid, rprices) {
   return res;
 }
 
-function _desingPrices(prices) {
-  var res= '<thead class="pricing"><tr><th>Day</th>';
+function _desingPrices(prices, where, readonly) {
+  var res= '<thead class="pricing"><tr><th>Day/Room</th>';
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
     var rcode= zakEditReservation.rooms[i].code;
     res+= '<th>'+rcode+'</th>';
@@ -159,17 +170,23 @@ function _desingPrices(prices) {
   }
 
   function _inpRoom(dayidx, rid) {
-    var iid= ' id="price_' + rid + '_' + dayidx + '" ';
     var sty= ' style="width:50px" ';
-    var onc= ' onchange="computeRoomsAmount(' + rid + ')"' ;
-    return '<td><input ' + iid + sty + onc + 'type="text" value="' + _strPri(i, rid) + '"></input></td>';
+    if (readonly)
+      return '<td align="center">' + _strPri(i, rid) + '</td>';
+    else {
+      var iid= ' id="price_' + rid + '_' + dayidx + '" ';
+      var spri= parseFloat(_strPri(i, rid));
+      var onc= ' onchange="computeRoomsAmount(' + rid + ')"' ;
+      _tempTotal+= spri;
+      return '<td><input ' + iid + sty + onc + 'type="text" value="' + spri + '"></input></td>';
+    }
   }
 
   var cmbdaymeals= '';
   for (var i= 0; i< icycle; i++) {
     var std= _strDay(i);
     var sv= parseInt(zakEditReservation.dfrom) + (86400 * i);
-    tres= '<tr><td>' + std + '</td>';
+    tres= '<tr><td align="center">' + std + '</td>';
     cmbdaymeals+= '<option value="' + sv + '">' + std + '</option>';
     for (var j= 0; j< zakEditReservation.rooms.length; j++) {
       var rid= zakEditReservation.rooms[j].id;
@@ -178,14 +195,16 @@ function _desingPrices(prices) {
     tres+= '</tr>';
     res+= tres;
   }
-  $('#cmbdaymeals').html('<option value="" selected="selected">Each day</option>' + cmbdaymeals);
-  res+= '<tr><td><b id="total_sum">...</b></td>';
-  for (var i= 0; i< zakEditReservation.rooms.length; i++) {
-    var rid= zakEditReservation.rooms[i].id;
-    res+= '<td><b id="partial_sum_' + rid + '">...</b></td>';
+  if (!readonly) {
+    $('#cmbdaymeals').html('<option value="" selected="selected">Each day</option>' + cmbdaymeals);
+    res+= '<tr><td><b id="total_sum">...</b></td>';
+    for (var i= 0; i< zakEditReservation.rooms.length; i++) {
+      var rid= zakEditReservation.rooms[i].id;
+      res+= '<td><b id="partial_sum_' + rid + '">...</b></td>';
+    }
   }
   res+= '</tr>';
-  $('#tablepricing').html(res);
+  $(where || '#tablepricing').html(res);
   computeRoomsAmount();
 }
 
@@ -229,14 +248,14 @@ function changeOccupancy() {
   designOccupancy();
 }
 
-function designPrices(prid, onlyroom) {
+function designPrices(prid, onlyroom, where, readonly) {
   /* make sure pricing info is loaded */
   console.log('Writing prices: prid= ' + prid + ', onlyroom: ' + onlyroom);
   if (prid && !_tempPricing[prid]) {
     llGetDatedPricing(prid, zakEditReservation.dfrom, zakEditReservation.dto, 1,
       function(pps) {
         _tempPricing[prid]= pps;
-        designPrices(prid, onlyroom);
+        designPrices(prid, onlyroom, where, readonly);
       }, 
       function(ses, err) {
         humanMsg.displayMsg('Bad error there: '+ err.message);
@@ -265,7 +284,7 @@ function designPrices(prid, onlyroom) {
       res[room.id]= roomprices;
     }
   }
-  _desingPrices(res);
+  _desingPrices(res, where, readonly);
 }
 
 function designCmbPricing() {
@@ -318,43 +337,53 @@ function designVariations() {
   });
 }
 
-function subTableMeals(meals, day) {
+function subTableMeals(meals, day, readonly) {
   var sday= strDate(parseInt(day), 'd/m');
   var res= '';
   for (var i= 0; i< meals.length; i++) {
     res+= '<tr><td>' + sday + '</td>';
     var meal= meals[i];
-    res+= '<td><b>' + meal.name + '</b></td>';
+    res+= '<td>' + meal.name + '</td>';
 
     var mid= day + '_' + meal.id;
 
-    res+= '<td><input id="mhow_' + mid + '" type="text" ';
-    res+= 'style="width:40px" value="' + meal.how + '"></input></td>';
+    if (!readonly) {
+      res+= '<td><input id="mhow_' + mid + '" type="text" ';
+      res+= 'style="width:40px" value="' + meal.how + '"></input></td>';
 
-    res+= '<td><input id="mprice_' + mid + '" type="text" ';
-    res+= 'style="width:40px" value="' + meal.cprice + '"></input></td>';
+      res+= '<td><input id="mprice_' + mid + '" type="text" ';
+      res+= 'style="width:40px" value="' + meal.cprice + '"></input></td>';
 
-    res+= '<td><input type="submit" value="Delete" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
+      res+= '<td><input type="submit" value="Delete" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
+    } else {
+      res+= '<td align="center">' + meal.how + '</td>';
+      res+= '<td align="center">' + meal.cprice + '</td>';
+    }
+    _tempTotal+= parseFloat(meal.cprice);
 
     res+= '</tr>';
   }
   return res;
 }
 
-function designMealTables() {
+function designMealTables(where, wherediv) {
   var meals= getResMeals();
-  var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
+  if (!where) 
+    var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
+  else
+    var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th></tr></thead>';
   console.log('meals: ');
   gigi= meals;
   something= false;
   for (var k in meals) {
     something= true;
-    res+= subTableMeals(meals[k], k);
+    res+= subTableMeals(meals[k], k, where);
   }
-  res+= '<tr><td colspan="5"><input type="submit" value="Update" onclick="updateMeals()"></input></tr>';
-  $('#tablemeals').html(res);
-  if (something) $('#meals_div').show();
-  else $('#meals_div').hide();
+  if (!where)
+    res+= '<tr><td colspan="5"><input type="submit" value="Update" onclick="updateMeals()"></input></tr>';
+  $(where || '#tablemeals').html(res);
+  if (something) $(wherediv || '#meals_div').show();
+  else $(wherediv || '#meals_div').hide();
 }
 
 function designReservation(noOccupancy) {
@@ -1237,3 +1266,79 @@ function editInvoice() {
 $(document).ready(function() {
   designReservation();
 });
+
+/* plugin YouBook */
+
+$(document).ready(function() {
+  $('#right_reservation').prepend('<input type="submit" style="float:right;margin:5px" value="YouBook" onclick="youBookPreview()"></input>');
+});
+function youBookPreview() {
+  $('#youbook').remove();
+  var res= '<div id="youbook">';
+  res+= '<input style="float:right;margin:5px" type="submit" value="Send mail" onclick="youBookSendPreview()"></input>';
+  res+= '<h1>' + getActiveProperty().name +': Resevation Preview</h1>';
+  res+= '<p><span id="pre_message">';
+  res+= '<a href="javascript:youBookWritePreMessage()"><img src="/zhimgs/pencil.png"></img></a> ';
+  res+= '<span id="pre_message_text">Dear ' + $('#ocustomer').val() + '...</span></p>';
+  res+= '<span id="pre_message_edit" style="display:none">';
+  res+= '<a href="javascript:youBookWrotePreMessage()">';
+  res+= '<img style="vertical-align:top;margin:2px" src="/zhimgs/close.png"></img></a>';
+  res+= '<textarea rows="4" style="width:80%" id="pre_message_edit_text"></textarea></span>';
+  res+= '<h2 style="color:#BD0000">Resume</h2>';
+  res+= '<table><tr>';
+  res+= '<td>Arrival date:</td><td>' + strDate(zakEditReservation.dfrom) + '</td>';
+  res+= '</tr><tr>';
+  res+= '<td>Departure date:</td><td>' + strDate(zakEditReservation.dto) + '</td>';
+  res+= '</tr><tr>';
+  res+= '<td>Amount:</td><td>' + parseFloat(_tempTotal).toFixed(2) + '</td>';
+  res+= '</tr></table>';
+  res+= '<h2 style="color:#BD0000">Rooms pricing</h2>';
+  res+= '<table id="youbook_pricing"></table>';
+  res+= '<br/>';
+  res+= '<div id="youbook_meals_div" style="display:none"><h2 style="color:#BD0000">Meals pricing</h2>';
+  res+= '<table id="youbook_meals"></table>';
+  res+= '</div>';
+  res+= '<br/>';
+  res+= '<div id="youbook_extras_div" style="display:none"><h2 style="color:#BD0000">Extras</h2>';
+  res+= '<table id="youbook_extras"></table>';
+  res+= '</div>';
+  res+= '</div>';
+  $(res).dialog({width: '600px', height: 'auto', position: 'top'});
+  designPrices(false, false, '#youbook_pricing', true);
+  designMealTables('#youbook_meals', '#youbook_meals_div');
+  var extras= getResExtras();
+  if (extras.length != 0) {
+    designExtras('#youbook_extras');
+    $('#youbook_extras_div').show();
+  }
+}
+
+function youBookWritePreMessage() {
+  var msg= $('#pre_message_text').html();
+  $('#pre_message').hide();
+  $('#pre_message_edit_text').val(msg);
+  $('#pre_message_edit').show();
+}
+function youBookWrotePreMessage() {
+  var mst= $('#pre_message_edit_text').val();
+  var msg= $('#pre_message_text').html(mst);
+  $('#pre_message').show();
+  $('#pre_message_edit').hide();
+}
+
+function youBookSendPreview() {
+  $.modal.close();
+  $('#youbook_send_preview').remove();
+  var res= '<div id="youbook_send_preview" class="zakmodalfree" style="background-color:#ccc">';
+  res+= '<h2>Sending reservation preview</h2>';
+  res+= '<table><tr>';
+  res+= '<td>Mail subject:</td><td><input style="width:200px" type="text" value="' + getActiveProperty().name +': Resevation Preview"></input></td>';
+  res+= '</tr><tr>';
+  res+= '<td>Mail address:</td><td><input style="width:200px" type="text" name="youbook_mail"></input></td>';
+  res+= '</tr><tr>';
+  res+= '<td colspan="2" align="center"><input type="submit" value="Send mail" onclick="youBookSendPreviewMail()"></input><img src="/imgs/lgear.gif"></img></td>';
+  res+= '</tr></table>';
+  res+= '</div>';
+  /*$(res).modal();*/
+  $(res).dialog({width: 'auto', height: 'auto'});
+};

@@ -69,7 +69,7 @@ function arrayQueries(ses, ssql, cbs, cbe) {
   }
   zakCountArrayDb= 0;
   zakCountArrayNb= queries.length;
-  _zakloop(ses, queries, function(ses, recs) {cbs(ses, recs);}, function(ses, err) {cbe(ses, err);});
+  _zakloop(ses, queries, cbs, cbe);
 }
 
 function changeZakVersion(sqlstr, tov, cbs, cbe) {
