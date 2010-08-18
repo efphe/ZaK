@@ -1,6 +1,7 @@
 create table property ( 
   id integer primary key asc, 
   name text, 
+  currency text,
   active integer default 0
 );; 
 create table psettings (

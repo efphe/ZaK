@@ -410,7 +410,7 @@ function goDetails(rid) {
         var oid= recs.rows.item(0).id;
         localStorage.editOccupancyOid= oid;
         localStorage.editOccupancyRid= rid;
-        goToSameDirPage('book');
+        goToSameDirPage('reservation');
       },
       function(ses, err) {
         humanMsg.displayMsg('Error there: ' + err.message);

@@ -126,7 +126,28 @@
   <div id="newProperty" class="zakmodal">
     <h1>Please, add a new property</h1>
     <h2>Just enter your property name</h2>
-    Property Name: <input type="text" id="newpropertyname"></input>
+    <table>
+      <tr>
+        <td>
+          Property Name: 
+        </td>
+        <td>
+          <input type="text" id="newpropertyname"></input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Currency: 
+        </td>
+        <td>
+          <select id="newpropertycur">
+            <option value="1">Euro (&#8364;)</option>
+            <option value="2">Dollar ($)</option>
+            <option value="3">Pound (&#163;)</option>
+          </select>
+        </td>
+      </tr>
+    </table>
     <br/>
     <br/>
     <a style="color:#36ff00;font-weight:bold" href="javascript:addNewProperty()">Add this property</a> 

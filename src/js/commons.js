@@ -269,3 +269,11 @@ function addArray(src, dst) {
 function getPropertySettings(cb) {
   llGetPropertySettings(getActiveProperty()['id'], cb);
 }
+
+function getCurrency() {
+  var cur= getActiveProperty()['currency'];
+  if (cur == 1) return '&#8364;';
+  if (cur == 2) return '$';
+  if (cur == 3) return '&#163;';
+  return cur;
+}

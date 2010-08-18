@@ -66,7 +66,7 @@ class AdminSettings(AdminTemplate):
 
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
-  xmlfile= 'src/html/res.xhtml'
+  xmlfile= 'src/html/reservation.xhtml'
   cssorigin= '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminSearch(AdminTemplate):
@@ -116,7 +116,7 @@ class ZakAdmin(rend.Page):
     self.children= {
         'dashboard': AdminProperties(),
         'tableau': AdminTableau(),
-        'book': AdminReservation(),
+        'reservation': AdminReservation(),
         'js': JsDispenser,
         'css': CssDispenser,
         'imgs': ImgDispenser,

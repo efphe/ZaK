@@ -1,118 +1,262 @@
-_vatPerc= false;
-$(document).ready(function() {
-  var ib= JSON.parse(localStorage.invoiceBuilding);
-  var rid= ib.rid;
-  var oid= ib.oid;
-  llGetInvoice(rid, oid,
-    function(record) {
-      var cust= record.icustomer || record.customer;
-      var ivat= record.ivat || '';
-      var idate= record.idate || $.datepicker.formatDate('D M yy', new Date());
-      $('#customer').val(cust);
-      $('#vat').val(ivat);
-      $('#date').val(idate);
-      getPropertySettings(function(ses, sets) {
-        /* id is id invoice, id is not selected from other
-         * tables by llGetInvoice */
-        if (!record.id) {
-          $('#buthandler').show();
-          $('#header').val(sets.vatheader);
-        } else {
-          $('#header').val(record.iheader || '');
-        }
-        $('#vatname').val(sets.vatname);
-        _vatPerc= sets.vatperc;
-      });
+invoiceReservation= false;
+invoiceItems= [];
+invoiceSettings= '';
+invoiceN= 0;
 
-    });
+function _zakRoomName(rid) {
+  for (i= 0; i< invoiceReservation.rooms.length; i++) {
+    var room= invoiceReservation.rooms[i];
+    if (room.id == rid) return room.name;
+  }
+  return '??';
+}
 
-  llGetReservation(rid, oid, 
-    function(res) {
-    },
-    function(ses, err) {
-      console.log('Error there: ' + err.message);
-    });
+function designFinal() {
+  var tot= 0.0;
+  var nettot= 0.0;
+  for (var i= 0; i< invoiceItems.length; i++) {
+    var ii= invoiceItems[i];
+    var itot= parseFloat(ii.tot);
+    tot+= itot;
+    nettot+= itot / (1.0 + (ii.vat/100.0));
+  }
+  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Total', 'margin-left:30px;margin-top:2px'));
+};
 
-  /* graphic details */
-  $('.hovergreen').hover(
-    function(ev) {
-      $(this).css('background-color', '#daffa9');
-    },
-    function(ev) {
-      $(this).css('background-color', 'white');
+function _getPartial(tot, vat, name, addst) {
+  var netrate= tot / (1.0 + (vat/100.0));
+  var netvat= tot - netrate;
+  var st= 'float:right;margin-top:20px;';
+  if (addst) st+= addst;
+  var res= '<div style="' + st + '"><table><tr><td>' + name;
+  res+= '</td><td>' + netrate.toFixed(2) + '</td></tr>';
+  res+= '<tr><td>Vat taxes:</td><td>' + netvat.toFixed(2) + '</td></tr>';
+  res+= '<tr><td><b>Total:</b></td><td><b>' + tot.toFixed(2) + ' ' + getCurrency() + '</b></td></tr>';
+  res+= '</table></div>';
+  return res;
+}
+
+function checkFinal() {
+  invoiceN-= 1;
+  if (invoiceN == 0) designFinal();
+}
+
+function designInvoiceRooms() {
+  console.log('Designing pricing');
+  var pricing= invoiceReservation.custom_pricing;
+  if (!pricing) {
+    $('#rooms_table').hide();
+    $('#title_rooms').hide();
+    checkFinal(); 
+    return;
+  }
+  try {pricing= JSON.parse(pricing)} catch(e) {
+    $('#rooms_table').hide();
+    $('#title_rooms').hide();
+    checkFinal();
+    return;
+  };
+  for (var k in pricing) {
+    var rlen= pricing[k].length;
+    break
+  }
+  var tot= 0.0;
+  var dtot= {};
+  var res= '<table><tr><td></td>';
+  for (var k in pricing) {
+    res+= '<td>' + _zakRoomName(pricing[k][0]) + '</td>';
+  }
+  res+= '<td></td></tr><tr>';
+  for (var i= 1; i< rlen; i++) {
+    var day= invoiceReservation.dfrom + (86400 * (i-1));
+    day= strDate(day, 'd/m');
+    res+= '<td>' + day + '</td>';
+    for (k in pricing) {
+      var pri= parseFloat(pricing[k][i]);
+      res+= '<td>' + pri + '</td>';
+      tot+= pri;
+      if (dtot[k]) dtot[k]+= parseFloat(pri);
+      else dtot[k]= parseFloat(pri);
     }
-  );
+    res+= '<td></td></tr>';
+  }
+  res+= '<tr><td>Tot.</td>';
+  for (var k in dtot) {
+    res+= '<td>' + dtot[k] + '</td>';
+  }
+  res+= '<td><b>' + tot + '</b></td></tr>';
+  $('#rooms_table').html(res);
+  var rvat= parseFloat(invoiceSettings.vatSettingsPerc);
+  $('#title_rooms').prepend(_getPartial(tot, rvat, 'Rooms'));
+  invoiceItems.push( {tot: tot, vat: rvat, title: 'Rooms'} ); 
+  checkFinal();
+}
 
-});
+function designMeals() {
+  var meals= invoiceReservation.meals;
+  if (!meals) {
+    $('#meals_table').hide();
+    $('#title_meals').hide();
+    checkFinal();
+    return;
+  }
+  try {meals= JSON.parse(meals);} catch(e) {
+    $('#meals_table').hide();
+    $('#title_meals').hide();
+    checkFinal();
+    return;
+  }
+  if (!meals) {
+    $('#meals_table').hide();
+    $('#title_meals').hide();
+    checkFinal();
+    return;
+  }
+  var tot= 0.0;
+  var nettot= 0.0;
+  var res= '<table>';
+  for (var day in meals) {
+    var sday= strDate(parseInt(day), 'd/m');
+    var daymeals= meals[day];
+    for (var i= 0; i< daymeals.length; i++) {
+      var daymeal= daymeals[i];
+      var pri= parseFloat(daymeal.price);
+      tot+= pri;
+      nettot+= pri / (1.0 + (daymeal.vat/100.0));
+      if (i == 0)
+        res+= '<tr><td>' + sday + '</td>';
+      else
+        res+= '<tr><td></td>';
+      /*res+= '<td>' + daymeal.how + ' X </td>';*/
+      res+= '<td>' + daymeal.name + ' (' + daymeal.how + 'x) </td>';
+      res+= '<td>' + pri + '</td>';
+      res+= '</tr>';
+    }
+  }
+  res+= '<tr><td colspan="2" align="center">Total</td><td><b>' + tot + '</b></td>';
+  res+= '</table>';
+  $('#meals_table').html(res);
+  $('#title_meals').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Meals'));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Meals'} ); 
+  /*console.log(meals);*/
+  checkFinal();
+}
 
+function designExtras() {
+  var extras= invoiceReservation.extras;
+  if (!extras) {
+    $('#extras_table').hide();
+    $('#title_extras').hide();
+    checkFinal(); 
+    return;
+  }
+  try {
+    extras= JSON.parse(extras);
+  } catch(e) {
+    $('#extras_table').hide();
+    $('#title_extras').hide();
+    checkFinal(); 
+    return;
+  };
+  if (!extras) {
+    $('#extras_table').hide();
+    $('#title_extras').hide();
+    checkFinal();
+    return;
+  };
+  var tot= 0.0;
+  var nettot= 0.0;
+  var res= '<table>';
+  for (var i= 0; i< extras.length; i++) {
+    var ex= extras[i];
+    var pri= parseFloat(ex.cost);
+    tot+= pri;
+    nettot+= pri / (1.0 + (ex.vat/100.0));
+    res+= '<tr><td>' + ex.name + '(' + ex.how + 'x)</td><td>' + pri.toFixed(2) + '</td></tr>';
+  }
+  res+= '<tr><td>Total</td><td><b>' + tot.toFixed(2) + '</b></td>';
+  res+= '</table>';
+  $('#extras_table').html(res);
+  $('#title_extras').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Extras'));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Extras'} ); 
+  /*console.log(extras);*/
+  checkFinal();
+}
 
-
-/*$(document).ready(function() {*/
-/*var nd= new Date();*/
-/*$('#today').val($.datepicker.formatDate('D M yy', nd));*/
-/*$('#vat').val('--');*/
-
-/*console.log('Initializing reservation');*/
-/*var reservationId= JSON.parse(localStorage.invoiceReservation);*/
-/*llGetReservationFromRid(reservationId, */
-/*function(reservation) {*/
-/*zakReservation= iReservation(reservation, 1);*/
-
-/*try {*/
-/*var extras= JSON.parse(zakReservation.extras);*/
-/*var res= '';*/
-/*var etotal= 0.0;*/
-/*for (var key in extras) {*/
-/*var extra= extras[key];*/
-/*res+= '<tr><td>' + extra['how'] + '</td><td>X</td>';*/
-/*res+= '<td>' + extra['name'] + '</td>';*/
-/*res+= '<td>' + extra['cost'] + '</td>';*/
-/*res+= '</tr>';*/
-/*etotal+= parseFloat(extra['cost']);*/
-/*}*/
-/*res+= '<tr><td colspan="3"><b>Total:</b></td><td>' + etotal.toFixed(2) + '</td></tr>';*/
-/*$('#extraspricing').html(res);*/
-/*} catch(e) {*/
-/*etotal= 0.0;*/
-/*}*/
-/*$('#totextras').html(etotal.toFixed(2));*/
-/*$('#guest').html(zakReservation.reservation.customer);*/
-/*console.log(strDate(zakTableau.dfrom));*/
-
-/*llNextInvoiceNumber(getActiveProperty()['id'],*/
-/*function(n) {*/
-/*console.log('Number invoice: ' + n);*/
-/*$('#invoiceN').html(n);*/
-/*});*/
-
-/*zakReservation.loadTableau(function() {*/
-/*zakReservation._designPrices();*/
-/*var count= 0.0;*/
-/*for (var j in roomPricing) {*/
-/*var rp= roomPricing[j];*/
-/*for (var i= 1; i< rp.length; i++) {*/
-/*count+= parseFloat(rp[i]);*/
-/*}*/
-/*}*/
-/*$('#totrooms').html(count.toFixed(2));*/
-/*count+= parseFloat(etotal);*/
-/*$('#itotal').html(count.toFixed(2) + ' &#8364');*/
-/*$('#stay').html('From ' + strDate(zakTableau.dfrom) + ' to ' + strDate(dateAddDays(zakTableau.dfrom, zakTableau.lendays)));*/
-/*});*/
-/*});*/
-
-/*});*/
+function designInvoice() {
+  invoiceN= 3;
+  designInvoiceRooms();
+  designMeals();
+  designExtras();
+}
 
 function exitInvoice() {
-  goToSameDirPage('book');
+  goToSameDirPage('reservation');
 }
 
 function saveInvoice() {
-  var guest= $('#guest').val();
-  var today= $('#today').val();
-  var vat= $('#vat').val();
-  var inv= {guest: guest, today: today, vat: vat};
-  alert('Now saving');
-  /*llSaveInvoice(getActiveProperty()['id'], n, zakReservation.reservation.id, false, html, function() {alert('ok');});*/
+  var html= $('#invoice_div').html();
+  var n= $('#inumber').html();
+  var head= $('#iheader').val();
+  var chead= $('#cheader').val();
+  var rid= localStorage.editOccupancyRid;
+  var it= localStorage.editInvoiceItype;
+  llSaveInvoice(rid, html, n, head, chead, it,
+    function(ses, recs) {
+      window.location.reload(false);
+    },
+    function(ses, err) {
+      console.log('Error: ' + err.message);
+      alert('Error: ' + err.message);
+    });
 }
 
+function _buildNew() {
+  llGetReservationFromRid(localStorage.editOccupancyRid,
+    function(reservation) {
+      invoiceReservation= reservation;
+      llGetPropertySettings(getActiveProperty()['id'], 
+        function(ses, recs, sets) {
+          invoiceSettings= sets;
+          $('#iheader').val(sets.vatSettingsHeader || '');
+          designInvoice();
+        });
+    });
+  llGetItypes(function(ses, recs) {
+    for (var j= 0; j< recs.rows.length; j++) {
+      var it= recs.rows.item(j);
+      var dit= '';
+      if (it.id == localStorage.editInvoiceItype) {
+        $('#iname').html(it.name);
+        dit= it.id;
+      }
+    }
+  });
+  llGetReservationInvoiceHeader(localStorage.editOccupancyRid,
+    function(ses, recs) {
+      if (recs.rows.length > 0) {
+        $('#cheader').val(recs.rows.item(0).vat);
+      }
+    });
+  llGetInvoiceN(getActiveProperty()['id'], localStorage.editInvoiceItype,
+    function(n) {
+      console.log('Last invoice: ' + n);
+      $('#inumber').html(n);
+    });
+}
+
+function _buildOld(i) {
+  $('#invoice_div').html($.base64Decode(i.html));
+  $('#iheader').val(i.head);
+  $('#cheader').val(i.chead);
+  $('#bSaveInvoice').hide();
+  $('textarea').attr('readonly', 'readonly');
+}
+
+$(document).ready(function() {
+  llGetReservationInvoice(localStorage.editOccupancyRid,
+    function(ses, recs) {
+      if (recs.rows.length == 0) _buildNew();
+      else _buildOld(recs.rows.item(0));
+    });
+});

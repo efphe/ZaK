@@ -236,11 +236,12 @@ function modRoomType() {
 
 function addNewProperty() {
   var propname= $('#newpropertyname').val();
+  var currency= $('#newpropertycur').val();
   if(!propname) {
     humanMsg.displayMsg('Please, insert a valid property name', 1);
     return;
   }
-  llNewProperty(propname, 
+  llNewProperty(propname, currency,
     function(ses, recs) {
       var pid= recs.insertId;
       humanMsg.displayMsg('New property ' + propname + ': Done!');

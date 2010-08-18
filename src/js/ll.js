@@ -12,10 +12,10 @@ function llDelProperty(pid, cbs, cbe) {
   });
 }
 
-function llNewProperty(name, cbs, cbe) {
+function llNewProperty(name, currency, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    ses.executeSql('insert into property (name) values (?)', [name], cbs, cbe);
+    ses.executeSql('insert into property (name, currency) values (?,?)', [name,currency], cbs, cbe);
   });
 }
 

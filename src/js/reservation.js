@@ -94,9 +94,10 @@ function designExtras(where) {
       res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
       res+= '</tr>';
     } else {
-      res+= '<tr><td>' + e.name + '</td>'; 
-      res+= '<td>' + e.how + '</td>';
-      res+= '<td>' + parseFloat(e['cost']).toFixed(2) + '</td>';
+      res+= '<tr><th>Extra</th><th>Qty</th><th>Price</th></tr>';
+      res+= '<tr><td align="center">' + e.name + '</td>'; 
+      res+= '<td align="center">' + e.how + '</td>';
+      res+= '<td align="center">' + parseFloat(e['cost']).toFixed(2) + '</td>';
       res+= '</tr>';
     }
     _tempTotal+= parseFloat(e['cost']);
@@ -1267,78 +1268,3 @@ $(document).ready(function() {
   designReservation();
 });
 
-/* plugin YouBook */
-
-$(document).ready(function() {
-  $('#right_reservation').prepend('<input type="submit" style="float:right;margin:5px" value="YouBook" onclick="youBookPreview()"></input>');
-});
-function youBookPreview() {
-  $('#youbook').remove();
-  var res= '<div id="youbook">';
-  res+= '<input style="float:right;margin:5px" type="submit" value="Send mail" onclick="youBookSendPreview()"></input>';
-  res+= '<h1>' + getActiveProperty().name +': Resevation Preview</h1>';
-  res+= '<p><span id="pre_message">';
-  res+= '<a href="javascript:youBookWritePreMessage()"><img src="/zhimgs/pencil.png"></img></a> ';
-  res+= '<span id="pre_message_text">Dear ' + $('#ocustomer').val() + '...</span></p>';
-  res+= '<span id="pre_message_edit" style="display:none">';
-  res+= '<a href="javascript:youBookWrotePreMessage()">';
-  res+= '<img style="vertical-align:top;margin:2px" src="/zhimgs/close.png"></img></a>';
-  res+= '<textarea rows="4" style="width:80%" id="pre_message_edit_text"></textarea></span>';
-  res+= '<h2 style="color:#BD0000">Resume</h2>';
-  res+= '<table><tr>';
-  res+= '<td>Arrival date:</td><td>' + strDate(zakEditReservation.dfrom) + '</td>';
-  res+= '</tr><tr>';
-  res+= '<td>Departure date:</td><td>' + strDate(zakEditReservation.dto) + '</td>';
-  res+= '</tr><tr>';
-  res+= '<td>Amount:</td><td>' + parseFloat(_tempTotal).toFixed(2) + '</td>';
-  res+= '</tr></table>';
-  res+= '<h2 style="color:#BD0000">Rooms pricing</h2>';
-  res+= '<table id="youbook_pricing"></table>';
-  res+= '<br/>';
-  res+= '<div id="youbook_meals_div" style="display:none"><h2 style="color:#BD0000">Meals pricing</h2>';
-  res+= '<table id="youbook_meals"></table>';
-  res+= '</div>';
-  res+= '<br/>';
-  res+= '<div id="youbook_extras_div" style="display:none"><h2 style="color:#BD0000">Extras</h2>';
-  res+= '<table id="youbook_extras"></table>';
-  res+= '</div>';
-  res+= '</div>';
-  $(res).dialog({width: '600px', height: 'auto', position: 'top'});
-  designPrices(false, false, '#youbook_pricing', true);
-  designMealTables('#youbook_meals', '#youbook_meals_div');
-  var extras= getResExtras();
-  if (extras.length != 0) {
-    designExtras('#youbook_extras');
-    $('#youbook_extras_div').show();
-  }
-}
-
-function youBookWritePreMessage() {
-  var msg= $('#pre_message_text').html();
-  $('#pre_message').hide();
-  $('#pre_message_edit_text').val(msg);
-  $('#pre_message_edit').show();
-}
-function youBookWrotePreMessage() {
-  var mst= $('#pre_message_edit_text').val();
-  var msg= $('#pre_message_text').html(mst);
-  $('#pre_message').show();
-  $('#pre_message_edit').hide();
-}
-
-function youBookSendPreview() {
-  $.modal.close();
-  $('#youbook_send_preview').remove();
-  var res= '<div id="youbook_send_preview" class="zakmodalfree" style="background-color:#ccc">';
-  res+= '<h2>Sending reservation preview</h2>';
-  res+= '<table><tr>';
-  res+= '<td>Mail subject:</td><td><input style="width:200px" type="text" value="' + getActiveProperty().name +': Resevation Preview"></input></td>';
-  res+= '</tr><tr>';
-  res+= '<td>Mail address:</td><td><input style="width:200px" type="text" name="youbook_mail"></input></td>';
-  res+= '</tr><tr>';
-  res+= '<td colspan="2" align="center"><input type="submit" value="Send mail" onclick="youBookSendPreviewMail()"></input><img src="/imgs/lgear.gif"></img></td>';
-  res+= '</tr></table>';
-  res+= '</div>';
-  /*$(res).modal();*/
-  $(res).dialog({width: 'auto', height: 'auto'});
-};

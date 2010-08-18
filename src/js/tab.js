@@ -173,7 +173,7 @@ function _menuEditOcc(a,e,p) {
   localStorage.editOccupancyOid= editOccupancyOid;
   localStorage.editOccupancyRid= rid;
   console.log('Rid, oid: ' + rid + ',' + editOccupancyOid);
-  goToSameDirPage('book');
+  goToSameDirPage('reservation');
 }
 
 function _menuResizeOcc(a,e,p) {

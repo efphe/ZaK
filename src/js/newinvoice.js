@@ -31,7 +31,7 @@ function _getPartial(tot, vat, name, addst) {
   var res= '<div style="' + st + '"><table><tr><td>' + name;
   res+= '</td><td>' + netrate.toFixed(2) + '</td></tr>';
   res+= '<tr><td>Vat taxes:</td><td>' + netvat.toFixed(2) + '</td></tr>';
-  res+= '<tr><td><b>Total:</b></td><td><b>' + tot.toFixed(2) + '</b></td></tr>';
+  res+= '<tr><td><b>Total:</b></td><td><b>' + tot.toFixed(2) + ' ' + getCurrency() + '</b></td></tr>';
   res+= '</table></div>';
   return res;
 }
@@ -191,7 +191,7 @@ function designInvoice() {
 }
 
 function exitInvoice() {
-  goToSameDirPage('book');
+  goToSameDirPage('reservation');
 }
 
 function saveInvoice() {
