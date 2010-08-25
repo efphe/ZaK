@@ -128,6 +128,6 @@ class ZakAdmin(rend.Page):
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),
         'search': AdminSearch(),
-        'favicon.ico': Favicon(),
+        'favicon.ico': Favicon,
         '': self,
         }
