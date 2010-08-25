@@ -19,7 +19,7 @@ function _akInitSchema() {
 }
 
 $(document).ready(function() {
-  if (!$.browser.safari || !window.openDatabase) {
+  if ( (!$.browser.safari && !$.browser.opera) || !window.openDatabase) {
     goToSameDirPage('notsupported');  
   } else
     _akInitSchema();
