@@ -2,7 +2,11 @@ ZAK_DB_NAME= 'zak';
 ZAK_APP_NAME= 'Zak';
 ZAK_DB_DISK= 1024 * 1024 * 50;
 
-function goToSameDirPage(apage) {
+function goToSameDirPage(apage, delay) {
+  if (!delay) return _goToSameDirPage(apage);
+  setTimeout(function() {_goToSameDirPage(apage);}, delay);
+}
+function _goToSameDirPage(apage) {
   if (apage.indexOf('http') == 0) {
     var eurl= apage;
     window.location.href= eurl;

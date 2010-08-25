@@ -20,7 +20,7 @@ function _akInitSchema() {
 
 $(document).ready(function() {
   if ( (!$.browser.safari && !$.browser.opera) || !window.openDatabase) {
-    goToSameDirPage('notsupported');  
+    goToSameDirPage('notsupported', 3000);  
   } else
     _akInitSchema();
 });
