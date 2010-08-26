@@ -19,8 +19,8 @@ function _akInitSchema() {
 }
 
 $(document).ready(function() {
-  if (!$.browser.safari || !window.openDatabase) {
-    goToSameDirPage('notsupported');  
+  if ( (!$.browser.safari && !$.browser.opera) || !window.openDatabase) {
+    goToSameDirPage('notsupported', 3000);  
   } else
     _akInitSchema();
 });

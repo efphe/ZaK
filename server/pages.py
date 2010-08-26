@@ -8,6 +8,7 @@ _sdir= _bdir + 'src/'
 JsDispenser= File(_sdir + 'js', defaultType= 'application/x-javascript')
 CssDispenser= File(_sdir + 'css', defaultType= 'text/css')
 ImgDispenser= File(_sdir + 'imgs', defaultType= 'image/png')
+Favicon= File(_sdir + 'imgs/favicon.ico')
 
 class IZak:
   def __init__(self):
@@ -127,5 +128,6 @@ class ZakAdmin(rend.Page):
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),
         'search': AdminSearch(),
+        'favicon.ico': Favicon,
         '': self,
         }
