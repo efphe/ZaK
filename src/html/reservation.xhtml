@@ -133,7 +133,13 @@
   <h1 id="reservationTitle"></h1>
   <div>
     <h1>Rooms pricing</h1>
-    <table>
+    Apply 
+    <select id="choose_app" onchange="choosePricingApplication()">
+      <option value="">--</option>
+      <option value="pricing">Pricing</option>
+      <option value="filter">Filter</option>
+    </select>
+    <table id="apply_pricing" style="display:none">
       <tr>
         <td>
           <b>Pricing</b> edit
@@ -142,14 +148,24 @@
           <input type="submit" onclick="changePricing()" value="Edit"></input>
         </td>
       </tr>
+      <tr>
+        <td>
+          Remeber to save your changes!
+        </td>
+      </tr>
     </table>
-    <table>
+    <table id="apply_filters" style="display:none">
       <tr>
         <td>
           <b>Filter</b> Apply <select id="cmbalter"></select>
           for room <select class="cmbPricingRoom" id="cmbAlterRoom"></select>
           <input type="submit" onclick="applyFilter()" value="Apply"></input> 
           (<b><a href="javascript:askVariation()">New</a></b>)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Remeber to save your changes!
         </td>
       </tr>
     </table>

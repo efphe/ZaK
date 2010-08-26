@@ -11,6 +11,31 @@ _zakYourVat= false;
 _tempPricing= {};
 _tempTotal= 0.0;
 
+function choosePricingApplication() {
+  var v= $('#choose_app').val();
+  if (!v) {
+    $('#apply_pricing').hide();
+    $('#apply_filters').hide();
+  }
+  if (v == 'pricing') {
+    llLoadPricings(function(ses, recs) {
+      if (recs.rows.length > 0) {
+        $('#apply_pricing').show();
+        $('#apply_filters').hide();
+      } else {
+        humanMsg.displayMsg('There is no pricing to apply. Insert a new pricing before');
+        $('#choose_app').val('');
+        $('#apply_pricing').hide();
+        $('#apply_filters').hide();
+      }
+    });
+  }
+  if (v == 'filter') {
+    $('#apply_pricing').hide();
+    $('#apply_filters').show();
+  }
+}
+
 function getResExtras() {
   try {
     return JSON.parse(zakEditReservation.extras);

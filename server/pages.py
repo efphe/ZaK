@@ -104,7 +104,7 @@ class ZakAdmin(rend.Page):
   </head> 
   <body> 
   <div>
-    <img src="http://localhost:11311/imgs/zak.png"></img>
+    <img src="/imgs/zak.png"></img>
   </div>
   <br/>
     <b>Welcome</b>:<br/> please wait, Zak is loading... <img src="/imgs/lgear.gif"></img>
