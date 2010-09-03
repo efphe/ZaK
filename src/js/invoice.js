@@ -64,11 +64,11 @@ function designInvoiceRooms() {
   var dtot= {};
   var res= '<table><tr><td></td>';
   for (var k in pricing) {
-    res+= '<td>' + _zakRoomName(pricing[k][0]) + '</td>';
+    res+= '<td>' + _zakRoomName(k) + '</td>';
   }
   res+= '<td></td></tr><tr>';
-  for (var i= 1; i< rlen; i++) {
-    var day= invoiceReservation.dfrom + (86400 * (i-1));
+  for (var i= 0; i< rlen; i++) {
+    var day= invoiceReservation.dfrom + (86400 * i);
     day= strDate(day, 'd/m');
     res+= '<td>' + day + '</td>';
     for (k in pricing) {
