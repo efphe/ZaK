@@ -1,5 +1,17 @@
-ZaK is a product by WuBook Srl:
+Zak is an open source property management system,
+build upon python, twisted and javascript.
 
-  http://en.wubook.net/
+You can find more details here:
 
-Details and descriptions coming soon
+  http://zak.wubook.net/
+  http://it.zak.wubook.net/
+
+To use ZaK you must install Twisted, Nevow and some
+python library. Please, see the official sites to
+read more details.
+
+To run ZaK, simply type:
+
+  ~ twistd -noy gateway.py
+
+Actually alpha
