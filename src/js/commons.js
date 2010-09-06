@@ -281,3 +281,7 @@ function getCurrency() {
   if (cur == 3) return '&#163;';
   return cur;
 }
+
+function zakCheckMail(m) {
+  return true;
+}
