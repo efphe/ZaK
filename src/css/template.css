@@ -13,11 +13,11 @@ a.menu {
 }
 h1,h2 {margin-top:2px}
 h2 {
-  font-size: 22px;
+  font-size: 18px;
 }
 h1 {
   color: #bd0000;
-  font-size: 24px;
+  font-size: 20px;
 }
 div.subCtnt {
   margin-left: 20px;
@@ -26,11 +26,11 @@ div#mmenu {background-color:grey;width:200px;padding:5px;border-radius:4px;float
 /*div.immenu {background-color:white;padding:5px;border-radius:3px}*/
 .lmenu {margin:0;padding:0;padding-left:16px}
 .lmenu a {font-weight:bold;color: black}
-.lmenu li {margin-top: 4px;font-size:14px}
-div#mmenu b {color:#bd0000;font-size:18px}
-div#contents {background-color:grey;margin-left: 220px;border-radius:4px;padding:5px}
+.lmenu li {margin-top: 4px;font-size:12px}
+div#mmenu b {color:#bd0000;font-size:14px}
+div#contents {background-color:grey;margin-left: 220px;border-radius:4px;padding:5px;font-size:12px}
 
-table.roomsmanagement {border:1px solid black;border-collapse:collapse;}
+table.roomsmanagement {border:1px solid black;border-collapse:collapse;font-size:12px}
 table.roomsmanagement th {padding:4px;border-bottom:1px dotted #770000;}
 table.roomsmanagement td {padding:6px;font-weight:bold}
 
