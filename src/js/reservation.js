@@ -179,7 +179,10 @@ function getRoomPricing(room, prid, rprices) {
 function _desingPrices(prices, where, readonly) {
   var res= '<thead class="pricing"><tr><th>Day/Room</th>';
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
-    var rcode= zakEditReservation.rooms[i].code;
+    if (readonly)
+      var rcode= zakEditReservation.rooms[i].name;
+    else
+      var rcode= zakEditReservation.rooms[i].code;
     res+= '<th>'+rcode+'</th>';
   }
   res+= '</thead>';
@@ -198,7 +201,7 @@ function _desingPrices(prices, where, readonly) {
   function _inpRoom(dayidx, rid) {
     var sty= ' style="width:50px" ';
     if (readonly)
-      return '<td align="center">' + _strPri(i, rid) + '</td>';
+      return '<td align="center">' + _strPri(i, rid) + ' ' + getCurrency() + '</td>';
     else {
       var iid= ' id="price_' + rid + '_' + dayidx + '" ';
       var spri= parseFloat(_strPri(i, rid));
