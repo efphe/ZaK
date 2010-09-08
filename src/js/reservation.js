@@ -177,6 +177,7 @@ function getRoomPricing(room, prid, rprices) {
 }
 
 function _desingPrices(prices, where, readonly) {
+  console.log(prices);
   var res= '<thead class="pricing"><tr><th>Day/Room</th>';
   for (var i= 0; i< zakEditReservation.rooms.length; i++) {
     if (readonly)
@@ -194,8 +195,9 @@ function _desingPrices(prices, where, readonly) {
   }
   function _strPri(dayidx, rid) {
     try {
-      return prices[rid][dayidx];
-    } catch(e) {console.log('Pricing error: ' + e.message); return 0.0};
+      var res= prices[rid][dayidx];
+    } catch(e) {console.log('Pricing error: ' + e.message); var res= 0.0};
+    return res || 0.0;
   }
 
   function _inpRoom(dayidx, rid) {

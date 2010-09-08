@@ -278,7 +278,15 @@ function llModOccupancy(oid, params, cbs, cbe) {
     qparams.push(oid);
     var s= t.join(',');
     var s= 'update occupancy set ' + s + ' where id = ?';
-    ses.executeSql(s, qparams, cbs, cbe);
+    ses.executeSql(s, qparams, 
+      function(ses, recs) {
+        var idrid= 'select id_reservation from occupancy where id = ' + oid;
+        rdfrom= 'select min(dfrom) from occupancy where id_reservation = (' + idrid + ')'; 
+        rdto= 'select max(dto) from occupancy where id_reservation = (' + idrid + ')'; 
+        var qry= 'update reservation set dfrom = (' + rdfrom + '), dto= (' + rdto + ')';
+        console.log(qry);
+        ses.executeSql(qry, [], cbs, cbe);
+      }, cbe);
   });
 }
 

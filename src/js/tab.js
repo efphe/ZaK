@@ -310,13 +310,11 @@ function changeOccupancyLenght() {
   var oid= $('#resize_oid').val();
   var rid= $('#resize_rid').val();
   var newlen= $('#new_days').val();
-  console.log('Destroying slider...');
   $('#true_slider').slider('destroy');
   $.modal.close();
-  console.log('Destroying modal...');
   var occ= zakTableau.rooms[rid].getOccupancy(oid);
-  if (diffDateDays(occ['dfrom'], occ['dto']) == newlen)
-    return;
+  var oldlen= diffDateDays(occ['dfrom'], occ['dto']);
+  if (oldlen == newlen) return;
   var udto= dateAddDays(occ['dfrom'], newlen);
   udto= unixDate(udto);
   llModOccupancy(oid, {dto: udto},
