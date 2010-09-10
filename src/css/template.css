@@ -23,7 +23,6 @@ div.subCtnt {
   margin-left: 20px;
 }
 div#mmenu {background-color:grey;width:200px;padding:5px;border-radius:4px;float:left}
-/*div.immenu {background-color:white;padding:5px;border-radius:3px}*/
 .lmenu {margin:0;padding:0;padding-left:16px}
 .lmenu a {font-weight:bold;color: black}
 .lmenu li {margin-top: 4px;font-size:12px}
@@ -238,4 +237,55 @@ table.roomsmanagement td {padding:6px;font-weight:bold}
 
 .contextMenu LI.separator {
 	border-top: solid 1px #CCC;
+}
+
+div.immenu {background-color:#f0f0f0;padding:5px;border-radius:3px;font-size:12px}
+h3 {color:#BD0000;margin-bottom: 3px}
+
+div.bookright {
+  float: right;
+  border-radius: 5px;
+  background-color: #cccccc;
+  width: 320px;
+  min-height: 100px;
+  padding: 10px;
+  border: 3px solid #888888;
+  margin-left: 5px;
+}
+h1.secacc {
+  border-radius: 5px;
+  background-color: #eeeeee;
+  padding: 5px;
+}
+
+h1.secacc a {
+  color: black;
+}
+
+.tablepricing {
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+.tablepricing td {
+  text-align: center;
+}
+.tablepricing th {
+  background-color: #bd0000;
+  text-align: center;
+  color: white;
+  padding: 4px;
+}
+.tablepricing input {
+  width: 80px;
+}
+input.extraHow {
+  width: 40px;
+}
+input.extraCost {
+  width: 60px;
+}
+
+a.acit {
+  color: green;
 }
