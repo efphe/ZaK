@@ -53,8 +53,8 @@ class AdminProperties(AdminTemplate):
 class AdminTableau(AdminTemplate):
   jsorigin= '/js/cm/pgtab.js'
   xmlfile= 'src/html/tableau.xhtml'
-  #cssorigin= '/css/tab.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/tab.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminPricing(AdminTemplate):
   jsorigin= '/js/cm/pgpricing.js'
@@ -70,14 +70,14 @@ class AdminSettings(AdminTemplate):
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
   xmlfile= 'src/html/reservation.xhtml'
-  #cssorigin= '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminSearch(AdminTemplate):
   jsorigin= '/js/cm/pgsearch.js'
   xmlfile= 'src/html/search.xhtml'
-  #cssorigin= '/css/search.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/search.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/invoice.xhtml')

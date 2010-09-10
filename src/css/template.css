@@ -289,3 +289,18 @@ input.extraCost {
 a.acit {
   color: green;
 }
+/*table.roomsmanagement td {text-align: center}*/
+table.defprices td {text-align: right}
+table.defprices b {font-size: 14px;color:black}
+table.roomsmanagement td {text-align: center}
+table.roomsmanagement {
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+table.roomsmanagement th {
+  background-color: #bd0000;
+  text-align: center;
+  color: white;
+  padding: 4px;
+}
