@@ -157,6 +157,23 @@ function llCheckOccupancyChance(oid, rid, day, n, args, cb) {
   });
 }
 
+// cb(isok), ce(ses, err)
+function llCheckOccupancyChances(rids, day, n, cb, ce) {
+  var counter= rids.length;
+  var ok= true;
+  for (var i= 0; i< rids.length; i++) {
+    var rid= rids[i];
+    llCheckOccupancyChance(false, rid, day, n, true, 
+      function(ses, isok) {
+        counter-= 1;
+        if (!isok) ok= false;
+        if (counter == 0) {
+          cb(ok);
+        }
+      });
+  }
+}
+
 function llDelOccupancy(oid, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(
@@ -214,6 +231,41 @@ function _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs,
       } else 
         ses.executeSql('select code from room where id = ?', [rid], cbs, cbe);
     });
+}
+
+function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer, optargs, cbs, cbe) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var dfrom= unixDate(udfrom);
+    var dto= unixDate(dateAddDays(udfrom, ndays));
+    console.log('Inserting now a new reservation...');
+    var s= 'insert into reservation (dfrom,dto,customer,status,id_property) values ';
+    s+= '(?,?,?,?,?)';
+    ses.executeSql(s, [dfrom, dto, customer,stat,pid], 
+      function(ses, recs) {
+        console.log('Associating now occupancies...');
+        var counter= rids.length;
+        var resid= recs.insertId;
+        if (optargs) {
+          var sd= updateStatement(optargs); 
+          var sqry= sd['qry'];
+          var sqarr= sd['qarr'];
+          sqarr.push(resid);
+          ses.executeSql('update reservation set ' + sqry + ' where id = ?', sqarr);
+        }
+        var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
+        ss+= ' values (?,?,?,?,?,?)';
+        for (var i= 0; i< rids.length; i++) {
+          var rid= rids[i];
+          ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid],
+            function(ses, recs) {
+              counter-= 1;
+              if (counter == 0) cbs();
+            }, cbe);
+        }
+      }, cbe);
+  });
+
 }
 
 /* cbs(okocc) */
@@ -435,8 +487,8 @@ function llModPricing(pid, params, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
     var sd= updateStatement(params); 
-    sqry= sd['qry'];
-    sqarr= sd['qarr'];
+    var sqry= sd['qry'];
+    var sqarr= sd['qarr'];
     sqarr.push(pid);
     ses.executeSql('update pricing set ' + sqry + ' where id = ?', sqarr, cbs, cbe);
   });
