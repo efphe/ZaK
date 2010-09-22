@@ -292,3 +292,9 @@ function obLen(ob) {
   for (var k in ob) res+= 1;
   return res;
 }
+
+function zakSleep(delay) {
+  var start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
+}
+
