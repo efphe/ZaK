@@ -63,7 +63,8 @@ src/js/cm/pgsettings.js: $(PGSETTINGS)
 
 $(SRCJSDIR)/cm/j.js: $(SRCJSDIR)/jquery/jquery.js $(SRCJSDIR)/jquery/jquery-ui.js \
 			 $(SRCJSDIR)/jquery/jquery.hoverIntent.js $(SRCJSDIR)/jquery/jquery.humanmsg.js \
-			 $(SRCJSDIR)/jquery/jquery.simplemodal-1.3.5.js $(SRCJSDIR)/jquery/jquery.contextMenu.js
+			 $(SRCJSDIR)/jquery/jquery.simplemodal-1.3.5.js $(SRCJSDIR)/jquery/jquery.contextMenu.js \
+			 $(SRCJSDIR)/jquery/jquery.simpletip-1.3.1.pack.js
 	cat $^ > $@
 
 jspages:
