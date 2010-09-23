@@ -233,7 +233,7 @@ function _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs,
     });
 }
 
-function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer, optargs, cbs, cbe) {
+function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer, optargs, rcustomer, cbs, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
     var dfrom= unixDate(udfrom);
@@ -252,6 +252,10 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
           var sqarr= sd['qarr'];
           sqarr.push(resid);
           ses.executeSql('update reservation set ' + sqry + ' where id = ?', sqarr);
+        }
+        if (rcustomer) {
+          console.log('Assigning new customer to this reservation');
+          llAssignCustomer(resid, rcustomer, false, function(s, r) {}, function(s, e) {});
         }
         var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
         ss+= ' values (?,?,?,?,?,?)';
