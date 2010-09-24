@@ -261,7 +261,7 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
 
         var counter= rids.length;
         var f= function() {
-          if (counter == 0) var h= cbs;
+          if (counter == 1) var h= cbs;
           else var h= function() {zakSleep(100);f();};
           counter-= 1;
           var rid= rids[counter];
