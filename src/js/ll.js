@@ -191,12 +191,33 @@ function llMoveOccupancy(oid, udfrom, udto, rid, cbs, cbe) {
         cbs(false);
         return;
       }
-      var nudfrom= newargs['udfrom'];
-      var nudto= newargs['udto'];
-      var rid= newargs['rid'];
-      var oid= newargs['oid'];
-      ses.executeSql('update occupancy set dfrom = ?, dto= ?, id_room= ? where id = ?',
-                  [unixDate(udfrom), unixDate(udto), rid, oid], cbs, cbe);
+      var q= 'select occupancy.id_room,reservation.custom_pricing,reservation.id from occupancy ';
+      q+= 'join reservation on reservation.id = occupancy.id_reservation where occupancy.id = ?';
+      ses.executeSql(q, [oid], 
+        function(ses, recs) {
+          var nudfrom= newargs['udfrom'];
+          var nudto= newargs['udto'];
+          var rid= newargs['rid'];
+          var oid= newargs['oid'];
+          var res= recs.rows.item(0);
+          var oldrid= res.id_room;
+          var pricing= res.custom_pricing;
+          console.log('Old pricing: ' + pricing);
+          if (pricing) {
+            pricing= JSON.parse(pricing);
+            console.log(pricing);
+            if (pricing[oldrid]) {
+              pricing[rid]= pricing[oldrid];
+              delete pricing[oldrid];
+              console.log(pricing);
+              pricing= JSON.stringify(pricing);
+              ses.executeSql('update reservation set custom_pricing= ? where id = ?', [pricing, res.id]);
+            }
+          }
+          ses.executeSql('update occupancy set dfrom = ?, dto= ?, id_room= ? where id = ?',
+                      [unixDate(udfrom), unixDate(udto), rid, oid], cbs, cbe);
+        }, 
+      cbe);
     });
 }
 

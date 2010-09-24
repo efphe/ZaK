@@ -374,7 +374,7 @@ function afterTableau() {
           var resid= '';
           for(i=0;i<classes.length;i++) {
             if (classes[i].indexOf('rsrv_') == 0) {
-              resid= classes[i][5];
+              resid= classes[i].split('_')[1];
               break
             }
           }
