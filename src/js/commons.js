@@ -298,3 +298,28 @@ function zakSleep(delay) {
   while (new Date().getTime() < start + delay);
 }
 
+function zakSelect(o, s, sid) {
+  var res= '';
+  if (sid) res+= '<select id="' + sid + '">';
+  for (var k in o) {
+    if (s == k)
+      res+= '<option selected="selected" value="' + k + '">' + o[k] + '</option>';
+    else
+      res+= '<option value="' + k + '">' + o[k] + '</option>';
+  }
+  if (sid) res+= '</select>';
+  return res;
+}
+function zakSelectL(o, s, sid) {
+  var res= '';
+  if (sid) res+= '<select id="' + sid + '">';
+  for (var i= 0; i< o.length; i++) {
+    var vl= o[i];
+    if (s == k)
+      res+= '<option selected="selected" value="' + vl + '">' + vl + '</option>';
+    else
+      res+= '<option value="' + vl + '">' + vl + '</option>';
+  }
+  if (sid) res+= '</select>';
+  return res;
+}
