@@ -259,15 +259,15 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
         var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
         ss+= ' values (?,?,?,?,?,?)';
 
-        /*var counter= rids.length;*/
-        /*var f= function() {*/
-        /*if (counter == -1) var h= cbs;*/
-        /*else var h= function() {zakSleep(100);f();};*/
-        /*counter-= 1;*/
-        /*var rid= rids[counter];*/
-        /*ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid], h, cbe);*/
-        /*};*/
-        /*f();*/
+        var counter= rids.length;
+        var f= function() {
+          if (counter == 0) var h= cbs;
+          else var h= function() {zakSleep(100);f();};
+          counter-= 1;
+          var rid= rids[counter];
+          ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid], h, cbe);
+        };
+        f();
 
         /*for (var i= 0; i< rids.length; i++) {*/
         /*zakSleep(30);*/
