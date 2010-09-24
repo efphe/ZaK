@@ -244,7 +244,6 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
     ses.executeSql(s, [dfrom, dto, customer,stat,pid], 
       function(ses, recs) {
         console.log('Associating now occupancies...');
-        var counter= rids.length;
         var resid= recs.insertId;
         if (optargs) {
           var sd= updateStatement(optargs); 
@@ -259,15 +258,26 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
         }
         var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
         ss+= ' values (?,?,?,?,?,?)';
-        for (var i= 0; i< rids.length; i++) {
-          zakSleep(30);
-          var rid= rids[i];
-          ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid],
-            function(ses, recs) {
-              counter-= 1;
-              if (counter == 0) cbs();
-            }, cbe);
-        }
+
+        var counter= rids.length;
+        var f= function() {
+          if (counter == 0) var h= cbs;
+          else var h= function() {zakSleep(100);f();};
+          counter-= 1;
+          var rid= rids[counter];
+          ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid], h, cbe);
+        };
+        f();
+
+        /*for (var i= 0; i< rids.length; i++) {*/
+        /*zakSleep(30);*/
+        /*var rid= rids[i];*/
+        /*ses.executeSql(ss, [dfrom, dto, rid, customer, stat, resid],*/
+        /*function(ses, recs) {*/
+        /*counter-= 1;*/
+        /*if (counter == 0) cbs();*/
+        /*}, cbe);*/
+        /*}*/
       }, cbe);
   });
 
