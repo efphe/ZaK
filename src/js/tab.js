@@ -405,6 +405,16 @@ function _delOccupancy() {
 }
 
 function initTableau(d, lendays, rids) {
+  if (!d) {
+    try {
+      var dd= JSON.parse(localStorage.zakTableauDfrom);
+      if (dd) {
+        console.log('Overwriting date from lstorage');
+        console.log(dd);
+        d= dd;
+      }
+    } catch(e) {};
+  }
   initDimensions();
   console.log(d);
   var dd= jsDate(d);
@@ -414,6 +424,10 @@ function initTableau(d, lendays, rids) {
   zakTableau.afterDesign= function() {afterTableau()};
   zakTableau.loadRooms(false, function() {});
   $('#datepicker').val(strDate(d));
+  if (d) 
+    localStorage.zakTableauDfrom= JSON.stringify(unixDate(d));
+  else
+    localStorage.zakTableauDfrom= JSON.stringify('');
 }
 
 function goToTableauDate(d) {
