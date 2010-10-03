@@ -372,6 +372,7 @@ function llModOccupancy(oid, params, cbs, cbe) {
         rdfrom= 'select min(dfrom) from occupancy where id_reservation = (' + idrid + ')'; 
         rdto= 'select max(dto) from occupancy where id_reservation = (' + idrid + ')'; 
         var qry= 'update reservation set dfrom = (' + rdfrom + '), dto= (' + rdto + ')';
+        qry+= ' where id = (' + idrid + ')';
         console.log(qry);
         ses.executeSql(qry, [], cbs, cbe);
       }, cbe);
