@@ -34,9 +34,25 @@ function _addNewReservation() {
         humanMsg.displayMsg('Not enough days space for this reservation', 1);
         return;
       }
-      zakTableau.loadRooms([rid]);
-      $.modal.close();
-      humanMsg.displayMsg('Welcome ' + cust);
+      if ($('#addNewReservationDetails').is(':checked')) {
+        ses.executeSql('select id,id_reservation from occupancy where id = (select max(id) from occupancy)', [],
+          function(ses, recs) {
+            var r= recs.rows.item(0);
+            localStorage.editOccupancyOid= r.id;
+            localStorage.editOccupancyRid= r.id_reservation;
+            goToSameDirPage('reservation');
+            return;
+          }, function(ses, err) {
+            zakTableau.loadRooms([rid]);
+            $.modal.close();
+            humanMsg.displayMsg('Welcome ' + cust);
+          });
+      }
+      else {
+        zakTableau.loadRooms([rid]);
+        $.modal.close();
+        humanMsg.displayMsg('Welcome ' + cust);
+      }
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message);
