@@ -196,7 +196,7 @@ function exitInvoice() {
 
 function saveInvoice() {
   var html= $('#invoice_div').html();
-  var n= $('#inumber').html();
+  var n= $('#inumber').val();
   var head= $('#iheader').val();
   var chead= $('#cheader').val();
   var rid= localStorage.editOccupancyRid;
@@ -241,7 +241,7 @@ function _buildNew() {
   llGetInvoiceN(getActiveProperty()['id'], localStorage.editInvoiceItype,
     function(n) {
       console.log('Last invoice: ' + n);
-      $('#inumber').html(n);
+      $('#inumber').val(n);
     });
 }
 
@@ -250,6 +250,8 @@ function _buildOld(i) {
   $('#iheader').val(i.head);
   $('#cheader').val(i.chead);
   $('#bSaveInvoice').hide();
+  $('#inumber').attr('readonly', 'readonly');
+  $('#inumber').val(i.n);
   $('textarea').attr('readonly', 'readonly');
 }
 
