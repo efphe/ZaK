@@ -480,3 +480,5 @@ $(document).ready(function() {
     });
   });
 })
+/*$('input').qtip({show: {solo: true, effect: { type: 'slide' } }, style: {name: 'light', border: {radius:5, width:2}}, content: '<div>ciao <b>mamma</b></div>', position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});*/
+
