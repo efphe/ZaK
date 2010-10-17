@@ -31,7 +31,7 @@ function _addNewReservation() {
   llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust, false,
     function(ses, recs) {
       if (!ses) {
-        humanMsg.displayMsg('Not enough days space for this reservation', 1);
+        humanMsg.displayMsg('Not enough free days for this reservation/room', 1);
         return;
       }
       if ($('#addNewReservationDetails').is(':checked')) {

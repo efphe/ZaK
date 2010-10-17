@@ -1,3 +1,10 @@
+ZAK_MAP_STATUS= {
+  1: 'c', /* confirmed */
+  2: 'n', /* not confirmed */
+  3: 'i', /* checkin */
+  4: 'p', /* preview */
+}
+
 function llGetProperties(cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
@@ -140,7 +147,7 @@ function llLoadOccupancies(rids, dfrom, dto, cbs, cbe) {
 function llCheckOccupancyChance(oid, rid, day, n, args, cb) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    var s= 'select min(dfrom) as dfrom from occupancy where id_room = ? and dfrom > ?';
+    var s= 'select min(dfrom) as dfrom from occupancy where id_room = ? and dfrom >= ?';
     if (oid) s+= ' and occupancy.id != ' + oid;
     ses.executeSql(s, [rid, unixDate(day)], 
       function(ses, recs) {
