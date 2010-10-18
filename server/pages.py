@@ -10,6 +10,8 @@ CssDispenser= File(_sdir + 'css', defaultType= 'text/css')
 ImgDispenser= File(_sdir + 'imgs', defaultType= 'image/png')
 Favicon= File(_sdir + 'imgs/favicon.ico')
 
+_cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+
 class IZak:
   def __init__(self):
     self.zakDbVersion= self.dbInit()
@@ -41,10 +43,12 @@ class AdminTemplate(rend.Page):
   def render_css(self, ctx, data):
     if self.cssorigin:
       if isinstance(self.cssorigin, str):
-        return T.link(type= 'text/css', rel= 'stylesheet', href= self.cssorigin)
+        res= [T.link(type= 'text/css', rel= 'stylesheet', href= self.cssorigin)]
       else:
-        return [T.link(type= 'text/css', rel= 'stylesheet', href= s) for s in self.cssorigin]
-    return ''
+        res= [T.link(type= 'text/css', rel= 'stylesheet', href= s) for s in self.cssorigin]
+      res.append(T.link(type= 'text/css', rel= 'stylesheet', href= _cssblitz))
+      return res
+    return T.link(type= 'text/css', rel= 'stylesheet', href= _cssblitz)
 
 class AdminProperties(AdminTemplate):
   jsorigin= '/js/cm/pgprops.js'
@@ -53,14 +57,11 @@ class AdminProperties(AdminTemplate):
 class AdminTableau(AdminTemplate):
   jsorigin= '/js/cm/pgtab.js'
   xmlfile= 'src/html/tableau.xhtml'
-  cssorigin= '/css/tab.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/tab.css'
 
 class AdminPricing(AdminTemplate):
   jsorigin= '/js/cm/pgpricing.js'
   xmlfile= 'src/html/pricing.xhtml'
-  #cssorigin= '/css/pricing.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
 class AdminSettings(AdminTemplate):
   jsorigin= '/js/cm/pgsettings.js'
@@ -70,14 +71,12 @@ class AdminSettings(AdminTemplate):
 class AdminReservation(AdminTemplate):
   jsorigin= '/js/cm/pgres.js'
   xmlfile= 'src/html/reservation.xhtml'
-  cssorigin= '/css/res.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/res.css'
 
 class AdminSearch(AdminTemplate):
   jsorigin= '/js/cm/pgsearch.js'
   xmlfile= 'src/html/search.xhtml'
-  cssorigin= '/css/search.css', '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
-  #cssorigin= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+  cssorigin= '/css/search.css'
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/invoice.xhtml')

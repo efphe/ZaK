@@ -31,12 +31,28 @@ function _addNewReservation() {
   llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust, false,
     function(ses, recs) {
       if (!ses) {
-        humanMsg.displayMsg('Not enough days space for this reservation', 1);
+        humanMsg.displayMsg('Not enough free days for this reservation/room', 1);
         return;
       }
-      zakTableau.loadRooms([rid]);
-      $.modal.close();
-      humanMsg.displayMsg('Welcome ' + cust);
+      if ($('#addNewReservationDetails').is(':checked')) {
+        ses.executeSql('select id,id_reservation from occupancy where id = (select max(id) from occupancy)', [],
+          function(ses, recs) {
+            var r= recs.rows.item(0);
+            localStorage.editOccupancyOid= r.id;
+            localStorage.editOccupancyRid= r.id_reservation;
+            goToSameDirPage('reservation');
+            return;
+          }, function(ses, err) {
+            zakTableau.loadRooms([rid]);
+            $.modal.close();
+            humanMsg.displayMsg('Welcome ' + cust);
+          });
+      }
+      else {
+        zakTableau.loadRooms([rid]);
+        $.modal.close();
+        humanMsg.displayMsg('Welcome ' + cust);
+      }
     },
     function(ses, err) {
       humanMsg.displayMsg('Error: ' + err.message);
@@ -334,8 +350,8 @@ function afterTableau() {
     zakInitializedOnce= true;
   }
 
-  var tresids= new Array();
-  var resids= new Array();
+  var tresids= [];
+  var resids= [];
   var room, occ;
   for(var rid in zakTableau.rooms) {
     room= zakTableau.rooms[rid];
@@ -383,6 +399,28 @@ function afterTableau() {
       }}
     );
   }
+
+  var _f= function(r) {
+    var rmrks= r.remarks || 'No remakrs';
+    return '<div style="font-size:12px"><b>Remarks</b><br/>' + rmrks + '</div>';
+  }
+
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var strrids= tresids.join(',');
+    var qry= 'select * from reservation where id in (' + strrids + ')';
+    console.log(qry);
+    ses.executeSql(qry, [], function(ses, recs) {
+      for (var j= 0; j< recs.rows.length; j++) {
+        var rsr= recs.rows.item(j);
+        var rsrid= rsr.id;
+        var cont= _f(rsr);
+        console.log('qtip: ' + rsrid);
+        $('td[data-rid="' + rsrid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#bd0000', radius:5, width:2}}, content: cont, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});
+      }
+      });
+  });
+
 }
 
 
@@ -464,3 +502,4 @@ $(document).ready(function() {
     });
   });
 })
+

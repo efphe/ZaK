@@ -1,11 +1,4 @@
 ZAK_TAB_LENGHT= 31;
-ZAK_MAP_STATUS= {
-  1: 'c', /* confirmed */
-  2: 'n', /* not confirmed */
-  3: 'i', /* checkin */
-  4: 'p', /* preview */
-}
-
 addNewReservationDay= false;
 addNewReservationRid= false;
 delReservationOid= false;
