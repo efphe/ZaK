@@ -353,16 +353,50 @@ function afterTableau() {
   var tresids= [];
   var resids= [];
   var room, occ;
+  var rsrmap= {};
   for(var rid in zakTableau.rooms) {
     room= zakTableau.rooms[rid];
     for (var oid in room.occupancies) {
       occ= room.occupancies[oid];
-      if ( tresids.indexOf(parseInt(occ['id_reservation'])) < 0 )
-        tresids.push(occ['id_reservation']);
-      else if ( resids.indexOf(parseInt(occ['id_reservation'])) < 0 )
-          resids.push(occ['id_reservation']);
+      var resid= occ['id_reservation'];
+      if (!rsrmap[resid]) rsrmap[resid]= [occ];
+      else rsrmap[resid].push(occ);
+      if ( tresids.indexOf(parseInt(resid)) < 0 )
+        tresids.push(resid);
+      else if ( resids.indexOf(parseInt(resid)) < 0 )
+        resids.push(resid);
     }
   }
+
+  /*var _f= function(r) {*/
+  /*var iresid= r.id;*/
+  /*var occs= rsrmap[r.id];*/
+  /*console.log(occs);*/
+  /*var rmrks= r.remarks || 'No remakrs';*/
+  /*var res= '<div style="font-size:12px">';*/
+  /*res+= '<b>' + r.customer + '</b><br/>';*/
+  /*res+= '<div><b>Remarks</b><br/>' + rmrks + '</div>';*/
+  /*res+= '</div>';*/
+  /*return res;*/
+  /**//*return '<div style="font-size:12px"><b>Remarks</b><br/>' + rmrks + '</div>';*/
+  /*}*/
+
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    var strrids= tresids.join(',');
+    var qry= 'select * from reservation where id in (' + strrids + ')';
+    console.log(qry);
+    ses.executeSql(qry, [], function(ses, recs) {
+      for (var j= 0; j< recs.rows.length; j++) {
+        var rsr= recs.rows.item(j);
+        tabRsrvPreview(ses, rsr);
+        /*var rsrid= rsr.id;*/
+        /*var cont= _f(rsr);*/
+        /*console.log('qtip: ' + rsrid);*/
+        /*$('td[data-rid="' + rsrid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#bd0000', radius:5, width:2}}, content: cont, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});*/
+      }
+      });
+  });
 
   var sresid, i;
   for(i=0;i<resids.length;i++) {
@@ -400,26 +434,6 @@ function afterTableau() {
     );
   }
 
-  var _f= function(r) {
-    var rmrks= r.remarks || 'No remakrs';
-    return '<div style="font-size:12px"><b>Remarks</b><br/>' + rmrks + '</div>';
-  }
-
-  var db= zakOpenDb();
-  db.transaction(function(ses) {
-    var strrids= tresids.join(',');
-    var qry= 'select * from reservation where id in (' + strrids + ')';
-    console.log(qry);
-    ses.executeSql(qry, [], function(ses, recs) {
-      for (var j= 0; j< recs.rows.length; j++) {
-        var rsr= recs.rows.item(j);
-        var rsrid= rsr.id;
-        var cont= _f(rsr);
-        console.log('qtip: ' + rsrid);
-        $('td[data-rid="' + rsrid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#bd0000', radius:5, width:2}}, content: cont, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});
-      }
-      });
-  });
 
 }
 
@@ -503,3 +517,63 @@ $(document).ready(function() {
   });
 })
 
+function tabRsrvPreview(ses, rsrv) {
+  var rid= rsrv.id;
+  ses.executeSql('select occupancy.*,room_setup.name as rsname, room.code roname from occupancy left join room_setup on occupancy.id_room_setup = room_setup.id join room on occupancy.id_room= room.id where occupancy.id_reservation = ?', [rid],
+    function(ses, recs) {
+      var amount= 0.0;
+      try {
+        var prices= JSON.parse(rsrv.custom_pricing);
+      } catch(e) {
+        var prices= {};
+      }
+      for (var rkey in prices) {
+        var sprices= prices[rkey];
+        for (var jj= 0; jj< sprices.length; jj++) {
+          amount+= parseFloat(sprices[jj]);
+        }
+      }
+      var eamount= 0.0;
+      try {
+        var rextras= JSON.parse(rsrv.extras);
+      } catch(e) {
+        var rextras= [];
+      }
+      for (var jj= 0; jj< rextras.length; jj++) {
+        var e= rextras[jj];
+        eamount+= parseFloat(e.cost);
+      }
+      var mamount= 0.0;
+      try {
+        var rmeals= JSON.parse(rsrv.meals);
+      } catch(e) {
+        var rmeals= {};
+      }
+      console.log('meals');
+      console.log(rmeals);
+      for (var mealday in rmeals) {
+        var mm= rmeals[mealday];
+        for (var jj= 0; jj< mm.length; jj++) {
+          mamount+= parseFloat(mm[jj].cprice);
+        }
+      }
+      var res= '<div style="font-size:12px">';
+      res+= '<b>' + rsrv.customer + '</b><br/>'; 
+      res+= amount.toFixed(2) + ' ' + getCurrency();
+      res+= ', ' + eamount.toFixed(2) + ' ' + getCurrency();
+      res+= ', ' + mamount.toFixed(2) + ' ' + getCurrency();
+      res+= '<br/>';
+      res+= '<table style="font-size:12px;margin-left:10px"><tr><td colspan="2" align="center" style="color:gray">Rooms setup</td></tr>';
+      for (var j= 0; j<recs.rows.length;j++) {
+        var occ= recs.rows.item(j);
+        res+= '<tr><td><b>' + occ.roname + '</b></td><td>' + (occ.rsname || 'Unknown setup') + '</td></tr>';
+      }
+      res+= '</table>';
+      if (rsrv.remarks)
+        res+= '<br/><b>Remarks:</b>' + rsrv.remarks;
+      res+= '</div>';
+      $('td[data-rid="' + rid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#570000', radius:5, width:2}}, content: res, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});
+    },
+    function(ses, err) {
+  });
+}
