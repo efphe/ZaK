@@ -155,6 +155,7 @@ var iRoom= function(tableau, room) {
 
       /*console.log('Setting up occupancy');*/
       bidx= diffDateDays(zakTableau.dfrom, odfrom);
+      if (bidx >= days.length) continue;
       n= diffDateDays(odfrom, odto) + 1;
       day= days[bidx];
 
