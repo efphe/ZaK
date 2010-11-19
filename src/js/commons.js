@@ -8,8 +8,7 @@ function goToSameDirPage(apage, delay) {
 }
 function _goToSameDirPage(apage) {
   if (apage.indexOf('http') == 0) {
-    var eurl= apage;
-    window.location.href= eurl;
+    window.location.href= apage;
     return;
   }
   var pname= window.location.pathname;

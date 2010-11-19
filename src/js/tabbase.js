@@ -184,6 +184,7 @@ var iRoom= function(tableau, room) {
 
       /* last day */
       day= days[bidx+n-1];
+      if (!day) continue;
       if (day.indexOf('v') == 0) {
         days[bidx+n-1]= 'e' + sstat;
       } else {

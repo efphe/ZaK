@@ -20,7 +20,7 @@ function designFinal() {
     tot+= itot;
     nettot+= itot / (1.0 + (ii.vat/100.0));
   }
-  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Total', 'margin-left:30px;margin-top:2px'));
+  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, ' Total', 'margin-left:30px;margin-top:2px'));
 };
 
 function _getPartial(tot, vat, name, addst) {
@@ -42,7 +42,7 @@ function checkFinal() {
 }
 
 function designInvoiceRooms() {
-  console.log('Designing pricing');
+  /*console.log('Designing pricing');*/
   var pricing= invoiceReservation.custom_pricing;
   if (!pricing) {
     $('#rooms_table').hide();
@@ -196,6 +196,8 @@ function exitInvoice() {
 
 function saveInvoice() {
   var html= $('#invoice_div').html();
+  html= html.replace(/textarea/g, 'div');
+  /*html= html.replace(/input/g, 'b');*/
   var n= $('#inumber').val();
   var head= $('#iheader').val();
   var chead= $('#cheader').val();
@@ -206,7 +208,7 @@ function saveInvoice() {
       window.location.reload(false);
     },
     function(ses, err) {
-      console.log('Error: ' + err.message);
+    /*console.log('Error: ' + err.message);*/
       alert('Error: ' + err.message);
     });
 }
@@ -240,19 +242,22 @@ function _buildNew() {
     });
   llGetInvoiceN(getActiveProperty()['id'], localStorage.editInvoiceItype,
     function(n) {
-      console.log('Last invoice: ' + n);
+    /*console.log('Last invoice: ' + n);*/
       $('#inumber').val(n);
     });
 }
 
 function _buildOld(i) {
+  /*console.log(i);*/
+  /*console.log($.base64Decode(i.html));*/
   $('#invoice_div').html($.base64Decode(i.html));
-  $('#iheader').val(i.head);
-  $('#cheader').val(i.chead);
+  $('#iheader').html(i.head);
+  $('#cheader').html(i.chead);
   $('#bSaveInvoice').hide();
-  $('#inumber').attr('readonly', 'readonly');
-  $('#inumber').val(i.n);
-  $('textarea').attr('readonly', 'readonly');
+  $('#inumber').remove();
+  /*$('#inumber').attr('readonly', 'readonly');*/
+  $('#ibnumber').html(i.n);
+  /*$('textarea').attr('readonly', 'readonly');*/
 }
 
 $(document).ready(function() {
