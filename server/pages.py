@@ -26,7 +26,7 @@ class IZak:
       res+= open(_sdir + 'db/%s' % f).read()
     while '\n\n' in res:
       res= res.replace('\n\n', '\n')
-    while res[-1] in [' ', '\n']:
+    while res and res[-1] in [' ', '\n']:
       res= res[:-1]
     return res
 
