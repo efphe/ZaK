@@ -24,7 +24,11 @@ class IZak:
     res= ''
     for f in self.files[fromversion:]:
       res+= open(_sdir + 'db/%s' % f).read()
-    return res.replace('\n\n', '\n')
+    while '\n\n' in res:
+      res= res.replace('\n\n', '\n')
+    while res[-1] in [' ', '\n']:
+      res= res[:-1]
+    return res
 
 ZaK= IZak()
 
