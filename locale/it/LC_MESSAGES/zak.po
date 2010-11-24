@@ -1,7 +1,5 @@
-# SOME DESCRIPTIVE TITLE.                                                                                                     
+# Traduzioni in italiano, zak: http://it.zak.wubook.net/
 msgid ""
 msgstr ""
-msgid "ciao"
-msgstr "ciao"
 msgid "Pricing"
 msgstr "Prezzi"

@@ -1,6 +1,5 @@
+# English translations: http://zak.wubook.net/
 msgid ""
 msgstr ""
-msgid "ciao"
-msgstr "hello"  
 msgid "Pricing"
 msgstr "Pricing"  
