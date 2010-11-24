@@ -1,4 +1,5 @@
 from nevow import rend, loaders, tags as T, inevow
+from nevow.i18n import  I18NConfig
 from twisted.web.util import ChildRedirector
 from twisted.web.static import File
 from twisted.python.util import sibpath
@@ -38,7 +39,13 @@ class AdminTemplate(rend.Page):
   jsorigin= None
   cssorigin= None
   xmlfile= None
+  from nevow.i18n import render as i18nrender
+  render_i18n= i18nrender()
+  del i18nrender
   def render_contents(self, ctx, data):
+    lang= ctx.arg('lang')
+    if lang:
+      ctx.remember([lang], inevow.ILanguages)
     return loaders.xmlfile(_bdir + self.xmlfile)
   def render_js(self, ctx, data):
     if isinstance(self.jsorigin, list):
@@ -138,3 +145,10 @@ class ZakAdmin(rend.Page):
         'favicon.ico': Favicon,
         '': self,
         }
+
+def getRootResource():
+  from twisted.python import util
+  LOCALE_DIR = 'locale'
+  root= ZakAdmin()
+  root.remember(I18NConfig(domain='test', localeDir=LOCALE_DIR), inevow.II18NConfig)
+  return root

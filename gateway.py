@@ -8,10 +8,10 @@ from twisted.application import service
 application= service.Application('Zak')
 from twisted.application import internet
 from nevow import appserver
-from server.pages import ZakAdmin as Toor
-rootfarm= appserver.NevowSite(Toor())
+from server.pages import getRootResource
+rootfarm= appserver.NevowSite(getRootResource())
 del appserver
-del Toor
+del getRootResource
 del service
 
 internet.TCPServer(11211, rootfarm, 1, '127.0.0.1').setServiceParent(application)
