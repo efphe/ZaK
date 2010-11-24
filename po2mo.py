@@ -1,10 +1,15 @@
+#!/usr/bin/python
 import polib
-f= polib.pofile(file)
-po.save_as_mofile('test.mo')
-
 import os
+import sys
 
 def po2mo(f):
+  print 'Converting file ' + f
   po= polib.pofile(f)
   base= os.path.basename(f)
-  polib.save_as_mofile(os.path.dirname(f) + '/' + base.replace('.po', '.mo'))
+  df= os.path.dirname(f) + '/' + base.replace('.po', '.mo')
+  po.save_as_mofile(df)
+  print 'Converted file: ' + df
+
+if __name__ == '__main__':
+  po2mo(sys.argv[1])

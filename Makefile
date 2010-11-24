@@ -67,6 +67,9 @@ $(SRCJSDIR)/cm/j.js: $(SRCJSDIR)/jquery/jquery.js $(SRCJSDIR)/jquery/jquery-ui.j
 			 #$(SRCJSDIR)/jquery/jquery.simpletip-1.3.1.pack.js
 	cat $^ > $@
 
+po2mo:
+	for i in locale/??/LC_MESSAGES/zak.po; do ./po2mo.py $$i; done
+
 jspages:
 	make $(SRCJSDIR)/cm/j.js
 	make $(SRCJSDIR)/cm/pgprops.js

@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+msgid "ciao"
+msgstr "hello"  
+msgid "Pricing"
+msgstr "Pricing"  

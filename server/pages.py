@@ -137,7 +137,6 @@ class ZakAdmin(rend.Page):
         'imgs': ImgDispenser,
         'init': AdminInit(),
         'pricing': AdminPricing(),
-        #'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),
@@ -147,8 +146,7 @@ class ZakAdmin(rend.Page):
         }
 
 def getRootResource():
-  from twisted.python import util
   LOCALE_DIR = 'locale'
   root= ZakAdmin()
-  root.remember(I18NConfig(domain='test', localeDir=LOCALE_DIR), inevow.II18NConfig)
+  root.remember(I18NConfig(domain= 'zak', localeDir=LOCALE_DIR), inevow.II18NConfig)
   return root

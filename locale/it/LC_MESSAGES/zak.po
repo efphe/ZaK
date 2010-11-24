@@ -1,0 +1,7 @@
+# SOME DESCRIPTIVE TITLE.                                                                                                     
+msgid ""
+msgstr ""
+msgid "ciao"
+msgstr "ciao"
+msgid "Pricing"
+msgstr "Prezzi"
