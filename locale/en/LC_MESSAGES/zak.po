@@ -1,5 +1,9 @@
 # English translations: http://zak.wubook.net/
 msgid ""
 msgstr ""
+
 msgid "Pricing"
 msgstr "Pricing"  
+
+msgid "Settings"
+msgstr "Settings"  
