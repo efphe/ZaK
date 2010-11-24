@@ -13,6 +13,10 @@ Favicon= File(_sdir + 'imgs/favicon.ico')
 
 _cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 
+from nevow.i18n import render as i18nrender
+_zt_= i18nrender()
+del i18nrender
+
 class IZak:
   def __init__(self):
     self.zakDbVersion= self.dbInit()
@@ -39,9 +43,10 @@ class AdminTemplate(rend.Page):
   jsorigin= None
   cssorigin= None
   xmlfile= None
-  from nevow.i18n import render as i18nrender
-  render_i18n= i18nrender()
-  del i18nrender
+
+  def render_i18n(self, ctx, data):
+    return _zt_(self, ctx, data).children
+
   def render_contents(self, ctx, data):
     lang= ctx.arg('lang')
     if lang:
