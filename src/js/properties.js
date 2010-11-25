@@ -8,12 +8,29 @@ function repeatedRoomCode(code, rid) {
   return false;
 }
 
-function _roomTd(rid, rname, rcode, rtype, rtypeid) {
+function _roomTd(room, rtype) {
+  var rname= room.name;
+  var rcode= room.code;
+  var rid= room.id;
+  var rtypeid= room.id_room_type;
   var res= '<td>' + rname + '</td><td>' + rcode + '</td><td>' + rtype + '</td>';
   res+= '<td><a href="javascript:delRoom(\'' + rid + '\')">Delete</a></td>';
   var args= [rid,rname,rcode,rtypeid].join("','");
   args= "'" + args + "'";
   res+= '<td><a href="javascript:askModRoom(' + args + ')">Modify</a></td>';
+  var tags= room.tags;
+  if (!tags) {
+    res+= '<td>no tag</td>';
+  } else {
+    res+= '<td>';
+    tags= tags.split(',');
+    for (var i= 0; i< tags.length; i++) {
+      var t= tags[i];
+      res+= '<b class="tagging">' + t + ' <a href="javascript:void(0)" onclick="delRoomTag(' + rid + ', ' + t +')">X</a></b>';
+    }
+    res+= '</td>';
+  }
+  res+= '<td><input type="text" style="width:60px" onclick="newRoomTag(this, '+rid+')"/></td>';
   return '<tr>' + res + '</tr>';
 }
 
@@ -154,7 +171,6 @@ function addNewRoom() {
     function(ses, recs) {
       var rid= recs.insertId;
       initRooms(1);
-      /*$('#roomsbody').append(_roomTd(rid, rname, rcode));*/
       _rcodes[rid]= rcode;
       humanMsg.displayMsg('Sounds Good!');
     },
@@ -218,7 +234,7 @@ function initRooms(reset) {
           var rname= room.name;
           var rcode= room.code;
           var rid= room.id;
-          res+= _roomTd(rid, rname, rcode, rmap[room.id_room_type], room.id_room_type);
+          res+= _roomTd(room, rmap[room.id_room_type]);
           _rcodes[rid]= rcode;
         }
         $('#roomsbody').html(res);
