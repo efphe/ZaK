@@ -1,4 +1,5 @@
 from nevow import rend, loaders, tags as T, inevow
+from nevow.i18n import  I18NConfig
 from twisted.web.util import ChildRedirector
 from twisted.web.static import File
 from twisted.python.util import sibpath
@@ -11,6 +12,10 @@ ImgDispenser= File(_sdir + 'imgs', defaultType= 'image/png')
 Favicon= File(_sdir + 'imgs/favicon.ico')
 
 _cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+
+from nevow.i18n import render as i18nrender
+_zt_= i18nrender()
+del i18nrender
 
 class IZak:
   def __init__(self):
@@ -38,7 +43,14 @@ class AdminTemplate(rend.Page):
   jsorigin= None
   cssorigin= None
   xmlfile= None
+
+  def render_i18n(self, ctx, data):
+    return _zt_(self, ctx, data).children
+
   def render_contents(self, ctx, data):
+    lang= ctx.arg('lang')
+    if lang:
+      ctx.remember([lang], inevow.ILanguages)
     return loaders.xmlfile(_bdir + self.xmlfile)
   def render_js(self, ctx, data):
     if isinstance(self.jsorigin, list):
@@ -130,7 +142,6 @@ class ZakAdmin(rend.Page):
         'imgs': ImgDispenser,
         'init': AdminInit(),
         'pricing': AdminPricing(),
-        #'oinvoice': ShowInvoice(),
         'invoice': AdminInvoice(),
         'settings': AdminSettings(),
         'notsupported': AdminNotSupported(),
@@ -138,3 +149,9 @@ class ZakAdmin(rend.Page):
         'favicon.ico': Favicon,
         '': self,
         }
+
+def getRootResource():
+  LOCALE_DIR = 'locale'
+  root= ZakAdmin()
+  root.remember(I18NConfig(domain= 'zak', localeDir=LOCALE_DIR), inevow.II18NConfig)
+  return root
