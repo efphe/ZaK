@@ -304,3 +304,11 @@ table.roomsmanagement th {
   color: white;
   padding: 4px;
 }
+
+b.tagging {
+  padding:3px;background-color:#cce3e2;border: 1px solid gray;border-bottom:2px solid gray;border-right:2px solid gray;
+  margin-left:2px;
+}
+b.tagging a {
+  color:white;text-align:center;padding:2px;background-color:#bd0000;text-decoration:none;border:1px solid gray;font-size:10px
+}

@@ -1,9 +1,0 @@
-# Traduzioni in italiano, zak: http://it.zak.wubook.net/
-msgid ""
-msgstr ""
-
-msgid "Pricing"
-msgstr "Prezzi"
-
-msgid "Settings"
-msgstr "Configurazione"  
