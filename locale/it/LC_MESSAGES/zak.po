@@ -125,5 +125,87 @@ msgstr "Tipo camera"
 msgid "New room type"
 msgstr "Nuovo tipo camera"
 
+msgid "Prev"
+msgstr "Prec"
 
+msgid "days"
+msgstr "giorni"
+
+msgid "Today"
+msgstr "Oggi"
+
+msgid "From date"
+msgstr "Dalla data"
+
+msgid "Next"
+msgstr "Succ"
+
+msgid "<b>drag me</b> to move your reservations"
+msgstr "<b>trascinami</b> per muovere l'occupazione"
+
+msgid "To insert a new reservation, <b>right click on a cell</b>"
+msgstr "Per inserire una nuova prenotazioni, <b>clicca in una cella</b>"
+
+msgid "Add new"
+msgstr "Aggiungi"
+
+msgid "Edit"
+msgstr "Modifica"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Resize"
+msgstr "Ridim."
+
+msgid "Postpone"
+msgstr "Posticipa"
+
+msgid "Add a new reservation"
+msgstr "Inserisci una prenotazione"
+
+msgid "Please, insert reservation data"
+msgstr "Compila i dati delle prenotazione"
+
+msgid "Nights"
+msgstr "Notti"
+
+msgid "Customer"
+msgstr "Cliente"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "Confirmed"
+msgstr "Confermata"
+
+msgid "Not confirmed"
+msgstr "Non confermata"
+
+msgid "Checkin'ed"
+msgstr "Arrivati"
+
+msgid "Option"
+msgstr "Altro"
+
+msgid "Go to details"
+msgstr "Entra in dettaglio"
+
+msgid "Continue"
+msgstr "Continua"
+
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "By deleting this occupancy you will loose it forever. Moreover, if the relative reservation has no additional occupancy, the reservation too will be deleted"
+msgstr "Cancellando l'occupazione la perderai persempre. Inoltre, se la prenotazione rimarra' senza occupazioni, verra' cancellata anch'essa"
+
+msgid "New lenght"
+msgstr "Nuova lunghezza"
+
+msgid "New status"
+msgstr "Nuovo stato"
 

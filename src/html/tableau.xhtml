@@ -2,25 +2,25 @@
   <div style="margin-top:5px;background-color: #bd0000;height:30px;border-radius:5px;line-height:28px">
     <div style="margin-left:10px">
       <select onchange="javascript:prevDays()" id="prevDays">
-        <option selected="selected" value="0">Prev</option>
-        <option value="5">5 days</option>
-        <option value="10">10 days</option>
-        <option value="15">15 days</option>
-        <option value="20">20 days</option>
-        <option value="25">25 days</option>
-        <option value="30">30 days</option>
+        <option selected="selected" value="0"><span nevow:render="i18n">Prev</span></option>
+        <option value="5">5 <span nevow:render="i18n">days</span></option>
+        <option value="10">10 <span nevow:render="i18n">days</span></option>
+        <option value="15">15 <span nevow:render="i18n">days</span></option>
+        <option value="20">20 <span nevow:render="i18n">days</span></option>
+        <option value="25">25 <span nevow:render="i18n">days</span></option>
+        <option value="30">30 <span nevow:render="i18n">days</span></option>
       </select>
       <select onchange="javascript:nextDays()" id="nextDays">
-        <option selected="selected" value="0">Next</option>
-        <option value="5">5 days</option>
-        <option value="10">10 days</option>
-        <option value="15">15 days</option>
-        <option value="20">20 days</option>
-        <option value="25">25 days</option>
-        <option value="30">30 days</option>
+        <option selected="selected" value="0"><span nevow:render="i18n">Next</span></option>
+        <option value="5">5 <span nevow:render="i18n">days</span></option>
+        <option value="10">10 <span nevow:render="i18n">days</span></option>
+        <option value="15">15 <span nevow:render="i18n">days</span></option>
+        <option value="20">20 <span nevow:render="i18n">days</span></option>
+        <option value="25">25 <span nevow:render="i18n">days</span></option>
+        <option value="30">30 <span nevow:render="i18n">days</span></option>
       </select>
-      <a class="menu" href="javascript:goToTableauDate(unixDate())">Today</a>
-      <a class="menu" href="javascript:document.getElementById('datepicker').focus()">From date:</a> <input type="text" id="datepicker" style="width:80px"></input>
+      <a class="menu" href="javascript:goToTableauDate(unixDate())"><span nevow:render="i18n">Today</span></a>
+      <a class="menu" href="javascript:document.getElementById('datepicker').focus()"><span nevow:render="i18n">From date</span>:</a> <input type="text" id="datepicker" style="width:80px"></input>
       <select id="ttags"></select>
     </div>
   </div>
@@ -31,12 +31,12 @@
           <img src="/imgs/tbl/mv.png"></img>
         </td>
         <td style="vertical-align:top">
-          <b>drag me</b> to move your reservations. 
+          <span nevow:render="i18n"><b>drag me</b> to move your reservations</span>. 
         </td>
       </tr>
     </table>
     <div>
-      To insert a new reservation, <b>right click on a cell</b>
+      <span nevow:render="i18n">To insert a new reservation, <b>right click on a cell</b></span>
     </div>
     <table id="tabtable">
       <tr id="tabtableheader">
@@ -47,24 +47,24 @@
 <div id="menus">
   <ul id="menuV" class="contextMenu">
       <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/newres.png)">Add new</a>
+        <a href="#edit" style="background-image:url(/imgs/mns/newres.png)"><span nevow:render="i18n">Add new</span></a>
       </li>
   </ul>
   <ul id="menuRes" class="contextMenu">
       <li class="edit">
-          <a href="#edit" style="background-image:url(/imgs/mns/modres.png)">Edit</a>
+        <a href="#edit" style="background-image:url(/imgs/mns/modres.png)"><span nevow:render="i18n">Edit</span></a>
       </li>
       <li class="edit">
-          <a href="#status" style="background-image:url(/imgs/mns/stares.png)">Status</a>
+        <a href="#status" style="background-image:url(/imgs/mns/stares.png)"><span nevow:render="i18n">Status</span></a>
       </li>
       <li class="edit">
-          <a href="#delete" style="background-image:url(/imgs/mns/delres.png)">Delete</a>
+        <a href="#delete" style="background-image:url(/imgs/mns/delres.png)"><span nevow:render="i18n">Delete</span></a>
       </li>
       <li class="edit">
-          <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)">Resize</a>
+        <a href="#resize" style="background-image:url(/imgs/mns/rszres.png)"><span nevow:render="i18n">Resize</span></a>
       </li>
       <li class="edit">
-          <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)">Postpone</a>
+        <a href="#postpone" style="background-image:url(/imgs/mns/pstres.png)"><span nevow:render="i18n">Postpone</span></a>
       </li>
   </ul>
   <!--<ul id="menuRc" class="contextMenu">-->
@@ -141,12 +141,12 @@
 </div>
 
 <div id="addNewReservation" style="display:none" class="zakmodal">
-  <h1>Add a new reservation</h1>
-  <h2>Please, insert reservation data</h2>
+  <h1><span nevow:render="i18n">Add a new reservation</span></h1>
+  <h2><span nevow:render="i18n">Please, insert reservation data</span></h2>
     <table>
       <tr>
         <td>
-          Nights:
+          <span nevow:render="i18n">Nights</span>:
         </td>
         <td>
           <input type="text" style="width:30px" id="addNewReservationNights" onchange="javascript:writeReservationNights()"></input>
@@ -172,7 +172,7 @@
       </tr>
       <tr>
         <td>
-          Customer
+          <span nevow:render="i18n">Customer</span>
         </td>
         <td>
           <input type="text" id="addNewReservationCustomer"></input>
@@ -180,20 +180,20 @@
       </tr>
       <tr>
         <td>
-          Status:
+          <span nevow:render="i18n">Status</span>:
         </td>
         <td>
           <select id="addNewReservationStatus">
-            <option value="1" selected="selected">Confirmed</option>
-            <option value="2">Not confirmed</option>
-            <option value="3">Checkin'ed</option>
-            <option value="4">Option</option>
+            <option value="1" selected="selected"><span nevow:render="i18n">Confirmed</span></option>
+            <option value="2"><span nevow:render="i18n">Not confirmed</span></option>
+            <option value="3"><span nevow:render="i18n">Checkin'ed</span></option>
+            <option value="4"><span nevow:render="i18n">Option</span></option>
           </select>
         </td>
       </tr>
       <tr>
         <td>
-          Go to details:
+          <span nevow:render="i18n">Go to details</span>:
         </td>
         <td>
           <input type="checkbox" id="addNewReservationDetails" checked="checked"></input>
@@ -201,23 +201,21 @@
       </tr>
     </table>
     <div style="float:right">
-      <a style="color:#36ff00;font-weight:bold" href="javascript:_addNewReservation()">Continue</a> 
-      <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Cancel</a>
+      <a style="color:#36ff00;font-weight:bold" href="javascript:_addNewReservation()"><span nevow:render="i18n">Continue</span></a> 
+      <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Cancel</span></a>
     </div>
     <br/>
 </div>
 
 <div id="deleteOccupancy" class="zakmodal">
-  <h1>Security Check</h1>
-  <h2>Please, confirm your wishes</h2>
-  By deleting this occupancy you will loose it forever. Moreover,
-  if the relative reservation has no additional occupancy, the
-  reservation too will be deleted.
+  <h1><span nevow:render="i18n">Security Check</span></h1>
+  <h2><span nevow:render="i18n">Please, confirm your wishes</span></h2>
+  <span nevow:render="i18n">By deleting this occupancy you will loose it forever. Moreover, if the relative reservation has no additional occupancy, the reservation too will be deleted</span>.
   <br/>
   <br/>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delOccupancy()">Yes, I know, continue</a> 
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delOccupancy()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 
 <div id="move_or_copy" style="padding:5px;display:none;background-color:black">
@@ -227,7 +225,7 @@
     <table>
       <tr>
         <td>
-          <b style="color:white">Customer</b>:
+          <b style="color:white"><span nevow:render="i18n">Customer</span></b>:
         </td>
         <td>
           <input type="text" style="width:140px" id="copy_customer"/> 
@@ -235,7 +233,7 @@
       </tr>
       <tr>
         <td>
-          <b style="color:white">Nights</b>: 
+          <b style="color:white"><span nevow:render="i18n">Nights</span></b>: 
         </td>
         <td>
           <input type="text" id="copy_nights" style="width:50px"/>
@@ -249,7 +247,7 @@
 <div class="zakmodal" style="display:none" id="sliderdiv">
   <b style="color:white" id="actual_days"></b> 
   <br/>
-  <b style="color:white">New lenght:</b> <input readonly="readonly" type="text" id="new_days" style="width:40px"/>
+  <b style="color:white"><span nevow:render="i18n">New lenght</span>:</b> <input readonly="readonly" type="text" id="new_days" style="width:40px"/>
   <div style="margin:5px 0 5px 0;" id="slider"><div id="true_slider"></div></div>
   <input type="hidden" id="resize_rid"></input>
   <input type="hidden" id="resize_oid"></input>
@@ -257,11 +255,12 @@
 </div>
 
 <div class="zakmodal" style="display:none" id="statusdiv">
-  <b style="color:white">New status:</b> <select id="cmbstatus_mod">
-      <option value="1">Confirmed</option>
-      <option value="2">Not confirmed</option>
-      <option value="3">Checkin'ed</option>
-      <option value="4">Option</option>
+  <b style="color:white"><span nevow:render="i18n">New status</span>:</b> 
+    <select id="cmbstatus_mod">
+      <option value="1"><span nevow:render="i18n">Confirmed</span></option>
+      <option value="2"><span nevow:render="i18n">Not confirmed</span></option>
+      <option value="3"><span nevow:render="i18n">Checkin'ed</span></option>
+      <option value="4"><span nevow:render="i18n">Option</span></option>
     </select>
   <input type="submit" value="Update" onclick="updateReservationStatus()"></input>
   <input type="hidden" id="status_rrid"></input>
@@ -269,7 +268,17 @@
 </div>
 
 <div class="zakmodal" style="display:none" id="postpone_div">
-  <b style="color:white">Days:</b> <select id="postpone_days"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
+  <b style="color:white"><span nevow:render="i18n">Days</span>:</b> 
+  <select id="postpone_days">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+  </select>
   <br/>
   <input type="hidden" id="postpone_rid"></input>
   <input type="hidden" id="postpone_oid"></input>

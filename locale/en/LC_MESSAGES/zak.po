@@ -125,3 +125,108 @@ msgstr "Room type"
 msgid "New room type"
 msgstr "New room type"
 
+msgid "Prev"
+msgstr "Prev"
+
+msgid "days"
+msgstr "days"
+
+msgid "Today"
+msgstr "Today"
+
+msgid "From date"
+msgstr "From date"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "<b>drag me</b> to move your reservations"
+msgstr "<b>drag me</b> to move your reservations"
+
+msgid "To insert a new reservation, <b>right click on a cell</b>"
+msgstr "To insert a new reservation, <b>right click on a cell</b>"
+
+msgid "Add new"
+msgstr "Add new"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Resize"
+msgstr "Resize"
+
+msgid "Postpone"
+msgstr "Postpone"
+
+msgid "Add a new reservation"
+msgstr "Add a new reservation"
+
+msgid "Please, insert reservation data"
+msgstr "Please, insert reservation data"
+
+msgid "Nights"
+msgstr "Nights"
+
+msgid "Customer"
+msgstr "Customer"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Confirmed"
+msgstr "Confirmed"
+
+msgid "Not confirmed"
+msgstr "Not confirmed"
+
+msgid "Checkin'ed"
+msgstr "Checkin'ed"
+
+msgid "Option"
+msgstr "Option"
+
+msgid "Go to details"
+msgstr "Go to details"
+
+msgid "Continue"
+msgstr "Continue"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "By deleting this occupancy you will loose it forever. Moreover, if the relative reservation has no additional occupancy, the reservation too will be deleted"
+msgstr "By deleting this occupancy you will loose it forever. Moreover, if the relative reservation has no additional occupancy, the reservation too will be deleted"
+
+msgid "New lenght"
+msgstr "New lenght"
+
+msgid "New status"
+msgstr "New status"
+
+msgid ""
+msgstr ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
