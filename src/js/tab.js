@@ -472,9 +472,12 @@ function initTableau(d, lendays, rids) {
   var dd= jsDate(d);
   console.log(dd);
   console.log('Initializing zak: ' + dd);
-  zakTableau= new iTableau(dd, lendays, rids);
+  try {
+    lrids= JSON.parse(localStorage.zkTabRids);
+  } catch (e) {lrids= false};
+  zakTableau= new iTableau(dd, lendays, rids || lrids);
   zakTableau.afterDesign= function() {afterTableau()};
-  zakTableau.loadRooms(false, function() {});
+  zakTableau.loadRooms(rids, function() {});
   $('#datepicker').val(strDate(d));
   if (d) 
     localStorage.zakTableauDfrom= JSON.stringify(unixDate(d));
@@ -506,16 +509,6 @@ function nextDays() {
   $('#nextDays').val(0);
   goToTableauDate(newdate);
 }
-
-$(document).ready(function() {
-  
-  initTableau(parseInt(localStorage.zakTableauDate) || '');
-  $(function() {
-    $("#datepicker").datepicker({showAnim: '', dateFormat: 'dd/mm/yy', onSelect: function(d,i) 
-      {goToTableauDate(d);}
-    });
-  });
-})
 
 function tabRsrvPreview(ses, rsrv) {
   var rid= rsrv.id;
@@ -577,3 +570,77 @@ function tabRsrvPreview(ses, rsrv) {
     function(ses, err) {
   });
 }
+
+function selectedRoomTag() {
+  var v= $(this).val();
+  if (v == '--') {
+    localStorage.zkTabRids= '';
+    $('#tabtable').html('<tr id="tabtableheader"></tr>');
+    initTableau(zakTableau.dfrom, zakTableau.lendays);
+    return;
+  }
+  console.log(v);
+  localStorage.zkActualTag= v;
+  var db= zakOpenDb();
+  var q= "select id from room where tags like('%," + v + ",%') or tags = '"+v+"' or tags like('"+v+",%') or tags like('%,"+v+"')";
+  db.transaction(function(ses) {
+    ses.executeSql(q, [],
+    function(ses, recs) {
+      var rids= [];
+      for (var i= 0; i< recs.rows.length;i++) {
+        var rid= recs.rows.item(i).id;
+        if (rids.indexOf(rid) == -1) rids.push(rid);
+      }
+      $('#tabtable').html('<tr id="tabtableheader"></tr>');
+      localStorage.zkTabRids= JSON.stringify(rids);
+      initTableau(zakTableau.dfrom, zakTableau.lendays);
+    }, 
+    function(ses, err) {
+      humanMsg.displayMsg('Error: ' + err.message, 1);
+    });
+  });
+}
+
+function initializeTtags() {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select tags from room where id_property = ?', [getActiveProperty()['id']], 
+      function(ses, recs) {
+        var actualtag= localStorage.zkActualTag || '--';
+        var tags= [];
+        if (!actualtag)
+          var res= '<option value="--">--</option>';
+        else
+          var res= '<option selected="selected" value="--">--</option>';
+        console.log('inside');
+        for (var i= 0; i< recs.rows.length; i++) {
+          var rtags= recs.rows.item(i).tags;
+          console.log(rtags);
+          if (!rtags) continue;
+          rtags= rtags.split(',');
+          for (var j=0; j< rtags.length; j++) {
+            var t= rtags[j];
+            if (tags.indexOf(t) >= 0) continue;
+            tags.push(t);
+            if (actualtag == t) 
+              res+= '<option selected="selected" value="' + t + '">'+t+'</option>';
+            else
+              res+= '<option value="' + t + '">'+t+'</option>';
+          }
+        }
+        console.log(res);
+        $('#ttags').html(res).change(selectedRoomTag);
+      }, function(ses, err) {console.log('Error ttags: '+ err.message)});
+  });
+}
+
+$(document).ready(function() {
+  initializeTtags();
+  initTableau(parseInt(localStorage.zakTableauDate) || '');
+  $(function() {
+    $("#datepicker").datepicker({showAnim: '', dateFormat: 'dd/mm/yy', onSelect: function(d,i) 
+      {goToTableauDate(d);}
+    });
+  });
+})
+
