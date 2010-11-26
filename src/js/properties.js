@@ -8,7 +8,7 @@ function repeatedRoomCode(code, rid) {
   return false;
 }
 
-function _roomTd(room, rtype) {
+function _roomTd(room, rtype, tags) {
   var rname= room.name;
   var rcode= room.code;
   var rid= room.id;
@@ -18,20 +18,30 @@ function _roomTd(room, rtype) {
   var args= [rid,rname,rcode,rtypeid].join("','");
   args= "'" + args + "'";
   res+= '<td><a href="javascript:askModRoom(' + args + ')">Modify</a></td>';
-  var tags= room.tags;
+  /*var tags= room.tags;*/
   if (!tags) {
     res+= '<td>no tag</td>';
   } else {
     res+= '<td>';
-    tags= tags.split(',');
+    /*tags= tags.split(',');*/
     for (var i= 0; i< tags.length; i++) {
       var t= tags[i];
       res+= '<b class="tagging">' + t + ' <a href="javascript:void(0)" onclick="delRoomTag(' + rid + ', \'' + t +'\')">X</a></b>';
     }
     res+= '</td>';
   }
-  res+= '<td><input id="tag_'+rid+'" onkeypress="return newRoomTag(event)" type="text" style="width:60px"/></td>';
+  res+= '<td><input class="rooms_tagging" id="tag_'+rid+'" onkeypress="return newRoomTag(event)" type="text" style="width:60px"/></td>';
   return '<tr>' + res + '</tr>';
+}
+
+function _newRoomTag(rid, tag) {
+  llNewRoomTag(rid, tag, function(ses, recs) {;
+    initRooms(1);
+    humanMsg.displayMsg('Sounds great');
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error: '+ err.message, 1);
+  });
+  return false;
 }
 
 function newRoomTag(ev) {
@@ -41,12 +51,7 @@ function newRoomTag(ev) {
     var el= $(ev.target);
     var tname= el.val();
     var rid= el.attr('id').split('_')[1];
-    llNewRoomTag(rid, tname, function(ses, recs) {;
-      initRooms(1);
-      humanMsg.displayMsg('Sounds great');
-      }, function(ses, err) {
-        humanMsg.displayMsg('Error: '+ err.message, 1);
-      });
+    return _newRoomTag(rid, tname);
   } catch(e) {console.log(e)}
   return false;
 }
@@ -245,6 +250,7 @@ function initRooms(reset) {
   _rcodes= {};
   if (reset) $('#roomsbody').empty();
   var pid= parseInt(getActiveProperty()['id']);
+  var alltags= [];
   llGetRoomTypes(function(ses, recs) {
     var rmap= {};
     for (var i= 0; i< recs.rows.length; i++) {
@@ -255,17 +261,36 @@ function initRooms(reset) {
 
     llLoadRooms(pid,
       function(ses, recs) {
+        var alltags= [];
         var i= 0;
         var res= '';
         for(i=0;i<recs.rows.length;i++) {
           var room= recs.rows.item(i);
-          var rname= room.name;
+          /*var rname= room.name;*/
           var rcode= room.code;
           var rid= room.id;
-          res+= _roomTd(room, rmap[room.id_room_type]);
+          var tags= room.tags || '';
+          if (tags) tags= tags.split(',');
+          else tags= [];
+          for (var j=0;j<tags.length;j++) {
+            if (alltags.indexOf(tags[j]) == -1) alltags.push(tags[j]);
+          }
+          res+= _roomTd(room, rmap[room.id_room_type], tags);
           _rcodes[rid]= rcode;
         }
         $('#roomsbody').html(res);
+        $('.rooms_tagging').autocomplete(
+        {
+          source: alltags,
+          minLength: 1,
+          select: function(event, ui) {
+            var rid= $(this).attr('id').split('_')[1];
+            var v= ui.item.value;
+            console.log(rid);
+            console.log(v);
+            _newRoomTag(rid, v);
+          }
+        });
       },
       function(ses, err) {
         alert(err);
