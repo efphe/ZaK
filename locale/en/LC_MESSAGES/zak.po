@@ -2,8 +2,126 @@
 msgid ""
 msgstr ""
 
+msgid "Delete property"
+msgstr "Delete property"
+
+msgid "Actions"
+msgstr "Actions"
+
 msgid "Pricing"
 msgstr "Pricing"  
 
+msgid "Settings"
+msgstr "Settings"
+
 msgid "New Property"
 msgstr "New Property"
+
+msgid "Rooms Management"
+msgstr "Rooms Management"
+
+msgid "Add a new room"
+msgstr "Add a new room"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Your Rooms"
+msgstr "Your Rooms"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Modify"
+msgstr "Modify"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Add tag"
+msgstr "Add tag"
+
+msgid "New room type"
+msgstr "New room type"
+
+msgid "Define a new room type"
+msgstr "Define a new room type"
+
+msgid "Organize your rooms grouping them by types (double, double superior, single and so on). You will have the chance to define faster your prices and to manage internt, better."
+msgstr "Organize your rooms grouping them by types (double, double superior, single and so on). You will have the chance to define faster your prices and to manage internt, better."
+
+msgid "Room name"
+msgstr "Room name"
+
+msgid "Room code"
+msgstr "Room code"
+
+msgid "Room type name"
+msgstr "Room type name"
+
+msgid "Add room with this type"
+msgstr "Add room with this type"
+
+msgid "Security Check"
+msgstr "Security Check"
+
+msgid "Please, confirm your wishes"
+msgstr "Please, confirm your wishes"
+
+msgid "Dear, are you conscious that, deleting this property, you will loose each type of data relative to this property (Rooms, reservations, customers and so on)?"
+msgstr "Dear, are you conscious that, deleting this property, you will loose each type of data relative to this property (Rooms, reservations, customers and so on)?"
+
+msgid "Yes, I know, continue"
+msgstr "Yes, I know, continue"
+
+msgid "Oh, not sure"
+msgstr "Oh, not sure"
+
+msgid "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too."
+msgstr "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too."
+
+msgid "Please, add a new property"
+msgstr "Please, add a new property"
+
+msgid "Just enter your property name"
+msgstr "Just enter your property name"
+
+msgid "Property Name"
+msgstr "Property Name"
+
+msgid "Currency"
+msgstr "Currency"
+
+msgid "Dollar"
+msgstr "Dollar"
+
+msgid "Pound"
+msgstr "Pound"
+
+msgid "Add this property"
+msgstr "Add this property"
+
+msgid "Modify room"
+msgstr "Modify room"
+
+msgid "Modify name and/or code"
+msgstr "Modify name and/or code"
+
+msgid "Room name"
+msgstr "Room name"
+
+msgid "Room code"
+msgstr "Room code"
+
+msgid "Room type"
+msgstr "Room type"
+
+msgid "New room type"
+msgstr "New room type"
+

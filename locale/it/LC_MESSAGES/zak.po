@@ -2,8 +2,128 @@
 msgid ""
 msgstr ""
 
+msgid "Delete property"
+msgstr "Elimina la struttura"
+
+msgid "Actions"
+msgstr "Opzioni"
+
 msgid "Pricing"
 msgstr "Prezzi"
 
+msgid "Settings"
+msgstr "Impostazioni"
+
 msgid "New Property"
 msgstr "Nuova struttura"
+
+msgid "Rooms Management"
+msgstr "Gestione Camere"
+
+msgid "Add a new room"
+msgstr "Inserisci una camera"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Code"
+msgstr "Codice"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Your Rooms"
+msgstr "Le tue camere"
+
+msgid "Delete"
+msgstr "Cancella"
+
+msgid "Modify"
+msgstr "Modifica"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Add tag"
+msgstr "Add tag"
+
+msgid "New room type"
+msgstr "Nuovo tipo camera"
+
+msgid "Define a new room type"
+msgstr "Definisci un nuovo tipo camera"
+
+msgid "Organize your rooms grouping them by types (double, double superior, single and so on). You will have the chance to define faster your prices and to manage internt, better."
+msgstr "Raggruppa le tue camere per tipo (doppia, doppia superior, singola ecc.). Potrai cosi' definire i prezzi piu' facilmente e gestire meglio la rivendita online."
+
+msgid "Room name"
+msgstr "Nome camera"
+
+msgid "Room code"
+msgstr "Codice camera"
+
+msgid "Room type name"
+msgstr "Tipo camera"
+
+msgid "Add room with this type"
+msgstr "Inserisci una camera di questo tipo"
+
+msgid "Security Check"
+msgstr "Controllo di sicurezza"
+
+msgid "Please, confirm your wishes"
+msgstr "Sei sicuro di voler procedere?"
+
+msgid "Dear, are you conscious that, deleting this property, you will loose each type of data relative to this property (Rooms, reservations, customers and so on)?"
+msgstr "Siete consapevoli che eliminando questa struttura, cancellerete ogni tipo di dato ad essa associato (Camere, prenotazioni, clienti ecc..)?"
+
+msgid "Yes, I know, continue"
+msgstr "Ne sono consapevole, continua"
+
+msgid "Oh, not sure"
+msgstr "Non ne sono sicuro"
+
+msgid "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too."
+msgstr "Siete consapevoli che eliminando questa camera, cancellerete anche tutte le occupazioni ad essa relative? Anche le prenotazioni che rimarranno senza occupazioni (a causa di questa cancellazione) verranno eliminate."
+
+msgid "Please, add a new property"
+msgstr "Inserire una nuova struttura"
+
+msgid "Just enter your property name"
+msgstr "Vi basta indicarne il nome"
+
+msgid "Property Name"
+msgstr "Nome struttura"
+
+msgid "Currency"
+msgstr "Valuta"
+
+msgid "Dollar"
+msgstr "Dollaro"
+
+msgid "Pound"
+msgstr "Sterlina"
+
+msgid "Add this property"
+msgstr "Aggiungi la struttura"
+
+msgid "Modify room"
+msgstr "Moifica la camera"
+
+msgid "Modify name and/or code"
+msgstr "Modifica nome e/o codice"
+
+msgid "Room name"
+msgstr "Nome camera"
+
+msgid "Room code"
+msgstr "Codice camera"
+
+msgid "Room type"
+msgstr "Tipo camera"
+
+msgid "New room type"
+msgstr "Nuovo tipo camera"
+
+
+

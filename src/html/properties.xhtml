@@ -4,13 +4,13 @@
       <div id="mmenu">
         <div class="immenu">
           <b class="putPropertyName"></b><br/>
-          <a href="javascript:askDelProperty()" style="font-weight:bold">Delete property</a>
+          <a href="javascript:askDelProperty()" style="font-weight:bold"><span nevow:render="i18n">Delete property</span></a>
         </div>
         <div style="margin-top:6px" class="immenu">
-          <b>Actions</b>:
+          <b><span nevow:render="i18n">Actions</span></b>:
           <ul class="lmenu" id="menuactions">
             <li><a href="pricing"><span nevow:render="i18n">Pricing</span></a></li>
-            <li><a href="settings">Settings</a></li>
+            <li><a href="settings"><span nevow:render="i18n">Settings</span></a></li>
             <li><a href="#" onclick="javascript:$('#newProperty').modal();"><span nevow:render="i18n">New Property</span></a></li>
           </ul>
         </div>
@@ -18,43 +18,43 @@
 
       <div id="contents">
         <div class="immenu">
-          <h1>Rooms Management (<b class="putPropertyName"></b>)</h1>
-          <h2>Add a new room</h2>
+          <h1><span nevow:render="i18n">Rooms Management</span> (<b class="putPropertyName"></b>)</h1>
+          <h2><span nevow:render="i18n">Add a new room</span></h2>
           <div class="subCtnt">
-            <b>Name:</b><input type="text" id="newroomname"></input>
-            <b>Code:</b><input type="text" style="width:50px" id="newroomcode"></input>
-            <b>Type:</b><select id="newroomtype" class="newroomtype"></select>
+            <b><span nevow:render="i18n">Name</span>:</b><input type="text" id="newroomname"></input>
+            <b><span nevow:render="i18n">Code</span>:</b><input type="text" style="width:50px" id="newroomcode"></input>
+            <b><span nevow:render="i18n">Type</span>:</b><select id="newroomtype" class="newroomtype"></select>
             <input type="submit" value="Add room" onclick="return addNewRoom()"></input>
             <br/>
             <br/>
             <!--<span nevow:render="i18n">ciao</span>-->
           </div>
-          <h2>Your Rooms</h2>
+          <h2><span nevow:render="i18n">Your Rooms</span></h2>
           <div class="subCtnt">
             
             <table class="roomsmanagement">
               <thead>
                 <tr>
                   <th>
-                    <b>Name</b>
+                    <b><span nevow:render="i18n">Name</span></b>
                   </th>
                   <th>
-                    <b>Code</b>
+                    <b><span nevow:render="i18n">Code</span></b>
                   </th>
                   <th>
-                    <b>Type</b>
+                    <b><span nevow:render="i18n">Type</span></b>
                   </th>
                   <th>
-                    <b>Delete</b>
+                    <b><span nevow:render="i18n">Delete</span></b>
                   </th>
                   <th>
-                    <b>Modify</b>
+                    <b><span nevow:render="i18n">Modify</span></b>
                   </th>
                   <th>
-                    <b>Tags</b>
+                    <b><span nevow:render="i18n">Tags</span></b>
                   </th>
                   <th>
-                    <b>Add tag</b>
+                    <b><span nevow:render="i18n">Add tag</span></b>
                   </th>
                 </tr>
               </thead>
@@ -70,16 +70,15 @@
   </div>
 
   <div id="askRoomType" class="zakmodal">
-    <h1>New room type</h1>
-    <h2>Define a new room type</h2>
-    Organize your rooms grouping them by types (double, double superior, single and so on). You will have
-    the chance to define faster your prices and to manage internt, better.
+    <h1><span nevow:render="i18n">New room type</span></h1>
+    <h2><span nevow:render="i18n">Define a new room type</span></h2>
+    <span nevow:render="i18n">Organize your rooms grouping them by types (double, double superior, single and so on). You will have the chance to define faster your prices and to manage internt, better.</span>
     <br/>
     <br/>
     <table>
       <tr style="display:none">
         <td>
-          Room name: 
+          <span nevow:render="i18n">Room name</span>: 
         </td>
         <td>
           <input type="text" id="tempnewroomname" readonly="readonly"></input>
@@ -87,7 +86,7 @@
       </tr>
       <tr style="display:none">
         <td>
-          Room code: 
+          <span nevow:render="i18n">Room code</span>: 
         </td>
         <td>
           <input type="text" id="tempnewroomcode" readonly="readonly"></input>
@@ -95,7 +94,7 @@
       </tr>
       <tr>
         <td>
-          Room type name: 
+          <span nevow:render="i18n">Room type name</span>: 
         </td>
         <td>
           <input type="text" id="rtype" style="width:180px"></input>
@@ -104,39 +103,35 @@
     </table>
     <br/>
     <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewRoomWithType()">Add room with this type</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewRoomWithType()"><span nevow:render="i18n">Add room with this type</span></a> 
   </div>
   <div id="delPropertyAlert" class="zakmodal">
-    <h1>Security Check</h1>
-    <h2>Please, confirm your wishes</h2>
-    Dear, are you conscious that, deleting this property, you will loose
-    each type of data relative to this property (Rooms, reservations,
-    customers and so on)?
+    <h1><span nevow:render="i18n">Security Check</span></h1>
+    <h2><span nevow:render="i18n">Please, confirm your wishes</span></h2>
+    <span nevow:render="i18n">Dear, are you conscious that, deleting this property, you will loose each type of data relative to this property (Rooms, reservations, customers and so on)?</span>
     <br/>
     <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:_delProperty()">Yes, I know, continue</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:_delProperty()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
     <br/>
-    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
   </div>
   <div id="delRoomAlert" class="zakmodal">
-    <h1>Security Check</h1>
-    <h2>Please, confirm your wishes</h2>
-    Dear, are you conscious that, deleting this room, you will delete
-    also all the occupancies relative to this room? Reservations without
-    occupancies (ie reservations relying only on this room) will be deleted too.
+    <h1><span nevow:render="i18n">Security Check</span></h1>
+    <h2><span nevow:render="i18n">Please, confirm your wishes</span></h2>
+    <span nevow:render="i18n">Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too.</span>
     <br/>
     <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()">Yes, I know, continue</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
     <br/>
-    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+    <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
   </div>
   <div id="newProperty" class="zakmodal">
-    <h1>Please, add a new property</h1>
-    <h2>Just enter your property name</h2>
+    <h1><span nevow:render="i18n">Please, add a new property</span></h1>
+    <h2><span nevow:render="i18n">Just enter your property name</span></h2>
     <table>
       <tr>
         <td>
-          Property Name: 
+          <span nevow:render="i18n">Property Name</span>: 
         </td>
         <td>
           <input type="text" id="newpropertyname"></input>
@@ -144,28 +139,28 @@
       </tr>
       <tr>
         <td>
-          Currency: 
+          <span nevow:render="i18n">Currency</span>: 
         </td>
         <td>
           <select id="newpropertycur">
             <option value="1">Euro (&#8364;)</option>
-            <option value="2">Dollar ($)</option>
-            <option value="3">Pound (&#163;)</option>
+            <option value="2"><span nevow:render="i18n">Dollar</span> ($)</option>
+            <option value="3"><span nevow:render="i18n">Pound</span> (&#163;)</option>
           </select>
         </td>
       </tr>
     </table>
     <br/>
     <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewProperty()">Add this property</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addNewProperty()"><span nevow:render="i18n">Add this property</span></a> 
   </div>
   <div id="modRoom" class="zakmodal">
-    <h1>Modify room</h1>
-    <h2>Modify name and/or code</h2>
+    <h1><span nevow:render="i18n">Modify room</span></h1>
+    <h2><span nevow:render="i18n">Modify name and/or code</span></h2>
     <table>
       <tr>
         <td>
-          Room name: 
+          <span nevow:render="i18n">Room name</span>: 
         </td>
         <td>
           <input type="text" id="modroom_name" style="width:100px"></input>
@@ -173,7 +168,7 @@
       </tr>
       <tr>
         <td>
-          Room code: 
+          <span nevow:render="i18n">Room code</span>: 
         </td>
         <td>
           <input type="text" id="modroom_code" style="width:60px"></input>
@@ -181,7 +176,7 @@
       </tr>
       <tr>
         <td>
-          Room type:
+          <span nevow:render="i18n">Room type</span>:
         </td>
         <td>
           <select id="modroom_rtype" class="newroomtype" style="width:60px" onchange="modRoomType()"></select>
@@ -189,13 +184,13 @@
       </tr>
       <tr id="showNewType" style="display:none">
         <td>
-          New room type: 
+          <span nevow:render="i18n">New room type</span>: 
         </td>
         <td>
           <input type="text" id="modroom_newtype" style="width:60px"></input>
         </td>
       </tr>
     </table>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:modRoom()">Modify</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:modRoom()"><span nevow:render="i18n">Modify</span></a> 
   </div>
 </div>
