@@ -26,12 +26,40 @@ function _roomTd(room, rtype) {
     tags= tags.split(',');
     for (var i= 0; i< tags.length; i++) {
       var t= tags[i];
-      res+= '<b class="tagging">' + t + ' <a href="javascript:void(0)" onclick="delRoomTag(' + rid + ', ' + t +')">X</a></b>';
+      res+= '<b class="tagging">' + t + ' <a href="javascript:void(0)" onclick="delRoomTag(' + rid + ', \'' + t +'\')">X</a></b>';
     }
     res+= '</td>';
   }
-  res+= '<td><input type="text" style="width:60px" onclick="newRoomTag(this, '+rid+')"/></td>';
+  res+= '<td><input id="tag_'+rid+'" onkeypress="return newRoomTag(event)" type="text" style="width:60px"/></td>';
   return '<tr>' + res + '</tr>';
+}
+
+function newRoomTag(ev) {
+  if (ev.keyCode != 13) return;
+  try {
+    console.log(ev);
+    var el= $(ev.target);
+    var tname= el.val();
+    var rid= el.attr('id').split('_')[1];
+    llNewRoomTag(rid, tname, function(ses, recs) {;
+      initRooms(1);
+      humanMsg.displayMsg('Sounds great');
+      }, function(ses, err) {
+        humanMsg.displayMsg('Error: '+ err.message, 1);
+      });
+  } catch(e) {console.log(e)}
+  return false;
+}
+
+function delRoomTag(rid, tag) {
+  console.log(rid);
+  console.log(tag);
+  llDelRoomTag(rid, tag, function(ses, recs) {
+    initRooms(1);
+    humanMsg.displayMsg('Sounds great');
+    }, function(ses, err) {
+      humanMsg.displayMsg('Error: '+ err.message, 1);
+    });
 }
 
 function askModRoom(rid, rname, rcode, rtype) {
