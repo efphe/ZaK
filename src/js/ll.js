@@ -1023,3 +1023,48 @@ function llChangeReservationStatus(rid, s, cb, cbe) {
       cbe);
   });
 }
+
+function llNewRoomTag(rid, tag, f, g) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select * from room where id = ?', [rid], 
+      function(ses, recs) {
+        var room= recs.rows.item(0);
+        var tags= room.tags || '';
+        if (!tags) 
+          tags= tag;
+        else {
+          var ltags= tags.split(',');
+          if (ltags.indexOf(tag) > 0) {
+            f();return;
+          }
+          tags+= ','+tag;
+        }
+        ses.executeSql('update room set tags = ? where id = ?', [tags, rid], f, g);
+      },
+      g);
+  });
+}
+
+function llDelRoomTag(rid, tag, f, g) {
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('select * from room where id = ?', [rid], 
+      function(ses, recs) {
+        var room= recs.rows.item(0);
+        var tags= room.tags || '';
+        if (!tags) {
+          f();return;
+        }
+
+        var ltags= tags.split(',');
+        var newtags= [];
+        for (var i= 0; i< ltags.length; i++) {
+          var otag= ltags[i];
+          if (otag != tag) newtags.push(otag);
+        }
+        ses.executeSql('update room set tags = ? where id = ?', [newtags, rid], f, g);
+      },
+      g);
+  });
+}
