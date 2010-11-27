@@ -125,3 +125,145 @@ msgstr "Room type"
 msgid "New room type"
 msgstr "New room type"
 
+msgid "Rooms"
+msgstr "Rooms"
+
+msgid "Setup"
+msgstr "Setup"
+
+msgid "Remarks"
+msgstr "Remarks"
+
+msgid "Occupancy"
+msgstr "Occupancy"
+
+msgid "Main guest"
+msgstr "Main guest"
+
+msgid "Adults"
+msgstr "Adults"
+
+msgid "Children"
+msgstr "Children"
+
+msgid "Customers"
+msgstr "Customers"
+
+msgid "Res. Invoice"
+msgstr "Res. Invoice"
+
+msgid "Extras"
+msgstr "Extras"
+
+msgid "Rooms pricing"
+msgstr "Rooms pricing"
+
+msgid "Apply"
+msgstr "Apply"
+
+msgid "apply"
+msgstr "apply"
+
+
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "for room"
+msgstr "for room"
+
+msgid "Remeber to save your changes!"
+msgstr "Remeber to save your changes!"
+
+msgid "Meals"
+msgstr "Meals"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "for the day"
+msgstr "for the day"
+
+msgid "All days"
+msgstr "All days"
+
+msgid "New meal"
+msgstr "New meal"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "Add a new setup"
+msgstr "Add a new setup"
+
+msgid "Deleting customer"
+msgstr "Deleting customer"
+
+msgid "Sure"
+msgstr "Sure"
+
+msgid "Are you sure you want delete permanently this customer"
+msgstr "Are you sure you want delete permanently this customer"
+
+msgid "If you want, you can simply deassociate the customer from this"
+msgstr "If you want, you can simply deassociate the customer from this"
+
+msgid "reservation, without removing it from your contacts"
+msgstr "reservation, without removing it from your contacts"
+
+msgid "Existing customer"
+msgstr "Existing customer"
+
+msgid "Find an existent customer"
+msgstr "Find an existent customer"
+
+msgid "Name or Email"
+msgstr "Name or Email"
+
+msgid "Add a new customer"
+msgstr "Add a new customer"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Gender"
+msgstr "Gender"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Female"
+msgstr "Female"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Personal Info"
+msgstr "Personal Info"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "City"
+msgstr "City"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Birth"
+msgstr "Birth"
+
+msgid ""
+msgstr ""
+
+
+

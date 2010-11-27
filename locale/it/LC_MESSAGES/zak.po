@@ -125,5 +125,159 @@ msgstr "Tipo camera"
 msgid "New room type"
 msgstr "Nuovo tipo camera"
 
+msgid "Rooms"
+msgstr "Camere"
 
+msgid "Setup"
+msgstr "Preparazione"
+
+msgid "Remarks"
+msgstr "Note"
+
+msgid "Occupancy"
+msgstr "Occupazione"
+
+msgid "Main guest"
+msgstr "Ospite rif."
+
+msgid "Adults"
+msgstr "Adulti"
+
+msgid "Children"
+msgstr "Bambini"
+
+msgid "Customers"
+msgstr "Cienti"
+
+msgid "Res. Invoice"
+msgstr "Fattura"
+
+msgid "Extras"
+msgstr "Extra"
+
+msgid "Rooms pricing"
+msgstr "Prezzi camera"
+
+msgid "Apply"
+msgstr "Applica"
+
+msgid "apply"
+msgstr "applica"
+
+msgid "Pricing"
+msgstr "Tariffa"
+
+msgid "Filter"
+msgstr "Filtro"
+
+msgid "edit"
+msgstr "modifica"
+
+msgid "for room"
+msgstr "per la camera"
+
+msgid "Remeber to save your changes!"
+msgstr "Ricorda di salvare le modifiche!"
+
+msgid "Meals"
+msgstr "Pasti"
+
+msgid "Add"
+msgstr "Aggiungi"
+
+msgid "for the day"
+msgstr "per il giorno"
+
+msgid "All days"
+msgstr "Tutti i giorni"
+
+msgid "New meal"
+msgstr "Nuovo pasto"
+
+msgid "Age"
+msgstr "Eta'"
+
+msgid "Add a new setup"
+msgstr "Nuova preparazione"
+
+msgid "Deleting customer"
+msgstr "Cancellazione cliente"
+
+msgid "Sure"
+msgstr "Sicuro"
+
+msgid "Are you sure you want delete permanently this customer"
+msgstr "Sei sicuro di voler cancellare il cliente definitivamente"
+
+msgid "If you want, you can simply deassociate the customer from this"
+msgstr "Se vuoi, puoi semplicemente disassociare il clienter da questa"
+
+msgid "reservation, without removing it from your contacts"
+msgstr "prenotazione, senza doverlo escludere dai tuoi contatti"
+
+msgid "Existing customer"
+msgstr "Cliente esistente"
+
+msgid "Find an existent customer"
+msgstr "Trova un cliente gia' inserito"
+
+msgid "Name or Email"
+msgstr "Nome o email"
+
+msgid "Add a new customer"
+msgstr "Inserisci un cliente"
+
+msgid "Contact"
+msgstr "Contatto"
+
+msgid "Gender"
+msgstr "Sesso"
+
+msgid "Male"
+msgstr "Maschio"
+
+msgid "Female"
+msgstr "Femmina"
+
+msgid "Phone"
+msgstr "Telefono"
+
+msgid "Personal Info"
+msgstr "Informazioni personli"
+
+msgid "Country"
+msgstr "Stato"
+
+msgid "City"
+msgstr "Citta'"
+
+msgid "Address"
+msgstr "Indirizzo"
+
+msgid "Zip"
+msgstr "Cap"
+
+msgid "Birth"
+msgstr "Nascita"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
 

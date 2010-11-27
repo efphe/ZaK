@@ -2,11 +2,11 @@
   <div id="graycontainer">
     <div class="bookright">
       <div id="right_reservation">
-        <h1>Rooms <select id="selOccupancy" onchange="changeOccupancy()"></select></h1>
+        <h1><span nevow:render="i18n">Rooms</span> <select id="selOccupancy" onchange="changeOccupancy()"></select></h1>
         <table>
           <tr>
             <td>
-              <a href="#" id="addRSetupButton" onclick="askNewRSetup()"><b>Setup</b></a>
+              <a href="#" id="addRSetupButton" onclick="askNewRSetup()"><b><span nevow:render="i18n">Setup</span></b></a>
             </td>
             <td>
               <select id="selectSetup"></select>
@@ -14,7 +14,7 @@
           </tr>
           <tr>
             <td>
-              Remarks:
+              <span nevow:render="i18n">Remarks</span>:
             </td>
             <td colspan="2">
               <textarea id="oremarks" style="background-color:white;width:100%;height:100px"></textarea>
@@ -27,11 +27,11 @@
         </table>
       </div>
       <div>
-        <h1>Occupancy</h1>
+        <h1><span nevow:render="i18n">Occupancy</span></h1>
         <table id="table_occupancy">
           <tr>
             <td>
-              Main guest:
+              <span nevow:render="i18n">Main guest</span>:
             </td>
             <td colspan="2">
               <input type="text" id="ocustomer" style="width:180px"></input>
@@ -40,7 +40,7 @@
           </tr>
           <tr>
             <td>
-              Adults:
+              <span nevow:render="i18n">Adults</span>:
             </td>
             <td colspan="2">
               <select id="adults">
@@ -56,7 +56,7 @@
           </tr>
           <tr>
             <td>
-              Children:
+              <span nevow:render="i18n">Children</span>:
             </td>
             <td>
               <input readonly="readonly" id="childrenCounter" value="0" style="width:40px"></input>
@@ -68,7 +68,7 @@
           <br/>
           <input type="submit" value="Save Occupancy" onclick="saveOccupancy()"></input>
         </div>
-        <h1>Customers</h1>
+        <h1><span nevow:render="i18n">Customers</span></h1>
         <div style="float:right;margin:1px" id="customers_div">
           <a style="border:none" href="javascript:addCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus.png" alt="New customer" title="New customer"></img></a>
           <a style="border:none" href="javascript:existCustomer()"><img style="border:none;vertical-align:middle" src="/imgs/plus_yellow.png" alt="Ex. customer" title="Existing customer"></img></a>
@@ -79,12 +79,12 @@
     </div>
     <div class="bookright">
       <div style="float:right;text-align:center" id="resinvoice">
-        <b style="color:black;font-size:12px">Res. Invoice</b><br/>
+        <b style="color:black;font-size:12px"><span nevow:render="i18n">Res. Invoice</span></b><br/>
         <input id="ibuilder" style="display:none" type="submit" value="Build invoice" onclick="buildReservationInvoice()"></input>
         <input id="iviewer" style="display:none" type="submit" value="View invoice" onclick="goToSameDirPage('invoice')"></input>
       </div>
       <div>
-        <h1>Extras</h1>
+        <h1><span nevow:render="i18n">Extras</span></h1>
         <table>
           <tr>
             <td>
@@ -118,7 +118,7 @@
         </div>
       </div>
       <div>
-        <h1>Remarks</h1>
+        <h1><span nevow:render="i18n">Remarks</span></h1>
         <textarea id="rremarks" style="background-color:white;width: 100%;height: auto;min-height:400px"></textarea>
         <input type="submit" value="Save Remarks" onclick="saveRemarks()"></input>
       </div>
@@ -132,40 +132,40 @@
 
   <h1 id="reservationTitle"></h1>
   <div>
-    <h1>Rooms pricing</h1>
-    Apply 
+    <h1><span nevow:render="i18n">Rooms pricing</span></h1>
+    <span nevow:render="i18n">Apply</span> 
     <select id="choose_app" onchange="choosePricingApplication()">
       <option value="">--</option>
-      <option value="pricing">Pricing</option>
-      <option value="filter">Filter</option>
+      <option value="pricing"><span nevow:render="i18n">Pricing</span></option>
+      <option value="filter"><span nevow:render="i18n">Filter</span></option>
     </select>
     <table id="apply_pricing" style="display:none">
       <tr>
         <td>
-          <b>Pricing</b> edit
+          <b><span nevow:render="i18n">Pricing</span></b> <span nevow:render="i18n">apply</span>
           <select id="cmbpricing"><option value="1">Standard</option></select> 
-          for room <select class="cmbPricingRoom" id="cmbPricingRoom"></select>
-          <input type="submit" onclick="changePricing()" value="Edit"></input>
+          <span nevow:render="i18n">for room</span> <select class="cmbPricingRoom" id="cmbPricingRoom"></select>
+          <input type="submit" onclick="changePricing()" value="Apply"></input>
         </td>
       </tr>
       <tr>
         <td>
-          Remeber to save your changes!
+          <span nevow:render="i18n">Remeber to save your changes!</span>
         </td>
       </tr>
     </table>
     <table id="apply_filters" style="display:none">
       <tr>
         <td>
-          <b>Filter</b> Apply <select id="cmbalter"></select>
-          for room <select class="cmbPricingRoom" id="cmbAlterRoom"></select>
+          <b><span nevow:render="i18n">Filter</span></b> <span nevow:render="i18n">Apply</span> <select id="cmbalter"></select>
+          <span nevow:render="i18n">for room</span> <select class="cmbPricingRoom" id="cmbAlterRoom"></select>
           <input type="submit" onclick="applyFilter()" value="Apply"></input> 
           (<b><a href="javascript:askVariation()">New</a></b>)
         </td>
       </tr>
       <tr>
         <td>
-          Remeber to save your changes!
+          <span nevow:render="i18n">Remeber to save your changes!</span>
         </td>
       </tr>
     </table>
@@ -175,8 +175,8 @@
   </div>
   <br/>
   <div>
-    <h1>Meals</h1>
-    Add 
+    <h1><span nevow:render="i18n">Meals</span></h1>
+    <span nevow:render="i18n">Add</span>
     <select id="howmeals">
       <option value="1">1</option>
       <option value="2">2</option>
@@ -192,10 +192,10 @@
       <option value="12">12</option>
     </select>
     <select id="cmbmeal"></select>
-    for the day 
-    <select id="cmbdaymeals"><option value="">All days</option></select>
+    <span nevow:render="i18n">for the day</span> 
+    <select id="cmbdaymeals"><option value=""><span nevow:render="i18n">All days</span></option></select>
       <input type="submit" value="Add" onclick="addMeal()"></input>
-      (<b><a href="javascript:askMeal()">New meal</a></b>)
+      (<b><a href="javascript:askMeal()"><span nevow:render="i18n">New meal</span></a></b>)
     <br/>
     <br/>
     <div id="meals_div" style="display:none">
@@ -209,7 +209,7 @@
   <table>
     <tr>
       <td>
-        <b style="color:white">Age:</b> 
+        <b style="color:white"><span nevow:render="i18n">Age</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:40px" id="children_age"></input>
@@ -225,11 +225,11 @@
 </div>
 
 <div class="zakmodalfree" id="rsetup_div">
-  <h1>Add a new setup</h1>
+  <h1><span nevow:render="i18n">Add a new setup</span></h1>
   <table>
     <tr>
       <td>
-        <b style="color:white">Name:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="rsetup_name"></input>
@@ -244,11 +244,11 @@
 </div>
 
 <div class="zakmodalfree" id="delcustomer_div">
-  <h1>Deleting customer</h1>
-  <h2>Sure?</h2>
-  Are you sure you want delete permanently this customer?<br/>
-  If you want, you can simply deassociate the customer from this<br/>
-  reservation, without removing it from your contacts.
+  <h1><span nevow:render="i18n">Deleting customer</span></h1>
+  <h2><span nevow:render="i18n">Sure</span>?</h2>
+  <span nevow:render="i18n">Are you sure you want delete permanently this customer</span>?<br/>
+  <span nevow:render="i18n">If you want, you can simply deassociate the customer from this</span><br/>
+  <span nevow:render="i18n">reservation, without removing it from your contacts</span>.
   <br/>
   <br/>
   <input type="submit" value="Remove from reservation" onclick="javascript:_delRCustomer()"></input>
@@ -257,12 +257,12 @@
 </div>
 
 <div class="zakmodalfree" id="existcustomer_div">
-  <h1>Existing customer</h1>
-  <h2>Find an existent customer</h2>
+  <h1><span nevow:render="i18n">Existing customer</span></h1>
+    <h2><span nevow:render="i18n">Find an existent customer</span></h2>
   <table>
     <tr>
       <td>
-        <b style="color:white">Name or Email:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name or Email</span>:</b> 
       </td>
       <td id="td_finder">
         <input type="text" id="cust_finder" style="width:200px"></input>
@@ -280,17 +280,17 @@
 </div>
 
 <div class="zakmodalfree" id="addcustomer_div">
-  <h1>Add a new customer</h1>
+  <h1><span nevow:render="i18n">Add a new customer</span></h1>
 
   <table style="float:right">
     <tr>
       <td colspan="2" align="center">
-        <h2 style="color:#36ff00">Contact</h2>
+        <h2 style="color:#36ff00"><span nevow:render="i18n">Contact</span></h2>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Name:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_name"></input> 
@@ -298,12 +298,12 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Gender:</b> 
+        <b style="color:white"><span nevow:render="i18n">Gender</span>:</b> 
       </td>
       <td>
         <select id="cust_gender">
-          <option value="1">Male</option>
-          <option value="2">Female</option>
+          <option value="1"><span nevow:render="i18n">Male</span></option>
+          <option value="2"><span nevow:render="i18n">Female</span></option>
         </select>
       </td>
     </tr>
@@ -317,7 +317,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Phone:</b> 
+        <b style="color:white"><span nevow:render="i18n">Phone</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_phone"></input>
@@ -327,12 +327,12 @@
   <table>
     <tr>
       <td colspan="2" align="center">
-        <h2 style="color:#36ff00">Personal Info</h2>
+        <h2 style="color:#36ff00"><span nevow:render="i18n">Personal Info</span></h2>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Country:</b> 
+        <b style="color:white"><span nevow:render="i18n">Country</span>:</b> 
       </td>
       <td id="countrygen">
         <input type="text" id="ac_country" style="width:140px" name="country" value="Enter country..." />
@@ -341,7 +341,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">City:</b> 
+        <b style="color:white"><span nevow:render="i18n">City</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_city"></input>
@@ -349,7 +349,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Address:</b> 
+        <b style="color:white"><span nevow:render="i18n">Address</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_address"></input>
@@ -357,7 +357,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Zip:</b> 
+        <b style="color:white"><span nevow:render="i18n">Zip</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_zip"></input>
@@ -365,7 +365,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Birth:</b> 
+        <b style="color:white"><span nevow:render="i18n">Birth</span>:</b> 
       </td>
       <td>
         <select id="cust_birth_month">
@@ -387,7 +387,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Birth place:</b> 
+        <b style="color:white"><span nevow:render="i18n">Birth place</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="cust_birth_place"></input>
