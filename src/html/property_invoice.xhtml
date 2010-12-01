@@ -51,14 +51,14 @@
     <div id="main">
 
       <div style="float:right;margin-top:10px">
-        <b style="float:right;margin-right:20px">Invoice N. <span id="invoiceN"></span></b>
+        <b style="float:right;margin-right:20px"><span nevow:render="i18n">Invoice</span> N. <span id="invoiceN"></span></b>
         <br/>
-        <h3>Thanks for your stay</h3>
+        <h3><span nevow:render="i18n">Thanks for your stay</span></h3>
         <span id="stay"></span>
         <table>
           <tr>
             <td>
-              Guest:
+              <span nevow:render="i18n">Guest</span>:
             </td>
             <td>
               <textarea id="customer" class="hovergreen oneline"></textarea>
@@ -66,7 +66,7 @@
           </tr>
           <tr>
             <td>
-              Today:
+              <span nevow:render="i18n">Today</span>:
             </td>
             <td>
               <textarea id="date" class="hovergreen oneline"></textarea>
@@ -74,7 +74,7 @@
           </tr>
           <tr>
             <td>
-              Vat:
+              <span nevow:render="i18n">Vat</span>:
             </td>
             <td>
               <textarea id="vat" class="hovergreen oneline" rows="3" style="width:100%;height:60px"></textarea>
@@ -86,7 +86,7 @@
         <table>
           <tr>
             <td>
-              Rooms:
+              <span nevow:render="i18n">Rooms</span>:
             </td>
             <td>
               <b id="totrooms"></b>
@@ -94,7 +94,7 @@
           </tr>
           <tr>
             <td>
-              Extras:
+              <span nevow:render="i18n">Extras</span>:
             </td>
             <td>
               <b id="totextras"></b>
@@ -102,7 +102,7 @@
           </tr>
           <tr>
             <td>
-              <b>Total</b>:
+              <b><span nevow:render="i18n">Total</span></b>:
             </td>
             <td>
               <b id="itotal"></b>
@@ -111,10 +111,10 @@
         </table>
       </div>
 
-      <h2>Rooms</h2>
-      Per Room/Night prices:
+      <h2><span nevow:render="i18n">Rooms</span></h2>
+      <span nevow:render="i18n">Per Room/Night prices</span>:
       <table id="tablepricing" style="margin-left:20px"></table>
-      <h2>Extras</h2>
+      <h2><span nevow:render="i18n">Extras</span></h2>
       <table id="extraspricing" style="margin-left:20px"></table>
     </div>
   </body>

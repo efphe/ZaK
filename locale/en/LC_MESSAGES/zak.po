@@ -125,6 +125,7 @@ msgstr "Room type"
 msgid "New room type"
 msgstr "New room type"
 
+<<<<<<< HEAD:locale/en/LC_MESSAGES/zak.po
 msgid "Prev"
 msgstr "Prev"
 
@@ -145,6 +146,216 @@ msgstr "<b>drag me</b> to move your reservations"
 
 msgid "To insert a new reservation, <b>right click on a cell</b>"
 msgstr "To insert a new reservation, <b>right click on a cell</b>"
+
+msgid "Rooms"
+msgstr "Rooms"
+
+msgid "Setup"
+msgstr "Setup"
+
+msgid "Remarks"
+msgstr "Remarks"
+
+msgid "Occupancy"
+msgstr "Occupancy"
+
+msgid "Main guest"
+msgstr "Main guest"
+
+msgid "Adults"
+msgstr "Adults"
+
+msgid "Children"
+msgstr "Children"
+
+msgid "Customers"
+msgstr "Customers"
+
+msgid "Res. Invoice"
+msgstr "Res. Invoice"
+
+msgid "Extras"
+msgstr "Extras"
+
+msgid "New"
+msgstr "New"
+
+msgid "Rooms pricing"
+msgstr "Rooms pricing"
+
+msgid "Apply"
+msgstr "Apply"
+
+msgid "apply"
+msgstr "apply"
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "for room"
+msgstr "for room"
+
+msgid "Remeber to save your changes!"
+msgstr "Remeber to save your changes!"
+
+msgid "Meals"
+msgstr "Meals"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "for the day"
+msgstr "for the day"
+
+msgid "All days"
+msgstr "All days"
+
+msgid "New meal"
+msgstr "New meal"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "Add a new setup"
+msgstr "Add a new setup"
+
+msgid "Deleting customer"
+msgstr "Deleting customer"
+
+msgid "Sure"
+msgstr "Sure"
+
+msgid "Are you sure you want delete permanently this customer"
+msgstr "Are you sure you want delete permanently this customer"
+
+msgid "If you want, you can simply deassociate the customer from this"
+msgstr "If you want, you can simply deassociate the customer from this"
+
+msgid "reservation, without removing it from your contacts"
+msgstr "reservation, without removing it from your contacts"
+
+msgid "Existing customer"
+msgstr "Existing customer"
+
+msgid "Find an existent customer"
+msgstr "Find an existent customer"
+
+msgid "Name or Email"
+msgstr "Name or Email"
+
+msgid "Add a new customer"
+msgstr "Add a new customer"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Gender"
+msgstr "Gender"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Female"
+msgstr "Female"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Personal Info"
+msgstr "Personal Info"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "City"
+msgstr "City"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Birth"
+msgstr "Birth"
+
+msgid "Birth place"
+msgstr "Birth place"
+
+msgid "Reservation invoice to this customer"
+msgstr "Reservation invoice to this customer"
+
+msgid "Invoice header"
+msgstr "Invoice<br/>header"
+
+msgid "Optional, you can edit it during invoicing"
+msgstr "Optional, you can edit it during invoicing"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Reservation invoice to this customer"
+msgstr "Reservation invoice to this customer"
+
+msgid "New price variation"
+msgstr "New price variation"
+
+msgid "Percentage"
+msgstr "Percentage"
+
+msgid "Fixed, daily"
+msgstr "Fixed, daily"
+
+msgid "Fixed"
+msgstr "Fixed"
+
+msgid "Negative values are possible to define discounts"
+msgstr "Negative values are possible<br/>to define discounts"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "ApplyTo"
+msgstr "Apply To"
+
+msgid "Add a new extra"
+msgstr "Add a new extra"
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "Daily"
+msgstr "Daily"
+
+msgid "yes"
+msgstr "yes"
+
+msgid "Vat"
+msgstr "Vat"
+
+msgid "How"
+msgstr "How"
+
+msgid "Add a new meal"
+msgstr "Add a new meal"
+
+msgid "Half board"
+msgstr "Half board"
+
+msgid "Full board"
+msgstr "Full board"
+
+msgid "Invoice type"
+msgstr "Invoice type"
+
+msgid "Classic Invoice"
+msgstr "Classic Invoice"
 
 msgid "Add new"
 msgstr "Add new"
@@ -170,11 +381,116 @@ msgstr "Add a new reservation"
 msgid "Please, insert reservation data"
 msgstr "Please, insert reservation data"
 
+msgid "Default prices"
+msgstr "Default prices"
+
+msgid "Per room type prices"
+msgstr "Per room type prices"
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Define different prices for a period"
+msgstr "Define different prices for a period"
+
+msgid "From"
+msgstr "From"
+
+msgid "To"
+msgstr "To"
+
+msgid "Defined periods"
+msgstr "Defined periods"
+
+msgid "New rate"
+msgstr "New rate"
+
+msgid "Rate name"
+msgstr "Rate name"
+
+msgid "Add the rate"
+msgstr "Add the rate"
+
+msgid "Looking for..."
+msgstr "Looking for..."
+
+msgid "Include"
+msgstr "Include"
+
+msgid "Customers"
+msgstr "Customers"
+
+msgid "Reservations"
+msgstr "Reservations"
+
+msgid "Extras"
+msgstr "Extras"
+
+msgid "Meals"
+msgstr "Meals"
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Room setups"
+msgstr "Room setups"
+
+msgid "Room types"
+msgstr "Room types"
+
+msgid "Invoices"
+msgstr "Invoices"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Type something to the left to begin your research..."
+msgstr "Type something to the left to begin your research..."
+
+msgid "Delete customer"
+msgstr "Delete customer"
+
+msgid "Pay attention!!!"
+msgstr "Pay attention!!!"
+
+msgid "Are you sure you want to delete the customer? His references on your reservations will be deleted too"
+msgstr "Are you sure you want to delete the customer? His references on your reservations will be deleted too"
+
+msgid "Delete reservation"
+msgstr "Delete reservation"
+
+msgid "Do you want to permanentely delete this reservation and relative informations"
+msgstr "Do you want to permanentely delete this reservation and relative informations"
+
+msgid "Delete Room"
+msgstr "Delete Room"
+
+msgid "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too"
+msgstr "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too"
+
+msgid "Deletion"
+msgstr "Deletion"
+
+msgid "Are you sure you want to delete it"
+msgstr "Are you sure you want to delete it"
+
+msgid "New reservation"
+msgstr "New reservation"
+
+msgid "Adding a new reservation"
+msgstr "Adding a new reservation"
+
+msgid "Arrival"
+msgstr "Arrival"
+
 msgid "Nights"
 msgstr "Nights"
 
 msgid "Customer"
 msgstr "Customer"
+
+msgid "Room"
+msgstr "Room"
 
 msgid "Status"
 msgstr "Status"
@@ -225,6 +541,76 @@ msgstr ""
 
 
 
+=======
+msgid "Good, there is availability"
+msgstr "Good, there is availability"
+
+msgid "No availability for this room"
+msgstr "No availability for this room"
+
+msgid "Vat settings"
+msgstr "Vat settings"
+
+msgid "With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name"
+msgstr "With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name"
+
+msgid "Zak settings"
+msgstr "Zak settings"
+
+msgid "Vat Name"
+msgstr "Vat Name"
+
+msgid "Vat Percentage"
+msgstr "Vat Percentage"
+
+msgid "Invoice Header"
+msgstr "Invoice Header"
+
+msgid "Invoices: enumeration types"
+msgstr "Invoices: enumeration types"
+
+msgid "Invoice types"
+msgstr "Invoice types"
+
+msgid "New invoice type"
+msgstr "New invoice type"
+
+msgid "Modify invoice type"
+msgstr "Modify invoice type"
+
+msgid "Deleting invoice type"
+msgstr "Deleting invoice type"
+
+msgid "Please, confirm your wishes"
+msgstr "Please, confirm your wishes"
+
+msgid "Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever"
+msgstr "Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever"
+
+msgid "Invoice"
+msgstr "Invoice"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Customer invoice header"
+msgstr "Customer invoice header"
+
+msgid "Zak Invoice"
+msgstr "Zak Invoice"
+
+msgid "Per Room/Night prices"
+msgstr "Per Room/Night prices"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+>>>>>>> traduzioni:locale/en/LC_MESSAGES/zak.po
 
 
 

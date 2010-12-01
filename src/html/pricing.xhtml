@@ -5,12 +5,12 @@
         <div class="immenu">
           <select id="selplan" onchange="changeActivePricing()"></select>
           <br/>
-          <a href="javascript:askNewPricing()">Add new</a>
+          <a href="javascript:askNewPricing()"><span nevow:render="i18n">Add new</span></a>
         </div>
         <div style="margin-top:6px" class="immenu">
-          <b>Default prices</b>:
+          <b><span nevow:render="i18n">Default prices</span></b>:
           <br/>
-          Per room type prices:
+          <span nevow:render="i18n">Per room type prices</span>:
           <table id="defprices">
           </table>
           <br/>
@@ -20,17 +20,17 @@
 
       <div id="contents">
         <div class="immenu">
-          <h1>Pricing</h1>
-          <h2>Define different prices for a period:</h2>
+          <h1><span nevow:render="i18n">Pricing</span></h1>
+          <h2><span nevow:render="i18n">Define different prices for a period</span>:</h2>
           <div class="subctnt">
             <table class="roomsmanagement">
               <thead>
                 <tr id="lrtypesname">
                   <th>
-                    <b>From</b>
+                    <b><span nevow:render="i18n">From</span></b>
                   </th>
                   <th>
-                    <b>To</b>
+                    <b><span nevow:render="i18n">To</span></b>
                   </th>
                 </tr>
                 <tr id="lrtypesinput">
@@ -49,7 +49,7 @@
             <br/>
             <br/>
           </div>
-          <h2>Defined periods</h2>
+          <h2><span nevow:render="i18n">Defined periods</span></h2>
           <div class="subCtnt">
             
             <table class="roomsmanagement">
@@ -69,11 +69,11 @@
   </div>
 
   <div id="newpricing" class="zakmodal">
-    <h1>New rate</h1>
+    <h1><span nevow:render="i18n">New rate</span></h1>
     <table>
       <tr>
         <td>
-          Rate name: 
+          <span nevow:render="i18n">Rate name</span>: 
         </td>
         <td>
           <input type="text" id="newpricing_name" style="width:100px"></input>
@@ -81,6 +81,6 @@
       </tr>
     </table>
     <br/>
-    <a style="color:#36ff00;font-weight:bold" href="javascript:addPricing()">Add the rate</a> 
+    <a style="color:#36ff00;font-weight:bold" href="javascript:addPricing()"><span nevow:render="i18n">Add the rate</span></a> 
   </div>
 </div>

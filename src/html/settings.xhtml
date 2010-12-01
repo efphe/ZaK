@@ -3,12 +3,10 @@
     <div id="mcont" style="overflow:auto">
       <div id="mmenu">
         <div class="immenu">
-          <b>Vat settings</b>
+          <b><span nevow:render="i18n">Vat settings</span></b>
           <br/>
           <br/>
-          With vat settings, you have control on
-          your invoices. You can setup the right vat
-          percentage and vat name.
+          <span nevow:render="i18n">With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name</span>.
           <!--<br/>-->
           <!--<br/>-->
           <!--<b>Reservation settings</b>-->
@@ -24,15 +22,15 @@
 
       <div id="contents">
         <div class="immenu">
-          <h1>Zak settings</h1>
+          <h1><span nevow:render="i18n">Zak settings</span></h1>
 
           <div class="subctnt">
-          <h2>Vat settings</h2>
+          <h2><span nevow:render="i18n">Vat settings</span></h2>
           <div class="subctnt">
             <table>
               <tr>
                 <td>
-                  Vat Name:
+                  <span nevow:render="i18n">Vat Name</span>:
                 </td>
                 <td>
                   <input type="text" style="width:100px" id="vatname"></input>
@@ -40,7 +38,7 @@
               </tr>
               <tr>
                 <td>
-                  Vat Percentage:
+                  <span nevow:render="i18n">Vat Percentage</span>:
                 </td>
                 <td>
                   <input type="text" style="width:50px" id="vatperc"></input> %
@@ -48,7 +46,7 @@
               </tr>
               <tr>
                 <td>
-                  Invoice Header:
+                  <span nevow:render="i18n">Invoice Header</span>:
                 </td>
                 <td>
                   <textarea style="width: 320px" rows="3" id="vatheader"></textarea>
@@ -61,9 +59,9 @@
               </tr>
             </table>
           </div>
-          <h2>Invoices: enumeration types</h2>
+          <h2><span nevow:render="i18n">Invoices: enumeration types</span></h2>
           <div class="subctnt">
-            <b>Invoice types:</b> <input type="submit" value="Add new" onclick="askAddType()"></input>
+            <b><span nevow:render="i18n">Invoice types</span>:</b> <input type="submit" value="Add new" onclick="askAddType()"></input>
                   <table id="titypes" style="margin-left:20px">
                   </table>
           </div>
@@ -80,27 +78,26 @@
   </div>
 
 <div class="zakmodal" style="display:none" id="newIType">
-  <h1>New invoice type</h1>
-  <b style="color:white">Name:</b> <input type="text" id="newitypename" style="width:80px"/>
+  <h1><span nevow:render="i18n">New invoice type</span></h1>
+  <b style="color:white"><span nevow:render="i18n">Name</span>:</b> <input type="text" id="newitypename" style="width:80px"/>
   <input type="submit" value="Add" onclick="addNewIType()"/>
 </div>
 <div class="zakmodal" style="display:none" id="modIType">
-  <h1>Modify invoice type</h1>
-  <b style="color:white">Name:</b> <input type="text" id="moditypename" style="width:80px"/>
+  <h1><span nevow:render="i18n">Modify invoice type</span></h1>
+  <b style="color:white"><span nevow:render="i18n">Name</span>:</b> <input type="text" id="moditypename" style="width:80px"/>
   <input type="hidden" id="moditypeid"></input>
   <input type="submit" value="Update" onclick="modIType()"/>
   <input type="submit" value="Cancel" onclick="$.modal.close()"/>
 </div>
 <div class="zakmodal" style="display:none" id="delItypeDiv">
-  <h1>Deleting invoice type</h1>
-  <h2>Please, confirm your wishes</h2>
-  Are you sure to delete this invoice type? By deleting it, the enumeration of 
-  your previous invoices of this types will be interrupeted forever.
+  <h1><span nevow:render="i18n">Deleting invoice type</span></h1>
+  <h2><span nevow:render="i18n">Please, confirm your wishes</span></h2>
+  <span nevow:render="i18n">Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever</span>.
   <br/>
   <br/>
   <input type="hidden" id="iid_delete"></input>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delItype()">Yes, I know, continue</a> 
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delItype()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 </div>

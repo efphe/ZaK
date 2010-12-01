@@ -1,7 +1,7 @@
 <html>
   <head>
     <script src="/js/cm/pginvoice.js"></script>
-    <title>Zak Invoice</title>
+    <title><span nevow:render="i18n">Zak Invoice</span></title>
     <style media="print">
       #invoice_buttons {
         display:none;
@@ -57,24 +57,24 @@
     </div>
     <div id="invoice_div" style="overflow:auto">
       <div id="hotel_header_div">
-        <span id="iname">Invoice</span> <b id="ibnumber">N: </b><input id="inumber" value="" style="width:40px"></input><br/>
+        <span id="iname"><span nevow:render="i18n">Invoice</span></span> <b id="ibnumber">N: </b><input id="inumber" value="" style="width:40px"></input><br/>
         <div style="float:right;border: 1px solid black" id="itotal">
-          <b style="float:left">Total:</b><br/>
+          <b style="float:left"><span nevow:render="i18n">Total</span>:</b><br/>
         </div>
 
       </div>
       <div id="invoiceheadersdiv">
         <textarea id="iheader" style="width:300px;height:60px">Hotel altrove</textarea>
         <br/>
-        <textarea id="cheader" style="width:300px;height:70px">Customer invoice header</textarea>
+        <textarea id="cheader" style="width:300px;height:70px"><span nevow:render="i18n">Customer invoice header</span></textarea>
       </div>
       <div id="rooms_div">
 
-        <h3 id="title_rooms">Rooms</h3>
+        <h3 id="title_rooms"><span nevow:render="i18n">Rooms</span></h3>
         <table id="rooms_table">
         </table>
 
-        <h3 id="title_meals">Meals</h3>
+        <h3 id="title_meals"><span nevow:render="i18n">Meals</span></h3>
         <table id="meals_table">
         </table>
 

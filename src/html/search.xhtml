@@ -3,13 +3,13 @@
     <div id="mcont" style="overflow:auto">
       <div id="mmenu">
         <div class="immenu">
-          <b>Looking for...</b>
+          <b><span nevow:render="i18n">Looking for...</span></b>
           <img src="/imgs/lgear.gif" style="float:right;margin:4px;display:none" id="zakIsearch"></img>
           <br/>
           <input type="text" id="zakSearch" style="border-radius:10px;height: 20px"></input>
           <br/>
           <br/>
-          <b>Include:</b>
+          <b><span nevow:render="i18n">Include</span>:</b>
           <br/>
           <table>
             <tr>
@@ -17,7 +17,7 @@
                 <input class="lookingi" type="checkbox" id="look_customer" checked="checked"></input>
               </td>
               <td>
-                Customers
+                <span nevow:render="i18n">Customers</span>
               </td>
             </tr>
             <tr>
@@ -25,7 +25,7 @@
                 <input class="lookingi" type="checkbox" id="look_reservation" checked="checked"></input>
               </td>
               <td>
-                Reservations
+                <span nevow:render="i18n">Reservations</span>
               </td>
             </tr>
             <tr>
@@ -33,7 +33,7 @@
                 <input class="lookingi" type="checkbox" id="look_extra" checked="checked"></input>
               </td>
               <td>
-                Extras
+                <span nevow:render="i18n">Extras</span>
               </td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@
                 <input class="lookingi" type="checkbox" id="look_meal" checked="checked"></input>
               </td>
               <td>
-                Meals
+                <span nevow:render="i18n">Meals</span>
               </td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@
                 <input class="lookingi" type="checkbox" id="look_pricing" checked="checked"></input>
               </td>
               <td>
-                Pricing
+                <span nevow:render="i18n">Pricing</span>
               </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
                 <input class="lookingi" type="checkbox" id="look_room_setup" checked="checked"></input>
               </td>
               <td>
-                Room setups
+                <span nevow:render="i18n">Room setups</span>
               </td>
             </tr>
             <tr>
@@ -65,7 +65,7 @@
                 <input class="lookingi" type="checkbox" id="look_room_type" checked="checked"></input>
               </td>
               <td>
-                Room types
+                <span nevow:render="i18n">Room types</span>
               </td>
             </tr>
             <tr>
@@ -73,7 +73,7 @@
                 <input class="lookingi" type="checkbox" id="look_room" checked="checked"></input>
               </td>
               <td>
-                Rooms
+                <span nevow:render="i18n">Rooms</span>
               </td>
             </tr>
             <tr>
@@ -81,7 +81,7 @@
                 <input class="lookingi" type="checkbox" id="look_invoice" checked="checked"></input>
               </td>
               <td>
-                Invoices
+                <span nevow:render="i18n">Invoices</span>
               </td>
             </tr>
             <tr>
@@ -95,8 +95,8 @@
 
       <div id="contents">
         <div class="immenu">
-          <h1>Results</h1>
-          <span id="zakHint">Type something to the left to begin your research...</span>
+          <h1><span nevow:render="i18n">Results</span></h1>
+          <span id="zakHint"><span nevow:render="i18n">Type something to the left to begin your research...</span></span>
           <div id="zakResults">
           </div>
         </div>
@@ -107,58 +107,57 @@
   </div>
 
 <div class="zakmodal" style="display:none" id="delcustomer_div">
-  <h1>Delete customer</h1>
-  <h2>Pay attention!!!</h2>
-  Are you sure you want to delete the customer? His references on your reservations will
-  be deleted too.
+  <h1><span nevow:render="i18n">Delete customer</span></h1>
+  <h2><span nevow:render="i18n">Pay attention!!!</span></h2>
+  <span nevow:render="i18n">Are you sure you want to delete the customer? His references on your reservations will be deleted too</span>.
   <br/>
   <br/>
   <input type="hidden" id="delcustomer_id"></input>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delCustomer()">Yes, I know, continue</a> 
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delCustomer()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 <div class="zakmodal" style="display:none" id="delreservation_div">
-  <h1>Delete reservation</h1>
-  <h2>Pay attention!!!</h2>
-  Do you want to permanentely delete this reservation and relative informations?
+  <h1><span nevow:render="i18n">Delete reservation</span></h1>
+  <h2><span nevow:render="i18n">Pay attention!!!</span></h2>
+  <span nevow:render="i18n">Do you want to permanentely delete this reservation and relative informations</span>?
   <br/>
   <br/>
   <input type="hidden" id="delreservation_id"></input>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delReservation()">Yes, I know, continue</a> 
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delReservation()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 <div class="zakmodal" style="display:none" id="delroom_div">
-  <h1>Delete Room</h1>
-  <h2>Pay attention!!</h2>
-  Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too. 
+  <h1><span nevow:render="i18n">Delete Room</span></h1>
+  <h2><span nevow:render="i18n">Pay attention!!!</span></h2>
+  <span nevow:render="i18n">Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too.</span>
   <br/>
   <br/>
   <input type="hidden" id="delroom_id"></input>
-  <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()">Yes, I know, continue</a> 
+  <a style="color:#36ff00;font-weight:bold" href="javascript:_delRoom()"><span nevow:render="i18n">Yes, I know, continue</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 <div class="zakmodal" style="display:none" id="deleting_div">
-  <h1>Deletion</h1>
-  Are you sure you want to delete it?
+  <h1><span nevow:render="i18n">Deletion</span></h1>
+  <span nevow:render="i18n">Are you sure you want to delete it</span>?
   <br/>
   <br/>
   <input type="hidden" id="deleting_id"></input>
-  <a style="color:#36ff00;font-weight:bold" id="deleting_link" href="javascript:_delCustomer()">Yes, sure</a> 
+  <a style="color:#36ff00;font-weight:bold" id="deleting_link" href="javascript:_delCustomer()"><span nevow:render="i18n">Yes, sure</span></a> 
   <br/>
-  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Oh, not sure</a>
+  <a style="color:red;font-weight:bold" href="javascript:$.modal.close()"><span nevow:render="i18n">Oh, not sure</span></a>
 </div>
 <div class="zakmodal" style="display:none" id="newreservation_div">
-  <h1>New reservation</h1>
-  Adding a new reservation
+  <h1><span nevow:render="i18n">New reservation</span></h1>
+  <span nevow:render="i18n">Adding a new reservation</span>
   <br/>
   <br/>
   <table>
     <tr>
       <td>
-        Arrival:
+        <span nevow:render="i18n">Arrival</span>:
       </td>
       <td id="nra_cnt">
         <input type="text" id="newreservation_arrival"></input>
@@ -167,7 +166,7 @@
     </tr>
     <tr>
       <td>
-        Nights:
+        <span nevow:render="i18n">Nights</span>:
       </td>
       <td>
         <input type="text" id="newreservation_nights" style="width:30px"></input>
@@ -175,7 +174,7 @@
     </tr>
     <tr>
       <td>
-        Room:
+        <span nevow:render="i18n">Room</span>:
       </td>
       <td>
         <select id="newreservation_room"></select>
@@ -183,14 +182,14 @@
     </tr>
     <tr>
       <td>
-        Status:
+        <span nevow:render="i18n">Status</span>:
       </td>
       <td>
         <select id="newreservation_status">
-            <option value="1" selected="selected">Confirmed</option>
-            <option value="2">Not confirmed</option>
-            <option value="3">Checkin'ed</option>
-            <option value="4">Option</option>
+          <option value="1" selected="selected"><span nevow:render="i18n">Confirmed</span></option>
+          <option value="2"><span nevow:render="i18n">Not confirmed</span></option>
+          <option value="3"><span nevow:render="i18n">Checkin'ed</span></option>
+          <option value="4"><span nevow:render="i18n">Option</span></option>
         </select>
       </td>
     </tr>
@@ -199,12 +198,12 @@
     </tr>
     <tr id="newreservation_continue" style="display:none">
       <td colspan="2" align="center">
-        <b style="color:#36ff00">Good, there is availability</b><br/>
+        <b style="color:#36ff00"><span nevow:render="i18n">Good, there is availability</span></b><br/>
         <input type="submit" value="Insert reservation" onclick="insertReservation()"></input>
       </td>
     </tr>
     <tr id="newreservation_noavail" style="display:none">
-      <td colspan="2" align="center"><b style="color:red">No availability for this room</b></td>
+      <td colspan="2" align="center"><b style="color:red"><span nevow:render="i18n">No availability for this room</span></b></td>
     </tr>
   </table>
 </div>
