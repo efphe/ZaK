@@ -270,7 +270,7 @@ function askNewPricing() {
   $('#newpricing').modal({onClose: function() {
     if (!getActivePricing()) {
       askNewPricing();
-      }
+    } else $.modal.close();
   }});
 }
 
