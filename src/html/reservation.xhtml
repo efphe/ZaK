@@ -88,7 +88,7 @@
         <table>
           <tr>
             <td>
-              <a id="addExtraButton" href="javascript:askExtra()"><b>New</b></a>
+              <a id="addExtraButton" href="javascript:askExtra()"><b><span nevow:render="i18n">New</span></b></a>
             </td>
             <td>
               <select id="selectExtra"></select>
@@ -397,20 +397,20 @@
 
   <br/>
   <br/>
-  Reservation invoice to this customer: <input id="chooseForInvoice" type="checkbox" onchange="eventuallyShowInvoice()"></input><br/>
+  <span nevow:render="i18n">Reservation invoice to this customer</span>: <input id="chooseForInvoice" type="checkbox" onchange="eventuallyShowInvoice()"></input><br/>
   <table>
     <tr id="row_vat" style="display:none">
       <td align="center">
-        <b style="color:white">Invoice<br/>header</b>
+        <b style="color:white"><span nevow:render="i18n">Invoice header</span></b>
       </td>
       <td>
-        <span style="color:grey">(Optional, you can edit it during invoicing)</span><br/>
+        <span style="color:grey">(<span nevow:render="i18n">Optional, you can edit it during invoicing</span>)</span><br/>
         <textarea style="width: 300px" rows="4" id="cust_vat"></textarea>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Notes:</b> 
+        <b style="color:white"><span nevow:render="i18n">Notes</span>:</b> 
       </td>
       <td>
         <textarea id="cust_notes" style="width:300px" rows="4"></textarea>
@@ -425,27 +425,27 @@
 </div>
 
 <div class="zakmodalfree" id="addvariation_div">
-  <h1>New price variation</h1>
+  <h1><span nevow:render="i18n">New price variation</span></h1>
   <table>
     <tr>
       <td>
-        <b style="color:white">Type:</b>
+        <b style="color:white"><span nevow:render="i18n">Type</span>:</b>
       </td>
       <td>
         <select id="vtype" onchange="changeVtype()">
-          <option value="1">Percentage</option>
-          <option value="2">Fixed, daily</option>
-          <option value="3">Fixed</option>
+          <option value="1"><span nevow:render="i18n">Percentage</span></option>
+          <option value="2"><span nevow:render="i18n">Fixed, daily</span></option>
+          <option value="3"><span nevow:render="i18n">Fixed</span></option>
         </select>
       </td>
     </tr>
     <tr>
       <td></td>
-      <td><span style="color:white">Negative values are possible<br/>to define discounts</span></td>
+      <td><span style="color:white"><span nevow:render="i18n">Negative values are possible to define discounts</span></span></td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Value:</b>
+        <b style="color:white"><span nevow:render="i18n">Value</span>:</b>
       </td>
       <td>
         <input type="text" id="vvalue" style="width:45px"></input> <b style="color:white" id="vpercsym">%</b>
@@ -463,7 +463,7 @@
 
     <tr id="vapply" style="display:none">
       <td>
-        <b style="color:white">ApplyTo:</b>
+        <b style="color:white"><span nevow:render="i18n">ApplyTo</span>:</b>
       </td>
       <td>
         <select id="vrooms" class="cmbPricingRoom">
@@ -473,7 +473,7 @@
 
     <tr id="vsave" style="display:none">
       <td>
-        <b style="color:white">Name:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="vname"></input>
@@ -503,11 +503,11 @@
 </div>
 
 <div class="zakmodalfree" id="addextra_div">
-  <h1>Add a new extra</h1>
+  <h1><span nevow:render="i18n">Add a new extra</span></h1>
   <table>
     <tr>
       <td>
-        <b style="color:white">Name:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="extra_name"></input>
@@ -515,7 +515,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Cost:</b> 
+        <b style="color:white"><span nevow:render="i18n">Cost</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="extra_cost"></input>
@@ -523,18 +523,18 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Daily:</b> 
+        <b style="color:white"><span nevow:render="i18n">Daily</span>:</b> 
       </td>
       <td>
         <select id="extra_perday">
           <option selected="selected" value="0">No</option>
-          <option value="1">Yes</option>
+          <option value="1"><span nevow:render="i18n">Yes</span></option>
         </select>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Vat:</b> 
+        <b style="color:white"><span nevow:render="i18n">Vat</span>:</b> 
       </td>
       <td>
         <input type="text" class="vatsettings" style="width:140px" id="extra_vat"></input>
@@ -542,7 +542,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">How:</b> 
+        <b style="color:white"><span nevow:render="i18n">How</span>:</b> 
       </td>
       <td>
         <select id="extra_how">
@@ -565,11 +565,11 @@
 </div>
 
 <div class="zakmodalfree" id="addmeal_div">
-  <h1>Add a new meal</h1>
+  <h1><span nevow:render="i18n">Add a new meal</span></h1>
   <table>
     <tr>
       <td>
-        <b style="color:white">Name:</b> 
+        <b style="color:white"><span nevow:render="i18n">Name</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:140px" id="mname"></input>
@@ -577,19 +577,19 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Type:</b> 
+        <b style="color:white"><span nevow:render="i18n">Type</span>:</b> 
       </td>
       <td>
         <select id="mtype">
-          <option value="1" selected="selected">Breakfast</option>
-          <option value="2">Half board</option>
-          <option value="3">Full board</option>
+          <option value="1" selected="selected"><span nevow:render="i18n">Breakfast</span></option>
+          <option value="2"><span nevow:render="i18n">Half board</span></option>
+          <option value="3"><span nevow:render="i18n">Full board</span></option>
         </select>
       </td>
     </tr>
     <tr>
       <td>
-        <b style="color:white">Price:</b> 
+        <b style="color:white"><span nevow:render="i18n">Price</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:50px" id="mprice"></input>
@@ -597,7 +597,7 @@
     </tr>
     <tr>
       <td>
-        <b style="color:white">Vat:</b> 
+        <b style="color:white"><span nevow:render="i18n">Vat</span>:</b> 
       </td>
       <td>
         <input type="text" style="width:30px" class="vatsettings" id="mvat"></input>
@@ -611,8 +611,8 @@
   </table>
 </div>
 <div id="whichinvoice" class="zakmodalfree">
-  <h2>Invoice type</h2>
-  <select id="cmbwhichinvoice"><option value="">Classic Invoice</option></select>
+  <h2><span nevow:render="i18n">Invoice type</span></h2>
+  <select id="cmbwhichinvoice"><option value=""><span nevow:render="i18n">Classic Invoice</span></option></select>
   <input type="submit" value="Edit Invoice" onclick="editInvoice()"/> 
 </div>
 

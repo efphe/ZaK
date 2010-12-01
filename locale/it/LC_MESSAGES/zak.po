@@ -155,6 +155,9 @@ msgstr "Fattura"
 msgid "Extras"
 msgstr "Extra"
 
+msgid "New"
+msgstr "Nuovo"
+
 msgid "Rooms pricing"
 msgstr "Prezzi camera"
 
@@ -198,7 +201,7 @@ msgid "Age"
 msgstr "Eta'"
 
 msgid "Add a new setup"
-msgstr "Nuova preparazione"
+msgstr "Nuovo assetto"
 
 msgid "Deleting customer"
 msgstr "Cancellazione cliente"
@@ -260,8 +263,266 @@ msgstr "Cap"
 msgid "Birth"
 msgstr "Nascita"
 
-msgid ""
-msgstr ""
+msgid "Birth place"
+msgstr "Luogo natale"
+
+msgid "Reservation invoice to this customer"
+msgstr "Fattura prenotazione per il cliente"
+
+msgid "Invoice header"
+msgstr "Intestazione<br/>fattura"
+
+msgid "Optional, you can edit it during invoicing"
+msgstr "Potrai comunque cambiarla successivamente"
+
+msgid "Notes"
+msgstr "Note"
+
+msgid "Reservation invoice to this customer"
+msgstr "Fattura della prenotazione per il cliente"
+
+msgid "New price variation"
+msgstr "Nuova variazione della tariffa"
+
+msgid "Percentage"
+msgstr "Percentuale"
+
+msgid "Fixed, daily"
+msgstr "Fisso giornaliero"
+
+msgid "Fixed"
+msgstr "Fisso"
+
+msgid "Negative values are possible to define discounts"
+msgstr "Come sconto, si possono<br/> usare anche valori negativi"
+
+msgid "Value"
+msgstr "Valore"
+
+msgid "ApplyTo"
+msgstr "Applica a"
+
+msgid "Add a new extra"
+msgstr "Nuovo extra"
+
+msgid "Cost"
+msgstr "Prezzo"
+
+msgid "Daily"
+msgstr "Giornaliero"
+
+msgid "yes"
+msgstr "si"
+
+msgid "Vat"
+msgstr "IVA"
+
+msgid "How"
+msgstr "Quanti"
+
+msgid "Add a new meal"
+msgstr "Nuovo pasto"
+
+msgid "Breakfast"
+msgstr "Colazione"
+
+msgid "Half board"
+msgstr "Mezza pensione"
+
+msgid "Full board"
+msgstr "Pensione completa"
+
+msgid "Invoice type"
+msgstr "Tipo fattura"
+
+msgid "Classic Invoice"
+msgstr "Fattura classica"
+
+msgid "Add new"
+msgstr "Inserisci"
+
+msgid "Default prices"
+msgstr "Prezzi default"
+
+msgid "Per room type prices"
+msgstr "Prezzo per tipo camera"
+
+msgid "Pricing"
+msgstr "Tariffe"
+
+msgid "Define different prices for a period"
+msgstr "Definisci le tariffe per periodo"
+
+msgid "From"
+msgstr "Da"
+
+msgid "To"
+msgstr "A"
+
+msgid "Defined periods"
+msgstr "Definizione del periodo"
+
+msgid "New rate"
+msgstr "Nuova tariffa"
+
+msgid "Rate name"
+msgstr "Nome tariffa"
+
+msgid "Add the rate"
+msgstr "Inserisci tariffa"
+
+msgid "Looking for..."
+msgstr "Ricerca..."
+
+msgid "Include"
+msgstr "Includi"
+
+msgid "Customers"
+msgstr "Clienti"
+
+msgid "Reservations"
+msgstr "Prenotazioni"
+
+msgid "Extras"
+msgstr "Extra"
+
+msgid "Meals"
+msgstr "Pasti"
+
+msgid "Pricing"
+msgstr "Tariffe"
+
+msgid "Room setups"
+msgstr "Assetto camere"
+
+msgid "Room types"
+msgstr "Tipi camera"
+
+msgid "Rooms"
+msgstr "Camere"
+
+msgid "Invoices"
+msgstr "Fatture"
+
+msgid "Results"
+msgstr "Risultati"
+
+msgid "Type something to the left to begin your research..."
+msgstr "Scrivi qualcosa nel campo a sinistra per iniziare la ricerca..."
+
+msgid "Delete customer"
+msgstr "Rimuovi il cliente"
+
+msgid "Pay attention!!!"
+msgstr "Attenzione!!!"
+
+msgid "Are you sure you want to delete the customer? His references on your reservations will be deleted too"
+msgstr "Confermi la cancellazione del cliente? Anche il riferimento a lui, nelle sue prenotazioni, verra' eiminato"
+
+msgid "Delete reservation"
+msgstr "Rimuovi la prenotazione"
+
+msgid "Do you want to permanentely delete this reservation and relative informations"
+msgstr "Vuoi rimuovere definitivamente la prenotazione con le sue informazioni"
+
+msgid "Delete Room"
+msgstr "Rimuovi la camera"
+
+msgid "Deletion"
+msgstr "Cancellazione"
+
+msgid "Are you sure you want to delete it"
+msgstr "Sicuro di rimuoverla"
+
+msgid "New reservation"
+msgstr "Nuova prenotazione"
+
+msgid "Adding a new reservation"
+msgstr "Inserisci una nuova prenotazione"
+
+msgid "Arrival"
+msgstr "Arrivo"
+
+msgid "Nights"
+msgstr "Notti"
+
+msgid "Room"
+msgstr "Camera"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "Confirmed"
+msgstr "Confermata"
+
+msgid "Not confirmed"
+msgstr "Non confermata"
+
+msgid "Checkin'ed"
+msgstr "Arrivati"
+
+msgid "Option"
+msgstr "Altro"
+
+msgid "Good, there is availability"
+msgstr "Bene, c'e' disponibilita'"
+
+msgid "No availability for this room"
+msgstr "Non c'e' disponibilita' per questa camera"
+
+msgid "Vat settings"
+msgstr "Configurazione IVA"
+
+msgid "With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name"
+msgstr "Con la gestione dell'IVA, agirai sulle fatture. Puoi configurare percentuale IVA e ragione sociale"
+
+msgid "Zak settings"
+msgstr "Configurazione Zak"
+
+msgid "Vat Name"
+msgstr "Ragione sociale"
+
+msgid "Vat Percentage"
+msgstr "Percentuale IVA"
+
+msgid "Invoice Header"
+msgstr "Intestazione fattura"
+
+msgid "Invoices: enumeration types"
+msgstr "Fatture: lista tipologie"
+
+msgid "Invoice types"
+msgstr "Tipi di fattura"
+
+msgid "New invoice type"
+msgstr "Nuovo tipo fattura"
+
+msgid "Modify invoice type"
+msgstr "Modifica il tipo fattura"
+
+msgid "Deleting invoice type"
+msgstr "Rimuovi il tipo fattura"
+
+msgid "Please, confirm your wishes"
+msgstr "Perfavore, confermate l'intenzione"
+
+msgid "Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever"
+msgstr "Siete certi di rimuovere il tipo fattura? Cancellandola, l'enumerazione sequenziale delle fatture gia' effettuate di questo tipo, sara' interrotta"
+
+msgid "Invoice"
+msgstr "Fattura"
+
+msgid "Total"
+msgstr "Totale"
+
+msgid "Customer invoice header"
+msgstr "Intestazione fattura"
+
+msgid "Zak Invoice"
+msgstr "Fattura Zak"
+
+msgid "Per Room/Night prices"
+msgstr "Prezzo per Notte/Camera"
 
 msgid ""
 msgstr ""
@@ -269,15 +530,7 @@ msgstr ""
 msgid ""
 msgstr ""
 
-msgid ""
-msgstr ""
 
-msgid ""
-msgstr ""
 
-msgid ""
-msgstr ""
 
-msgid ""
-msgstr ""
 

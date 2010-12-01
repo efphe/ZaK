@@ -155,6 +155,9 @@ msgstr "Res. Invoice"
 msgid "Extras"
 msgstr "Extras"
 
+msgid "New"
+msgstr "New"
+
 msgid "Rooms pricing"
 msgstr "Rooms pricing"
 
@@ -163,8 +166,6 @@ msgstr "Apply"
 
 msgid "apply"
 msgstr "apply"
-
-
 
 msgid "Pricing"
 msgstr "Pricing"
@@ -262,9 +263,277 @@ msgstr "Zip"
 msgid "Birth"
 msgstr "Birth"
 
+msgid "Birth place"
+msgstr "Birth place"
+
+msgid "Reservation invoice to this customer"
+msgstr "Reservation invoice to this customer"
+
+msgid "Invoice header"
+msgstr "Invoice<br/>header"
+
+msgid "Optional, you can edit it during invoicing"
+msgstr "Optional, you can edit it during invoicing"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Reservation invoice to this customer"
+msgstr "Reservation invoice to this customer"
+
+msgid "New price variation"
+msgstr "New price variation"
+
+msgid "Percentage"
+msgstr "Percentage"
+
+msgid "Fixed, daily"
+msgstr "Fixed, daily"
+
+msgid "Fixed"
+msgstr "Fixed"
+
+msgid "Negative values are possible to define discounts"
+msgstr "Negative values are possible<br/>to define discounts"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "ApplyTo"
+msgstr "Apply To"
+
+msgid "Add a new extra"
+msgstr "Add a new extra"
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "Daily"
+msgstr "Daily"
+
+msgid "yes"
+msgstr "yes"
+
+msgid "Vat"
+msgstr "Vat"
+
+msgid "How"
+msgstr "How"
+
+msgid "Add a new meal"
+msgstr "Add a new meal"
+
+msgid "Half board"
+msgstr "Half board"
+
+msgid "Full board"
+msgstr "Full board"
+
+msgid "Invoice type"
+msgstr "Invoice type"
+
+msgid "Classic Invoice"
+msgstr "Classic Invoice"
+
+msgid "Add new"
+msgstr "Add new"
+
+msgid "Default prices"
+msgstr "Default prices"
+
+msgid "Per room type prices"
+msgstr "Per room type prices"
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Define different prices for a period"
+msgstr "Define different prices for a period"
+
+msgid "From"
+msgstr "From"
+
+msgid "To"
+msgstr "To"
+
+msgid "Defined periods"
+msgstr "Defined periods"
+
+msgid "New rate"
+msgstr "New rate"
+
+msgid "Rate name"
+msgstr "Rate name"
+
+msgid "Add the rate"
+msgstr "Add the rate"
+
+msgid "Looking for..."
+msgstr "Looking for..."
+
+msgid "Include"
+msgstr "Include"
+
+msgid "Customers"
+msgstr "Customers"
+
+msgid "Reservations"
+msgstr "Reservations"
+
+msgid "Extras"
+msgstr "Extras"
+
+msgid "Meals"
+msgstr "Meals"
+
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Room setups"
+msgstr "Room setups"
+
+msgid "Room types"
+msgstr "Room types"
+
+msgid "Rooms"
+msgstr "Rooms"
+
+msgid "Invoices"
+msgstr "Invoices"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Type something to the left to begin your research..."
+msgstr "Type something to the left to begin your research..."
+
+msgid "Delete customer"
+msgstr "Delete customer"
+
+msgid "Pay attention!!!"
+msgstr "Pay attention!!!"
+
+msgid "Are you sure you want to delete the customer? His references on your reservations will be deleted too"
+msgstr "Are you sure you want to delete the customer? His references on your reservations will be deleted too"
+
+msgid "Delete reservation"
+msgstr "Delete reservation"
+
+msgid "Do you want to permanentely delete this reservation and relative informations"
+msgstr "Do you want to permanentely delete this reservation and relative informations"
+
+msgid "Delete Room"
+msgstr "Delete Room"
+
+msgid "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too"
+msgstr "Dear, are you conscious that, deleting this room, you will delete also all the occupancies relative to this room? Reservations without occupancies (ie reservations relying only on this room) will be deleted too"
+
+msgid "Deletion"
+msgstr "Deletion"
+
+msgid "Are you sure you want to delete it"
+msgstr "Are you sure you want to delete it"
+
+msgid "New reservation"
+msgstr "New reservation"
+
+msgid "Adding a new reservation"
+msgstr "Adding a new reservation"
+
+msgid "Arrival"
+msgstr "Arrival"
+
+msgid "Nights"
+msgstr "Nights"
+
+msgid "Room"
+msgstr "Room"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Confirmed"
+msgstr "Confirmed"
+
+msgid "Not confirmed"
+msgstr "Not confirmed"
+
+msgid "Checkin'ed"
+msgstr "Checkin'ed"
+
+msgid "Option"
+msgstr "Option"
+
+msgid "Good, there is availability"
+msgstr "Good, there is availability"
+
+msgid "No availability for this room"
+msgstr "No availability for this room"
+
+msgid "Vat settings"
+msgstr "Vat settings"
+
+msgid "With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name"
+msgstr "With vat settings, you have control on your invoices. You can setup the right vat percentage and vat name"
+
+msgid "Zak settings"
+msgstr "Zak settings"
+
+msgid "Vat Name"
+msgstr "Vat Name"
+
+msgid "Vat Percentage"
+msgstr "Vat Percentage"
+
+msgid "Invoice Header"
+msgstr "Invoice Header"
+
+msgid "Invoices: enumeration types"
+msgstr "Invoices: enumeration types"
+
+msgid "Invoice types"
+msgstr "Invoice types"
+
+msgid "New invoice type"
+msgstr "New invoice type"
+
+msgid "Modify invoice type"
+msgstr "Modify invoice type"
+
+msgid "Deleting invoice type"
+msgstr "Deleting invoice type"
+
+msgid "Please, confirm your wishes"
+msgstr "Please, confirm your wishes"
+
+msgid "Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever"
+msgstr "Are you sure to delete this invoice type? By deleting it, the enumeration of your previous invoices of this types will be interrupeted forever"
+
+msgid "Invoice"
+msgstr "Invoice"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Customer invoice header"
+msgstr "Customer invoice header"
+
+msgid "Zak Invoice"
+msgstr "Zak Invoice"
+
+msgid "Per Room/Night prices"
+msgstr "Per Room/Night prices"
 
 msgid ""
 msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+
 
 
 
