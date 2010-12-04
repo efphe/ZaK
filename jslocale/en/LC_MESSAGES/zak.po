@@ -50,6 +50,9 @@ msgstr "Please, insert reservation data"
 msgid "Arrival"
 msgstr "Arrival"
 
+msgid "Departure"
+msgstr "Departure"
+
 msgid "Nights"
 msgstr "Nights"
 
@@ -202,3 +205,75 @@ msgstr "Go to invoice"
 
 msgid "Go to reservation"
 msgstr "Go to reservation"
+
+msgid "Confirmed"
+msgstr "Confirmed"
+
+msgid "Not confirmed"
+msgstr "Not confirmed"
+
+msgid "Checkin'ed"
+msgstr "Checkin'ed"
+
+msgid "Option"
+msgstr "Option"
+
+msgid "Go to tableau"
+msgstr "Go to tableau"
+
+msgid "Go to details"
+msgstr "Go to details"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Delete this room type and set orphaned rooms to this:"
+msgstr "Delete this room type and set orphaned rooms to this:"
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "BB"
+msgstr "BB"
+
+msgid "Half board"
+msgstr "Half board"
+
+msgid "Full board"
+msgstr "Full board"
+
+msgid "Vat"
+msgstr "Vat"
+
+msgid "Per day"
+msgstr "Per day"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "New reservation"
+msgstr "New reservation"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "City"
+msgstr "City"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Birth place"
+msgstr "Birth place"
+
+msgid "Remarks"
+msgstr "Remarks"
+
+msgid "No results"
+msgstr "No results"

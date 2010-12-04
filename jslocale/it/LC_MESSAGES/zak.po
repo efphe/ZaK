@@ -50,6 +50,9 @@ msgstr "Dati della prenotazione"
 msgid "Arrival"
 msgstr "Arrivo"
 
+msgid "Departure"
+msgstr "Partenza"
+
 msgid "Nights"
 msgstr "Notti"
 
@@ -191,3 +194,75 @@ msgstr "Alla fattura"
 
 msgid "Go to reservation"
 msgstr "Alla prenotazione"
+
+msgid "Confirmed"
+msgstr "Confermata"
+
+msgid "Not confirmed"
+msgstr "Non confermata"
+
+msgid "Checkin'ed"
+msgstr "Entrata"
+
+msgid "Option"
+msgstr "Opzione"
+
+msgid "Go to tableau"
+msgstr "Al tableau"
+
+msgid "Go to details"
+msgstr "Ai dettagli"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Delete this room type and set orphaned rooms to this:"
+msgstr "Elimina tipo e cambie le camere di questo tipo su:"
+
+msgid "Cost"
+msgstr "Costo"
+
+msgid "BB"
+msgstr "BB"
+
+msgid "Half board"
+msgstr "Mezza pensione"
+
+msgid "Full board"
+msgstr "Pensione completa"
+
+msgid "Vat"
+msgstr "Iva"
+
+msgid "Per day"
+msgstr "Al giorno"
+
+msgid "Yes"
+msgstr "Si"
+
+msgid "No"
+msgstr "No"
+
+msgid "New reservation"
+msgstr "Nuova prenotazione"
+
+msgid "Phone"
+msgstr "Tel."
+
+msgid "City"
+msgstr "Citta'"
+
+msgid "Zip"
+msgstr "Cap"
+
+msgid "Address"
+msgid "Indirizzo"
+
+msgid "Birth place"
+msgstr "Nato a"
+
+msgid "Remarks"
+msgstr "Note"
+
+msgid "No results"
+msgstr "Nessun risultato"

@@ -77,7 +77,7 @@ function putSearchResult(s, rec) {
   };
 
   if (rec.fromtable == 'invoice') {
-    res+= _preamble('/imgs/invoice.png', _('Invoice')+' ' + rec.n);
+    res+= _preamble('/imgs/invoice.png', 'Invoice ' + rec.n);
     res+= '<b>'+_('Invoice')+'</b>';
     res+= '<table>';
     res+= '<tr>';
@@ -98,31 +98,31 @@ function putSearchResult(s, rec) {
     res+= '<b>' + rec.customer + '</b>';
     res+= '<table>';
     res+= '<tr>';
-    res+= '<td>Arrival Date:</td>';
+    res+= '<td>'+_('Arrival')+':</td>';
     res+= '<td>' + strDate(rec.dfrom) + '</td>';
     res+= '</tr>';
     res+= '<tr>';
-    res+= '<td>Departure Date:</td>';
+    res+= '<td>'+_('Departure')+':</td>';
     res+= '<td>' + strDate(rec.dto) + '</td>';
     res+= '</tr>';
     res+= '<tr>';
-    res+= '<td>Status:</td>';
+    res+= '<td>'+_('Status')+':</td>';
     res+= '<td><select id="res_status_' + rec.id + '">'; 
-    var _stats= ['Confirmed', 'Not confirmed', 'Checkin\'ed', 'Option'];
+    var _stats= [_('Confirmed'), _('Not confirmed'), _('Checkin\'ed'), _('Option')];
     for (var i= 1; i< 5; i++) {
       if (i == rec.status) res+= '<option value="' + i + '" selected="selected">' + _stats[i-1] + '</option>';
       else res+= '<option value="' + i + '">' + _stats[i-1] + '</option>';
     }
     res+= '</select>';
     /*res+= '<tr><td colspan="2" align="center">';*/
-    res+= '<input type="submit" value="Update status" onclick="changeResevationStatus(' + rec.id + ')"></input>';
+    res+= '<input type="submit" value="'+_('Update')+'" onclick="changeResevationStatus(' + rec.id + ')"></input>';
     res+= '</td>';
     res+= '</tr>';
     /*res+= '</td></tr>';*/
     res+= '</table>';
     res+= 'Actions<br/>';
-    res+= '<input type="submit" onclick="goTableau(' + rec.id + ')" value="Go to tableau"></input>';
-    res+= '<input type="submit" onclick="goDetails(' + rec.id + ')" value="Go to details"></input>';
+    res+= '<input type="submit" onclick="goTableau(' + rec.id + ')" value="'+_('Go to tableau')+'"></input>';
+    res+= '<input type="submit" onclick="goDetails(' + rec.id + ')" value="'+_('Go to details')+'"></input>';
     res+= '</div>';
   }
 
@@ -142,9 +142,9 @@ function putSearchResult(s, rec) {
     res+= _preamble('/imgs/room_setup.png', rec.name, 'delRoomSetup');
     res+= '<b>' + rec.name + '</b>';
     res+= '<table><tr>';
-    res+= '<td>Name</td>';
+    res+= '<td>'+_('Name')+'</td>';
     res+= '<td><input type="text" value="' + rec.name + '" id="rs_name_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Name" onclick="updateRoomSetup(' + rec.id + ')"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="'+_('Update')+'" onclick="updateRoomSetup(' + rec.id + ')"></input></td></tr>';
     res+= '</table>';
     res+= '</div>';
   }
@@ -153,14 +153,14 @@ function putSearchResult(s, rec) {
     res+= _preamble('/imgs/room_type.png', rec.name);
     res+= '<b>' + rec.name + '</b>';
     res+= '<table><tr>';
-    res+= '<td>Name</td>';
+    res+= '<td>'+_('Name')+'</td>';
     res+= '<td><input type="text" value="' + rec.name + '" id="rt_name_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Name" onclick="updateRoomType(' + rec.id + ')"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="'+_('Update')+'" onclick="updateRoomType(' + rec.id + ')"></input></td></tr>';
     res+= '</table>';
     res+= '<br/>';
-    res+= 'Delete this room type and set orphaned rooms to this: ';
+    res+= _('Delete this room type and set orphaned rooms to this: ');
     res+= _cmbRtypes(rec.id);
-    res+= '<input type="submit" value="Delete" onclick="delRoomType(' + rec.id + ')"></input>';
+    res+= '<input type="submit" value="'+('Delete')+'" onclick="delRoomType(' + rec.id + ')"></input>';
     res+= '</div>';
   }
 
@@ -168,22 +168,22 @@ function putSearchResult(s, rec) {
     res+= _preamble('/imgs/meal.png', rec.name, 'delMeal');
     res+= '<b>' + rec.name + '</b>';
     res+= '<table><tr>';
-    res+= '<td>Name</td>';
+    res+= '<td>'+_('Name')+'</td>';
     res+= '<td><input type="text" value="' + rec.name + '" id="m_name_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td>Cost</td>';
+    res+= '<tr><td>'+_('Cost')+'</td>';
     res+= '<td><input style="width:60px" type="text" value="' + rec.price + '" id="m_price_' + rec.id + '"></input></td></tr>';
     res+= '<tr><td>Vat</td>';
     res+= '<td><input style="width:40px" type="text" value="' + rec.vat + '" id="m_vat_' + rec.id + '">';
     res+= '</input></td></tr>';
     res+= '<tr><td>Type:</td><td><select id="m_mtype_' + rec.id + '">';
     var amtype= rec.mtype;
-    var amtypes= ['BB', 'Half board', 'Full board'];
+    var amtypes= [_('BB'), _('Half board'), _('Full board')];
     for (var j= 1; j< 4; j++) {
       if (j == amtype) res+= '<option selected="selected" value="' + j + '">' + amtypes[j-1] + '</option>';
       else res+= '<option value="' + j + '">' + amtypes[j-1] + '</option>';
     }
     res+= '</select></td></tr>';
-    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update meal"';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="'+_('Update')+'"';
     res+= ' onclick="updateMeal(' + rec.id + ')"></td></tr></table>';
     res+= '</div>';
   }
@@ -192,20 +192,20 @@ function putSearchResult(s, rec) {
     res+= _preamble('/imgs/extra.png', rec.name, 'delExtra');
     res+= '<b>' + rec.name + '</b>';
     res+= '<table><tr>';
-    res+= '<td>Name</td>';
+    res+= '<td>'+_('Name')+'</td>';
     res+= '<td><input type="text" value="' + rec.name + '" id="e_name_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td>Cost</td>';
+    res+= '<tr><td>'+_('Cost')+'</td>';
     res+= '<td><input style="width:60px" type="text" value="' + rec.cost + '" id="e_cost_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td>Vat</td>';
+    res+= '<tr><td>'+_('Vat')+'</td>';
     res+= '<td><input style="width:40px" type="text" value="' + rec.vat + '" id="e_vat_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td>Per day</td>';
+    res+= '<tr><td>'+_('Per day')+'</td>';
     res+= '<td><select id="e_perday_' + rec.id + '">';
     if (rec.perday) 
-      res+= '<option value="1" selected="selected">Yes</option><option value="0">No</option></select>';
+      res+= '<option value="1" selected="selected">'+_('Yes')+'</option><option value="0">'+_('No')+'</option></select>';
     else
-      res+= '<option value="1">Yes</option><option selected="selected" value="0">No</option></select>';
+      res+= '<option value="1">'+_('Yes')+'</option><option selected="selected" value="0">'+_('No')+'</option></select>';
     res+= '</td></tr>';
-    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Extra" onclick="updateExtra(' + rec.id + ')"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="'+_('Update')+'" onclick="updateExtra(' + rec.id + ')"></input></td></tr>';
     res+= '</table>';
     res+= '</div>';
   }
@@ -214,9 +214,9 @@ function putSearchResult(s, rec) {
     res+= _preamble('/imgs/pricing.png', rec.name, 'delPricing');
     res+= '<b>' + rec.name + '</b>';
     res+= '<table><tr>';
-    res+= '<td>Name</td>';
+    res+= '<td>'+_('Name')+'</td>';
     res+= '<td><input type="text" value="' + rec.name + '" id="p_name_' + rec.id + '"></input></td></tr>';
-    res+= '<tr><td colspan="2" align="center"><input type="submit" value="Update Name" onclick="updatePricing(' + rec.id + ')"></input></td></tr>';
+    res+= '<tr><td colspan="2" align="center"><input type="submit" value="'+_('Update')+'" onclick="updatePricing(' + rec.id + ')"></input></td></tr>';
     res+= '</table>';
     res+= '</div>';
   }
@@ -238,20 +238,20 @@ function putSearchResult(s, rec) {
       res+= '<img src="/imgs/flags/' + rec.country_code.toLowerCase() + '.gif"></img> ' + rec.name;
     else
       res+= rec.name;
-    res+= '<input type="submit" style="float:right" value="New reservation" onclick="newReservation(' + rid + ')"></input>';
+    res+= '<input type="submit" style="float:right" value="'+_('New reservation')+'" onclick="newReservation(' + rid + ')"></input>';
     res+= '<table>';
-    res+= '<tr><td>Name:</td><td>' + _ii('name') +'</td>' + '<td colspan="2">' + _cmbGender('c_gender_' + rid, rec.gender) + '</td></tr>';
+    res+= '<tr><td>'+_('Name')+':</td><td>' + _ii('name') +'</td>' + '<td colspan="2">' + _cmbGender('c_gender_' + rid, rec.gender) + '</td></tr>';
     res+= '<tr><td>Mail:</td><td>' + _ii('email') + '</td>';
-    res+= '<td>Phone:</td><td>' + _ii('phone') + '</td></tr>';
-    res+= '<tr><td>City:</td><td>' + _ii('city') + '</td>';
-    res+= '<td>Zip:</td><td>' + _ii('zip') + '</td></tr>';
-    res+= '<tr><td>Address:</td><td>' + _ii('address') + '</td></tr>';
+    res+= '<td>'+_('Phone')+':</td><td>' + _ii('phone') + '</td></tr>';
+    res+= '<tr><td>'+_('City')+':</td><td>' + _ii('city') + '</td>';
+    res+= '<td>'+_('Zip')+':</td><td>' + _ii('zip') + '</td></tr>';
+    res+= '<tr><td>'+_('Address')+':</td><td>' + _ii('address') + '</td></tr>';
     res+= '<tr>';
-    res+= '<td>Birth pl.:</td><td>' + _ii('bplace') + '</td>';
+    res+= '<td>'+_('Birth place')+':</td><td>' + _ii('bplace') + '</td>';
     res+= '<td>Birth:</td><td>' + _cmbMonths('c_bmonth_' + rid) + _ii('byear', 'style="width:60px"')+'</td>';
     res+= '</tr>';
-    res+= '<tr><td>Remarks:</td><td colspan="3"><textarea style="width:100%;height:80px" id="c_notes_' + rid + '">' + rec.notes + '</textarea></td></tr>';
-    res+= '<tr><td align="center" colspan="2"><input onclick="updateCustomer(' + rid + ')" type="submit" value="Update customer"></input></td></tr></table>';
+    res+= '<tr><td>'+_('Remarks')+':</td><td colspan="3"><textarea style="width:100%;height:80px" id="c_notes_' + rid + '">' + rec.notes + '</textarea></td></tr>';
+    res+= '<tr><td align="center" colspan="2"><input onclick="updateCustomer(' + rid + ')" type="submit" value="'+_('Update')+'"></input></td></tr></table>';
     res+= '</div></div>';
     afterF.push(function() {$('#c_month_' + rid).val(rec.bmonth);});
   }
@@ -264,7 +264,7 @@ function afterLook(s) {
   zakLookingResultsN-= 1;
   if (zakLookingResultsN == 0) {
     $('#zakIsearch').hide();
-    if (!zakLookResults[s]) $('#zakResults').html('No results');
+    if (!zakLookResults[s]) $('#zakResults').html(_('No results'));
   }
 }
 
@@ -306,7 +306,6 @@ zakLookStatusf= {
 
 function goWithSearch(s) {
   zakLookingResultsN= 0;
-  console.log('Beginning search: ' + s);
   var something= false;
   for (var k  in zakLookStatus) {
     if (zakLookStatus[k]) {
@@ -430,7 +429,5 @@ $(document).ready(function() {
         goWithSearch(ss);
       }
       });
-
   });
-
 });
