@@ -72,6 +72,7 @@ src/js/cm/pgsettings.js: $(PGSETTINGS)
 po2mo:
 	for i in locale/??/LC_MESSAGES/zak.po; do ./po2mo.py $$i; done
 	for i in jslocale/??/LC_MESSAGES/zak.po; do ./po2mo.py $$i; done
+	./jpo2mo.py
 
 jspages:
 	make $(SRCJSDIR)/cm/j.js

@@ -47,6 +47,10 @@ class AdminTemplate(rend.Page):
   def render_i18n(self, ctx, data):
     return _zt_(self, ctx, data).children
 
+  def render_gtlang(self, ctx, data):
+    lang= ctx.arg('lang') or 'en'
+    return T.link(href= '/js/gt/zak.mo.%s.json' % lang, lang= lang, rel= 'gettext')
+
   def render_contents(self, ctx, data):
     lang= ctx.arg('lang')
     if lang:
