@@ -60,13 +60,8 @@
 				var lang = this.lang;
 				$.get(this.href, function(data){
 					$.gt.messages[lang] = $.gt.messages[lang] || {};
-					try {
-						var messages = eval('(' + data + ')');
-					} catch(e) {
-						return;
-					}
-
-					$.extend($.gt.messages[lang], messages);
+                    $.gt.lang= lang;
+					$.extend($.gt.messages[lang], data);
 
 					var pl = $.gt.pl_re.exec($.gt.messages[lang]['']);
 					if(pl){

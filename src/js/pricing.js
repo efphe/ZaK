@@ -79,13 +79,12 @@ function designPricingPeriods() {
       var ppres= '';
       for (var j= 0; j< recs.rows.length; j++) {
         var pp= recs.rows.item(j);
-        console.log(pp);
         var pprices= _decompressPricing(pp.prices);
         ppres+= '<tr><td>' + strDate(pp.dfrom) + '</td><td>' + strDate(pp.dto) + '</td>';
         for (var z= 0; z< _zakRtypes.length; z++ ) {
           ppres+= '<td>' + _getRtPricing(pprices, _zakRtypes[z].id) + '</td>';
         }
-        ppres+= '<td><input type="submit" value="Delete" onclick="delPricingPeriod(' + pp.id + ')"/></td></tr>';
+        ppres+= '<td><input type="submit" value="'+_('Delete')+'" onclick="delPricingPeriod(' + pp.id + ')"/></td></tr>';
       }
       $('#defperiods').empty().html(ppres);
     });
@@ -99,8 +98,8 @@ function designPricingPeriods() {
       dres+= '<td><input type="text" id="pprice_' + zt.id + '" style="width:60px"></input></td>';
     }
     dres+= '<td><input type="submit" value="Save" onclick="savePeriodPricing()"></td>';
-    $('#lrtypesname').empty().html(hres + '<th><b>Save</b></th>');
-    $('#lrtypesperiodsname').empty().html(hres + '<th><b>Delete</b></th>');
+    $('#lrtypesname').empty().html(hres + '<th><b>'+_('Save')+'</b></th>');
+    $('#lrtypesperiodsname').empty().html(hres + '<th><b>'+_('Delete')+'</b></th>');
     $('#lrtypesinput').empty().html(dres);
     $('#pdfrom').datepicker({dateFormat: 'dd/mm/yy'});
     $('#pdto').datepicker({dateFormat: 'dd/mm/yy'});
@@ -108,7 +107,6 @@ function designPricingPeriods() {
 
 function designPricing() {
 
-  console.log('Designing now pricing');
   /* cmb pricing */
   llLoadPricings(function(ses, recs) {
     var rres= '';
@@ -118,13 +116,11 @@ function designPricing() {
     }
     $('#selplan').empty().html(rres);
     $('#selplan').val(getActivePricing());
-    console.log('Main designed');
   }, function(ses, err) {humanMsg.displayMsg('Error there: '+ err.message)});
 
   /* base pricing */
   llLoadPricing(getActivePricing(), 
     function(ses, recs) {
-      console.log('Various design');
       var p= recs.rows.item(0);
       var prices= _decompressPricing(p.prices);
       var res= '';
@@ -150,7 +146,7 @@ function saveBasePrices() {
     var rt= _zakRtypes[i];
     var p= $('#price_' + rt.id).val();
     if (!checkFloat(p)) {
-      humanMsg.displayMsg('Please, specify good values (use the "." for decimal)', 1);
+      humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
       return;
     }
     prices[rt.id]= p;
@@ -173,16 +169,16 @@ function savePeriodPricing() {
   var dfrom= $('#pdfrom').val();
   var dto= $('#pdto').val();
   if (!dfrom || !dto) {
-    humanMsg.displayMsg('Please, specify valid dates');
+    humanMsg.displayMsg(_('Please, specify valid dates'), 1);
     return;
   }
   try {
     if (unixDate(dto) < unixDate(dfrom)) {
-      humanMsg.displayMsg('Please, specify valid dates');
+      humanMsg.displayMsg(_('Please, specify valid dates'), 1);
       return;
     }
   } catch(e) {
-    humanMsg.displayMsg('Please, specify valid dates');
+    humanMsg.displayMsg(_('Please, specify valid dates'), 1);
     return;
   }
   var prices= {};
@@ -190,7 +186,7 @@ function savePeriodPricing() {
     var rt= _zakRtypes[i];
     var p= $('#pprice_' + rt.id).val();
     if (!checkFloat(p)) {
-      humanMsg.displayMsg('Please, specify good values (use the "." for decimal)', 1);
+      humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
       return;
     }
     prices[rt.id + '']= p;
@@ -207,7 +203,6 @@ function savePeriodPricing() {
         var saveprices= [params];
       else {
         /* let's check intersections */
-        console.log('Matching intersections');
         var intersections= new Array();
         for (var i= 0; i< recs.rows.length; i++) {
           var ppp= recs.rows.item(i);
@@ -216,12 +211,9 @@ function savePeriodPricing() {
             intersections.push(ppp);
           }
         }
-        console.log(intersections);
         if (intersections.length == 0) {
-          console.log('No intersections');
           var saveprices= [params];
         } else {
-          console.log('Working on intersections');
           var res= [params], tres, j;
           for (var i=0; i<intersections.length;i++) {
             var pint= intersections[i];
@@ -277,7 +269,7 @@ function askNewPricing() {
 function addPricing() {
   var rname= $('#newpricing_name').val();
   if (!rname) {
-    humanMsg.displayMsg('Please, specify a good value');
+    humanMsg.displayMsg(_('Please, specify a valid name'));
     return;
   }
   llNewPricing(rname, 
@@ -300,7 +292,6 @@ function changeActivePricing() {
 }
 
 function initPricing() {
-  console.log('Initializing pricing');
   _zakRtypes= [];
   llGetRoomTypes(function(ses, recs) {
     for (var i= 0; i< recs.rows.length; i++) {
@@ -308,7 +299,6 @@ function initPricing() {
       _zakRtypes.push(rt);
     }
     llLoadPricings(function(ses, recs) {
-      console.log('Ready pricings: ' + recs.rows.length);
       if (recs.rows.length != 0) {
         var ap= getActivePricing();
         if (!ap) 
@@ -316,7 +306,6 @@ function initPricing() {
         designPricing();
         return;
       } else {
-        console.log('Inserting new pricing');
         llNewPricing('Default', function(ses, recs) {
           initPricing();
         }, function(ses, err) {humanMsg.displayMsg('Error there: ' + err.message, 1);});

@@ -23,7 +23,7 @@ function choosePricingApplication() {
         $('#apply_pricing').show();
         $('#apply_filters').hide();
       } else {
-        humanMsg.displayMsg('There is no pricing to apply. Insert a new pricing before');
+        humanMsg.displayMsg(_('There is no pricing to apply. Insert a new pricing before'));
         $('#choose_app').val('');
         $('#apply_pricing').hide();
         $('#apply_filters').hide();
@@ -64,8 +64,8 @@ function designChildren() {
   for (var i= 0; i< _tempChildren.length; i++) {
     var child= _tempChildren[i];
     var age= child.age;
-    res+= '<tr class="rchildren"><td></td><td>Age: ' + age + '</td>'; 
-    res+= '<td><b><a href="javascript:delChild(' + age +','+ i + ')">Delete</a></b></td></tr>'; 
+    res+= '<tr class="rchildren"><td></td><td>'+_('Age')+': ' + age + '</td>'; 
+    res+= '<td><b><a href="javascript:delChild(' + age +','+ i + ')">'+_('Delete')+'</a></b></td></tr>'; 
   }
   $('#table_occupancy').append(res);
   $('#childrenCounter').val(_tempChildren.length);
@@ -116,10 +116,10 @@ function designExtras(where) {
       res+= '" value="' + e['how'] + '"></input></td>'; 
       res+= '<td><input class="extraCost" type="text" id="extra_cost_' + e['id'];
       res+= '" value="' + parseFloat(e['cost']).toFixed(2) + '"></input></td>'; 
-      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>Delete</b></a></td>';
+      res+= '<td><a href="javascript:removeAssignedExtra(' + e['id'] + ')"><b>'+_('Delete')+'</b></a></td>';
       res+= '</tr>';
     } else {
-      res+= '<tr><th>Extra</th><th>Qty</th><th>Price</th></tr>';
+      res+= '<tr><th>Extra</th><th>Qty</th><th>'+_('Price')+'</th></tr>';
       res+= '<tr><td align="center">' + e.name + '</td>'; 
       res+= '<td align="center">' + e.how + '</td>';
       res+= '<td align="center">' + parseFloat(e['cost']).toFixed(2) + '</td>';
@@ -129,7 +129,7 @@ function designExtras(where) {
   }
   if (!where) {
     res+= '<tr><td colspan="4" style="text-align:center">';
-    res+= '<input type="submit" value="Update extras" onclick="saveUpdatedExtras()"></input></td></tr>';
+    res+= '<input type="submit" value="'+_('Update')+ '" onclick="saveUpdatedExtras()"></input></td></tr>';
   }
   res+= '</table>';
   $(where || '#assignedExtras').html(res);
@@ -227,7 +227,7 @@ function _desingPrices(prices, where, readonly) {
     res+= tres;
   }
   if (!readonly) {
-    $('#cmbdaymeals').html('<option value="" selected="selected">Each day</option>' + cmbdaymeals);
+    $('#cmbdaymeals').html('<option value="" selected="selected">'+_('Each day')+'</option>' + cmbdaymeals);
     res+= '<tr><td><b id="total_sum">...</b></td>';
     for (var i= 0; i< zakEditReservation.rooms.length; i++) {
       var rid= zakEditReservation.rooms[i].id;
@@ -249,12 +249,12 @@ function computeRoomsAmount(onlyrid) {
       var s= '#price_' + rid + '_' + j;
       var p= $(s).val();
       if (!p) {
-        humanMsg.displayMsg('Please, specify good valus (use the . for decimal values)', 1);
+        humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
         return;
       }
       p= parseFloat(p);
       if (!checkFloat(p)) {
-        humanMsg.displayMsg('Please, specify good valus (use the . for decimal values)', 1);
+        humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
         return;
       }
       pcount+= p;
@@ -281,7 +281,6 @@ function changeOccupancy() {
 
 function designPrices(prid, onlyroom, where, readonly) {
   /* make sure pricing info is loaded */
-  console.log('Writing prices: prid= ' + prid + ', onlyroom: ' + onlyroom);
   if (prid && !_tempPricing[prid]) {
     llGetDatedPricing(prid, zakEditReservation.dfrom, zakEditReservation.dto, 1,
       function(pps) {
@@ -327,7 +326,7 @@ function designCmbPricing() {
     }
     $('#cmbpricing').html(res);
   });
-  var rres= '<option value="">Alls</option>';
+  var rres= '<option value="">'+_('Alls')+'</option>';
   for (var j= 0; j< zakEditReservation.rooms.length; j++) {
     var rr= zakEditReservation.rooms[j];
     rres+= '<option value="' + rr.id + '">' + rr.name + '</option>';
@@ -385,7 +384,7 @@ function subTableMeals(meals, day, readonly) {
       res+= '<td><input id="mprice_' + mid + '" type="text" ';
       res+= 'style="width:40px" value="' + meal.cprice + '"></input></td>';
 
-      res+= '<td><input type="submit" value="Delete" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
+      res+= '<td><input type="submit" value="'+_('Delete')+'" onclick="removeMeal(' + day + ','+ meal.id + ')"></input></td>';
     } else {
       res+= '<td align="center">' + meal.how + '</td>';
       res+= '<td align="center">' + meal.cprice + '</td>';
@@ -403,7 +402,6 @@ function designMealTables(where, wherediv) {
     var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th><th>Del</th></tr></thead>';
   else
     var res= '<thead class="pricing"><tr><th>Day</th><th>Meal</th><th>How</th><th>Price</th></tr></thead>';
-  console.log('meals: ');
   gigi= meals;
   something= false;
   for (var k in meals) {
@@ -411,7 +409,7 @@ function designMealTables(where, wherediv) {
     res+= subTableMeals(meals[k], k, where);
   }
   if (!where)
-    res+= '<tr><td colspan="5"><input type="submit" value="Update" onclick="updateMeals()"></input></tr>';
+    res+= '<tr><td colspan="5"><input type="submit" value="'+_('Update')+'" onclick="updateMeals()"></input></tr>';
   $(where || '#tablemeals').html(res);
   if (something) $(wherediv || '#meals_div').show();
   else $(wherediv || '#meals_div').hide();
@@ -484,11 +482,6 @@ function saveOccupancy() {
 function saveRooms() {
   var rmrks= $('#oremarks').val();
   var rsetup= $('#selectSetup').val() || '';
-  /*var ocust= $('#ocustomer').val() || '';*/
-  /*if (!ocust) {*/
-  /*humanMsg.displayMsg('Please, insert a valid customer name', 1);*/
-  /*return;*/
-  /*}*/
   llModOccupancy(localStorage.editOccupancyOid, {remarks: rmrks, id_room_setup: rsetup},
     function(ses, recs) {
       designOccupancy();
@@ -527,7 +520,7 @@ function askChildren() {
 function addChildren() {
   var age= $('#children_age').val();
   if (parseInt(age) != age) {
-    humanMsg.displayMsg('Please, specify good values', 1);
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   _tempChildren.push({age: age});
@@ -589,17 +582,15 @@ function writeVariationMsg(vt, vv, rooms) {
           srooms= zakEditReservation.rooms[i].code;
       }
     }
-    msgVariation= '[ZaK ' + now + '] I applied the following variation: ';
-    msgVariation+= 'Type: ' + stype + ', Value: ' + vv;
-    msgVariation+= ', Rooms: ' + srooms;
+    msgVariation= '[ZaK ' + now + '] '+_('I applied the following variation')+': ';
+    msgVariation+= _('Type')+': ' + stype + ', '+_('Value')+': ' + vv;
+    msgVariation+= ', '+_('Rooms')+': ' + srooms;
   } catch(e) {console.log(e); msgVariation= ''};
   return msgVariation;
 }
 
 function writeVariation(vt, vv, rooms) {
-  console.log('writing variation: vt: ' + vt + ', vv: ' + vv + ', rooms: ' + rooms);
   var msg= writeVariationMsg(vt, vv, rooms);
-  console.log('Message: ' + msg);
   if (rooms) 
     writeVariationRoom(vt, vv, rooms);
   else {
@@ -610,7 +601,6 @@ function writeVariation(vt, vv, rooms) {
   }
   computeRoomsAmount();
   var rm= $('#rremarks').val();
-  console.log(msg);
   rm+= '\n\n' + msg;
   llModReservation(localStorage.editOccupancyRid, {remarks: rm},
     function(ses, recs) {
@@ -630,7 +620,7 @@ function saveMeal() {
   var mprice= $('#mprice').val();
   var mvat= $('#mvat').val();
   if (!checkFloat(mvat) || !checkFloat(mprice) || !mname) {
-    humanMsg.displayMsg('Please, specify good values');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   llNewMeal(mname, mprice, mtype, mvat, function(ses, recs) {
@@ -645,23 +635,18 @@ function addMeal() {
   console.log('Adding meal');
   var mid= $('#cmbmeal').val();
   if (!mid) {
-    humanMsg.displayMsg('Select a valid meal or define a new one');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var how= $('#howmeals').val();
   var day= $('#cmbdaymeals').val();
   var meals= getResMeals();
-  console.log(meals);
-  console.log(day);
-
-  console.log('Now adding meal');
 
   llGetMeals(mid, function(ses, recs) {
     var omeal= recs.rows.item(0);
     /* add meal for a unique day */
 
     function _am(when) {
-      console.log('Am: ' + when);
       var mealday= meals[when + ''];
 
       /* no meal for this day, simply add */
@@ -721,7 +706,7 @@ function updateMeals() {
       if (!checkFloat(pri) || parseInt(how) != how) {
         console.log(how);
         console.log(pri);
-        humanMsg.displayMsg('Please, specify good values');
+        humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
         return;
       }
       meal.cprice= pri;
@@ -753,9 +738,6 @@ function removeMeal(day, mid) {
     }
     newmeals[k]= lmeals;
   }
-  console.log('New meals');
-  console.log(meals);
-
   llModReservation(localStorage.editOccupancyRid, {meals: JSON.stringify(newmeals)},
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
@@ -796,7 +778,7 @@ function applyVariation() {
   var vt= $('#vtype').val();
   var vv= $('#vvalue').val();
   if (!checkFloat(vv)) {
-    humanMsg.displayMsg('Specify a good variation value before');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var rooms= $('#vrooms').val();
@@ -808,12 +790,12 @@ function saveVariation() {
   var vt= $('#vtype').val();
   var vv= $('#vvalue').val();
   if (!checkFloat(vv)) {
-    humanMsg.displayMsg('Specify a good variation value before');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var vn= $('#vname').val();
   if (!vn) {
-    humanMsg.displayMsg('Specify a good name to save it!');
+    humanMsg.displayMsg(_('Please, specify a valid name'), 1);
     return;
   }
   llNewVariation(vt, vv, vn,
@@ -830,12 +812,12 @@ function saveApplyVariation() {
   var vt= $('#vtype').val();
   var vv= $('#vvalue').val();
   if (!checkFloat(vv)) {
-    humanMsg.displayMsg('Specify a good variation value before');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var vn= $('#vname').val();
   if (!vn) {
-    humanMsg.displayMsg('Specify a good name to save it!');
+    humanMsg.displayMsg(_('Please, specify a valid name'), 1);
     return;
   }
   llNewVariation(vt, vv, vn,
@@ -866,21 +848,18 @@ function saveExtra() {
   var ecost= $('#extra_cost').val();
   var evat= $('#extra_vat').val();
   if (!ename || !checkFloat(ecost) || !checkFloat(evat)) {
-    humanMsg.displayMsg('Please, specify good values (decimal values? use the dot [.])');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var eperday= $('#extra_perday').val();
   var how= $('#extra_how').val() || 1;
   if (eperday == 0 || !eperday) var atotal= ecost;
   else {
-    console.log('Eperday');
-    console.log(eperday);
     var n= diffDateDays(zakEditReservation.dfrom, zakEditReservation.dto);
     var atotal= parseFloat(ecost) * parseInt(n);
   }
   atotal*= parseInt(how);
   var aextras= getResExtras();
-  console.log('Atotal: ' + atotal);
   llAddExtra(localStorage.editOccupancyRid, ename, ecost, eperday, evat, how, aextras, atotal,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
@@ -896,7 +875,7 @@ function saveExtra() {
 function assignExtra() {
   var eid= $('#selectExtra').val();
   if (!eid) {
-    humanMsg.displayMsg('Select a valid extra or define a new one');
+    humanMsg.displayMsg(_('Select a valid extra or define a new one'), 1);
     return;
   }
   var how= $('#selectExtraHow').val();
@@ -961,7 +940,7 @@ function saveUpdatedExtras() {
     var ecost= $('#extra_cost_' + e.id).val();
     var ehow= $('#extra_how_'+ e.id).val();
     if (parseInt(ehow) != ehow || !checkFloat(ecost) ) {
-      humanMsg.displayMsg('Please, specify good values (decimal? use the "." [dot])');
+      humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
       return;
     }
     e.cost= ecost;
@@ -1009,7 +988,7 @@ function existCustomer() {
 function assignExistingCustomer() {
   var cid= $('#cust_finder_hidden').val();
   if (!cid) {
-    humanMsg.displayMsg('Invalid customer', 1);
+    humanMsg.displayMsg(_('Specify a valid customer'), 1);
     return;
   }
   llAssignExistingCustomer(zakEditReservation.id, cid,
@@ -1110,7 +1089,7 @@ function delCustomer(cid) {
 function assignCustomer() {
   var bname= $('#cust_name').val() || '';
   if (!bname) {
-    humanMsg.displayMsg('Customer name is required', 1);
+    humanMsg.displayMsg(_('Please, specify a valid name'), 1);
     return;
   }
   var cntry= $('#ac_country').val() || '';
@@ -1153,7 +1132,6 @@ function assignCustomer() {
 
   var cid= $('#cust_id').val();
   if (cid) {
-    console.log('Modifying existing customer');
     llModCustomer(cid, cdict, zakEditReservation.id, $('#chooseForInvoice').is(':checked'),
       function(ses, recs) {
         humanMsg.displayMsg('Sounds good');
@@ -1223,7 +1201,7 @@ function designCustomer() {
 
 function designCustomerCountries() {
   $('#ac_country').remove();
-  $('#countrygen').append('<input type="text" id="ac_country" style="width:140px" name="country" value="Enter country..." />');
+  $('#countrygen').append('<input type="text" id="ac_country" style="width:140px" name="country" value="Type country..." />');
   $('#ac_country').autocomplete({
     minLength: 2,
     focus: function(ev, ui) {$('#ac_country').val(ui.item.label);return false;},

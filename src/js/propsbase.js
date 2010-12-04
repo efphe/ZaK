@@ -1,16 +1,13 @@
 function setActiveProperty(prop, cbs, cbe) {
   if (parseInt(prop) != prop) {
     localStorage.activeProperty= JSON.stringify(prop);
-    console.log('Active property to: ' + localStorage.activeProperty);
     return;
   }
   llGetProperties(
       function(ses, recs) {
         var i;
-        console.log('Looking for right property');
         for(i=0;i<recs.rows.length;i++) {
           if (recs.rows.item(i)['id'] == prop) {
-            console.log('Found right property');
             setActiveProperty(recs.rows.item(i));
             cbs();
           }
@@ -25,14 +22,13 @@ function getModalNewFly(f, g) {
   llLoadRooms(getActiveProperty().id, function(ses, recs) {
     var _modalNewRes= '' + 
     ' <div id="addNewFlyReservation" style="display:none" class="zakmodal">'+
-    '<h1>Add a new reservation</h1>'+
-    '<h2>Please, insert reservation data</h2>'+
+    '<h1>'+_('Add a new reservation')+'</h1>'+
+    '<h2>'+_('Please, insert reservation data')+'</h2>'+
     '<table>'+
-    '<tr><td>Arrival:</td><td id="flyReservationWhenTd">'+
+    '<tr><td>'+_('Arrival')+':</td><td id="flyReservationWhenTd">'+
     '<input type="text" style="width:150px" id="flyReservationWhen"></input></td></tr>'+
     '<tr>'+
-    '<td>'+
-    'Nights:'+
+    '<td>'+_('Nights')+':'+
     '</td>'+
     '<td>'+
     '<select id="addNewFlyReservationNightsCmb">'+
@@ -55,7 +51,7 @@ function getModalNewFly(f, g) {
     '</select>'+
     '</td>'+
     '</tr>'+
-    '<tr><td>Room</td><td>'+
+    '<tr><td>'+_('Room')+'</td><td>'+
     '<select id="addNewFlyReservationRid">';
     for (var i= 0; i< recs.rows.length;i++) {
       var room= recs.rows.item(i);
@@ -64,7 +60,7 @@ function getModalNewFly(f, g) {
     _modalNewRes+= '</select></td></tr>'+
     '<tr>'+
     '<td>'+
-    '          Customer'+
+    '          '+_('Customer')+
     '</td>'+
     '<td>'+
     '<input type="text" id="addNewFlyReservationCustomer"></input>'+
@@ -85,7 +81,7 @@ function getModalNewFly(f, g) {
     '</tr>'+
     '<tr>'+
     '<td>'+
-    '          Go to:'+
+    '          '+_('Go to')+':'+
     '</td>'+
     '<td>'+
     '<select id="newflyact"><option value="0">Tableau</option><option value="1">Details</option></select>'+
@@ -93,7 +89,7 @@ function getModalNewFly(f, g) {
     '</tr>'+
     '</table>'+
     '<div style="float:right">'+
-    '<a style="color:#36ff00;font-weight:bold" href="javascript:_addNewFlyReservation()">Continue</a> '+
+    '<a style="color:#36ff00;font-weight:bold" href="javascript:_addNewFlyReservation()">'+_('Continue')+'</a> '+
     '<a style="color:red;font-weight:bold" href="javascript:$.modal.close()">Cancel</a>'+
     '</div>'+
     '<br/>'+
@@ -117,27 +113,26 @@ function flyReservation() {
 function _addNewFlyReservation() {
   var cust= $('#addNewFlyReservationCustomer').val();
   if (!cust) {
-    humanMsg.displayMsg('Specify a valid customer');
+    humanMsg.displayMsg(_('Specify a valid customer'));
     return;
   }
   var nights= $('#addNewFlyReservationNightsCmb').val();
   if (parseInt(nights) != nights) {
-    humanMsg.displayMsg('Specify a valid number of nights');
+    humanMsg.displayMsg(_('Specify a valid number of nights'));
     return;
   }
   var sta= $('#addNewFlyReservationStatus').val();
   if (parseInt(sta) != sta || ! ZAK_MAP_STATUS[parseInt(sta)]) {
-    humanMsg.displayMsg('Specify a valid reservation status');
+    humanMsg.displayMsg(_('Specify a valid reservation status'));
     return;
   }
   var rid= $('#addNewFlyReservationRid').val();
   var sday= $('#flyReservationWhen').val();
   var sday= unixDate(sday);
-  console.log('Adding new Reservation: from ' + strDate(sday) + ', nights= ' + nights);
   llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust, false,
     function(ses, recs) {
       if (!ses) {
-        humanMsg.displayMsg('Not enough free days for this reservation/room', 1);
+        humanMsg.displayMsg(_('Not enough free days for this reservation/room'), 1);
         return;
       }
       if ($('#newflyact').val() == '1') {

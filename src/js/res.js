@@ -9,7 +9,7 @@ function changeOccupancy() {
 }
 
 function _childrenHtml(age, red) {
-  var el= '<tr class="children_c"><td>Child</td><td>Age: ' + age + ' (-' + red + '%)</td>';
+  var el= '<tr class="children_c"><td>Child</td><td>'_('Age'): ' + age + ' (-' + red + '%)</td>';
   el+= '<td><b><a href="javascript:delChild(' + age +','+red + ')">Delete</a></b></td></tr>'; 
   return el;
 }
@@ -20,7 +20,7 @@ function computeRoomSum(j) {
   $('input.col_index_' + j).each(function(n, el) {
     var v= $(el).val();
     if (!checkFloat(v)) {
-      humanMsg.displayMsg('Please, specify correct prices');
+      humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
       return;
     }
     count+= parseFloat(v);
@@ -49,7 +49,6 @@ function changePricing() {
 }
 
 function designAdultsChildren(putAdults) {
-  /*console.log('Designing occupancy');*/
   var i, chi, res= '', age, red;
   for (i=0;i<occupancyObject.children.length;i++) {
     chi= occupancyObject.children[i];
@@ -71,7 +70,7 @@ function addChildren() {
   var age= $('#children_age').val();
   var red= $('#children_red').val();
   if (parseInt(age) != age || parseInt(red) != red) {
-    humanMsg.displayMsg('Please, specify good values', 1);
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   occupancyObject.children.push({age: age, red: red});
@@ -132,13 +131,10 @@ function addRSetup() {
 function saveRSetup(rsid, remarks) {
   var rsid= rsid || $('#selectSetup').val();
   var remarks= remarks || $('#roomSetupRemarks').val();
-  /*console.log('Updating occ: rsid: ' + rsid + ', remarks: ' + remarks);*/
   llModOccupancy(zakReservation.activeOccupancy, {remarks: remarks, id_room_setup: rsid},
     function(ses, recs) {
-    /*console.log('reloading occupancies');*/
       llGetReservationFromOid(zakReservation.activeOccupancy,
         function(reservatioin) {
-        /*console.log('Dio cane');*/
           zakReservation.occupancies= reservatioin['occupancies'];
           zakReservation.designOccupancy();
           humanMsg.displayMsg('Sounds good');
@@ -209,7 +205,7 @@ function assignExtra() {
   var eid= $('#selectExtra').val();
   var how= $('#selectExtraHow').val();
   if (!eid || eid == 0) {
-    humanMsg.displayMsg('Please, insert a new extra before', 1);
+    humanMsg.displayMsg(_('Please, insert a new extra before'), 1);
     return;
   }
   llLoadExtras(
@@ -221,7 +217,6 @@ function assignExtra() {
       }
 
       var res= extraAppendAssigned(eid, how, cost);
-      /*console.log(res);*/
       if (res['found']) 
         sextras= JSON.stringify(res['extras']);
       else {
@@ -249,7 +244,7 @@ function addExtra() {
   var ecost= $('#extra_cost').val();
   var how= $('#extra_how').val();
   if (!checkFloat(ecost) || ! ename) {
-    humanMsg.displayMsg('Please, specify good values', 1);
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
     return;
   }
   var fcost= parseFloat(ecost) * parseInt(how);
@@ -281,15 +276,13 @@ function saveUpdatedExtras() {
   try {
     var extras= JSON.parse(zakReservation.extras);
   } catch(e) {var extras = []};
-  console.log(extras);
   var i, newextras= [];
   for (i=0;i<extras.length;i++) {
     var eid= extras[i].id;
     var how= $('#extra_how_' + eid).val();
     var cost= $('#extra_cost_' + eid).val();
-    /*console.log('Eid: ' + eid + ' cost: ' + cost + ' how: ' + how);*/
     if (!checkFloat(cost) || how != parseInt(how)) {
-      humanMsg.displayMsg('Please, specify good values', 1);
+      humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
       return;
     }
     newextras.push({id: extras[i].id, cost: cost, how: how, name: extras[i].name});
@@ -310,12 +303,11 @@ function saveRoomsPrices() {
   for (i=0;i<occs.length;i++) {
     newar= new Array();
     rid= occs[i]['id_room'];
-    /*console.log('Reading prices for ' + rid);*/
     newar.push(rid);
     for(j=1;j<zakTableau.lendays;j++) {
       v= $('#rprice_' + rid + '_' + j).val();
       if (!checkFloat(v)) {
-        humanMsg.displayMsg('Please, specify good values', 1);
+        humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'), 1);
         return;
       }
       newar.push(parseFloat(v));
@@ -323,7 +315,6 @@ function saveRoomsPrices() {
     res.push(newar);
   }
   roomPricing= res;
-  /*console.log('compacting');*/
   var sp= JSON.stringify(res);
   llModReservation(zakReservation.reservation.id, {custom_pricing: sp},
     function(ses, recs) {
@@ -352,7 +343,6 @@ function initReservation() {
     goToSameDirPage('tableau');
     return;
   }
-  /*console.log('Initializing occupancy: '+ localStorage.editOccupancyOid);*/
   llGetReservationFromOid(localStorage.editOccupancyOid,
     function(reservation) {
       zakReservation= new iReservation(reservation);
@@ -360,8 +350,6 @@ function initReservation() {
 
       /*llGetInvoiceId(getActiveProperty().id, zakReservation.reservation.id, false,*/
       /*function(inv) {*/
-      /**//*console.log('Inv');*/
-      /**//*console.log(inv);*/
       /*if (!inv) return;*/
       /*$('#resinvoice').append('<br/><b><a style="font-size:12px" href="javascript:showInvoice(' + inv.id + ')">Invoice ' + inv.n + '</a></b>');*/
       /*});*/

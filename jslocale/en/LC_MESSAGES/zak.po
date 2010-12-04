@@ -1,3 +1,204 @@
 # English translations: http://zak.wubook.net/
 msgid ""
 msgstr ""
+
+msgid "hello"
+msgstr "Hello"
+
+msgid "not implemented yet"
+msgstr "Not implemented yet"
+
+msgid "Property"
+msgstr "Property"
+
+msgid "Feature actually not available"
+msgstr "Feature actually not available"
+
+msgid "Sorry: this feature has not been implemented yet. We will release it as soon as possible"
+msgstr "Sorry: this feature has not been implemented yet. We will release it as soon as possible"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Modify"
+msgstr "Modify"
+
+msgid "Room code specified already in use"
+msgstr "Room code specified already in use"
+
+msgid "Please, specify a valid room type"
+msgstr "Please, specify a valid room type"
+
+msgid "New"
+msgstr "New"
+
+msgid "Please, insert a room name and a Unique Room Code"
+msgstr "Please, insert a room name and a Unique Room Code"
+
+msgid "Please, insert a valid property name"
+msgstr "Please, insert a valid property name"
+
+msgid "Add a new reservation"
+msgstr "Add a new reservation"
+
+msgid "Please, insert reservation data"
+msgstr "Please, insert reservation data"
+
+msgid "Arrival"
+msgstr "Arrival"
+
+msgid "Nights"
+msgstr "Nights"
+
+msgid "Room"
+msgstr "Room"
+
+msgid "Rooms"
+msgstr "Rooms"
+
+msgid "Customer"
+msgstr "Customer"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Go to"
+msgstr "Go to"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Continue"
+msgstr "Continue"
+
+msgid "Specify a valid customer"
+msgstr "Specify a valid customer"
+
+msgid "Specify a valid number of nights"
+msgstr "Specify a valid number of nights"
+
+msgid "Specify a valid reservation status"
+msgstr "Specify a valid reservation status"
+
+msgid "Not enough free days for this reservation/room"
+msgstr "Not enough free days for this reservation/room"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Meals"
+msgstr "Meals"
+
+msgid "Extras"
+msgstr "Extras"
+
+msgid "You must associate orphaned rooms to a new, valid room type"
+msgstr "You must associate orphaned rooms to a new, valid room type"
+
+msgid "Please, specify a valid name"
+msgstr "Please, specify a valid name"
+
+msgid "Specify good values: for decimal values, use the DOT"
+msgstr "Specify good values: for decimal values, use the DOT"
+
+msgid "Reservation deleted"
+msgstr "Reservation deleted"
+
+msgid "Please, specify valid dates"
+msgstr "Please, specify valid dates"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Reservation"
+msgstr "Reservation"
+
+msgid "There is no pricing to apply. Insert a new pricing before"
+msgstr "There is no pricing to apply. Insert a new pricing before"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Each day"
+msgstr "Each day"
+
+msgid "Alls"
+msgstr "Alls"
+
+msgid "I applied the following variation"
+msgstr "I applied the following variation"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "Select a valid extra or define a new one"
+msgstr "Select a valid extra or define a new one"
+
+msgid "Please, insert a new extra before"
+msgstr "Please, insert a new extra before"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Apr"
+
+msgid "May"
+msgstr "May"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Aug"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Oct"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dec"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Female"
+msgstr "Female"
+
+msgid "Invoice"
+msgstr "Invoice"
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Number"
+msgstr "Number"
+
+msgid "Go to invoice"
+msgstr "Go to invoice"
+
+msgid "Go to reservation"
+msgstr "Go to reservation"

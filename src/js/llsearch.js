@@ -150,7 +150,7 @@ function updateRoom(rid) {
 function _delRoomType(rtid) {
   var newrt= $('#rt_newrtype_' + rtid).val();
   if (!newrt || newrt == rtid) {
-    humanMsg.displayMsg('You must associate orphaned rooms to a new, valid room type');
+    humanMsg.displayMsg(_('You must associate orphaned rooms to a new, valid room type'));
     return;
   }
   var cbe= function(ses, err) {humanMsg.displayMsg('Error there: '+ err.message); return };
@@ -171,7 +171,7 @@ function _delRoomType(rtid) {
 function updateRoomType(rsid) {
   var name= $('#rt_name_' + rsid).val();
   if (!name) {
-    humanMsg.displayMsg('Please, specify a valid name');
+    humanMsg.displayMsg(_('Please, specify a valid name'));
     return;
   }
   var db= zakOpenDb();
@@ -214,7 +214,7 @@ function updateMeal(mid) {
   var vat= $('#m_vat_' + mid).val();
   var mtype= $('#m_mtype_' + mid).val();
   if (!checkFloat(price) || !checkFloat(vat)) {
-    humanMsg.displayMsg('Specify good values: for decimal values, use the DOT "."');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'));
     return;
   }
   var db= zakOpenDb();
@@ -243,13 +243,13 @@ function updateMeal(mid) {
 function updateExtra(eid) {
   var name= $('#e_name_' + eid).val();
   if (!name) {
-    humanMsg.displayMsg('Please, specify a valid name');
+    humanMsg.displayMsg(_('Please, specify a valid name'));
     return;
   }
   var cost= $('#e_cost_' + eid).val();
   var vat= $('#e_vat_' + eid).val();
   if (!checkFloat(cost) || !checkFloat(vat)) {
-    humanMsg.displayMsg('Please, specify good values (decimal values? use "." - the-dot -)');
+    humanMsg.displayMsg(_('Specify good values: for decimal values, use the DOT'));
     return;
   }
   var perday= $('#e_perday_' + eid).val();
@@ -288,7 +288,7 @@ function _delPricing(pid) {
 function updatePricing(pid) {
   var name= $('#p_name_' + pid).val();
   if (!name) {
-    humanMsg.displayMsg('Please, specify a valid name');
+    humanMsg.displayMsg(_('Please, specify a valid name'));
     return;
   }
   var db= zakOpenDb();
@@ -332,7 +332,7 @@ function updateCustomer(cid) {
   console.log('Updating customer');
   var name= _i('name');
   if (!name) {
-    humanMsg.displayMsg('Please, specify a valid customer name');
+    humanMsg.displayMsg(_('Specify a valid customer'));
     return;
   }
   var mail= _i('email') || '';

@@ -20,7 +20,7 @@ function designFinal() {
     tot+= itot;
     nettot+= itot / (1.0 + (ii.vat/100.0));
   }
-  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, ' Total', 'margin-left:30px;margin-top:2px'));
+  $('#itotal').append(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, ' '+ _('Total'), 'margin-left:30px;margin-top:2px'));
 };
 
 function _getPartial(tot, vat, name, addst) {
@@ -31,7 +31,7 @@ function _getPartial(tot, vat, name, addst) {
   var res= '<div style="' + st + '"><table><tr><td>' + name;
   res+= '</td><td>' + netrate.toFixed(2) + '</td></tr>';
   res+= '<tr><td>Vat taxes:</td><td>' + netvat.toFixed(2) + '</td></tr>';
-  res+= '<tr><td><b>Total:</b></td><td><b>' + tot.toFixed(2) + ' ' + getCurrency() + '</b></td></tr>';
+  res+= '<tr><td><b>'+_('Total')+':</b></td><td><b>' + tot.toFixed(2) + ' ' + getCurrency() + '</b></td></tr>';
   res+= '</table></div>';
   return res;
 }
@@ -87,8 +87,8 @@ function designInvoiceRooms() {
   res+= '<td><b>' + tot + '</b></td></tr>';
   $('#rooms_table').html(res);
   var rvat= parseFloat(invoiceSettings.vatSettingsPerc);
-  $('#title_rooms').prepend(_getPartial(tot, rvat, 'Rooms'));
-  invoiceItems.push( {tot: tot, vat: rvat, title: 'Rooms'} ); 
+  $('#title_rooms').prepend(_getPartial(tot, rvat, _('Rooms')));
+  invoiceItems.push( {tot: tot, vat: rvat, title: _('Rooms')} ); 
   checkFinal();
 }
 
@@ -133,11 +133,11 @@ function designMeals() {
       res+= '</tr>';
     }
   }
-  res+= '<tr><td colspan="2" align="center">Total</td><td><b>' + tot + '</b></td>';
+  res+= '<tr><td colspan="2" align="center">'+_('Total')+'</td><td><b>' + tot + '</b></td>';
   res+= '</table>';
   $('#meals_table').html(res);
-  $('#title_meals').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Meals'));
-  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Meals'} ); 
+  $('#title_meals').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, _('Meals')));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: _('Meals')} ); 
   /*console.log(meals);*/
   checkFinal();
 }
@@ -174,11 +174,11 @@ function designExtras() {
     nettot+= pri / (1.0 + (ex.vat/100.0));
     res+= '<tr><td>' + ex.name + '(' + ex.how + 'x)</td><td>' + pri.toFixed(2) + '</td></tr>';
   }
-  res+= '<tr><td>Total</td><td><b>' + tot.toFixed(2) + '</b></td>';
+  res+= '<tr><td>'+_('Total')+'</td><td><b>' + tot.toFixed(2) + '</b></td>';
   res+= '</table>';
   $('#extras_table').html(res);
-  $('#title_extras').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, 'Extras'));
-  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: 'Extras'} ); 
+  $('#title_extras').prepend(_getPartial(tot, (1.0 - (nettot/tot)) * 100.0, _('Extras')));
+  invoiceItems.push( {tot: tot, vat: (1.0 - (nettot/tot)) * 100.0, title: _('Extras')} ); 
   /*console.log(extras);*/
   checkFinal();
 }

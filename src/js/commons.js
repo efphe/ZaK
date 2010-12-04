@@ -35,7 +35,7 @@ function goToPage(apage) {
 function zakOpenDb(v, sync) {
   var dbv= v || '';
   if (sync) {
-    alert('not implemented yet');
+    alert(_('not implemented yet'));
     return -1;
   }
   var db= window.openDatabase(ZAK_DB_NAME, dbv, ZAK_APP_NAME, ZAK_DB_DISK);
@@ -143,7 +143,7 @@ function selectPropertiesInit() {
       var aprop= getActiveProperty();
       /*console.log('Selecting with active= ' + aprop);*/
       $('.putPropertyname').each(function(idx, el) {
-        $(this).append(aprop['name'] || 'Property');
+        $(this).append(aprop['name'] || _('Property'));
       });
       var aid= aprop['id'];
       for(i=0;i<props.rows.length;i++) {
@@ -171,9 +171,9 @@ function zakNotImplementedYet() {
   el= document.getElementById('zakNotImplementedYet');
   if (!el) {
     var htmltoshow= '<div id="zakNotImplementedYet" class="zakmodal">' +
-      '<h1>Not Implemented Yet</h1> ' +
-      '<h2>Feature actually not available</h2>' +
-      'We\'re sorry: this feature has not been implemented yet. We will release it as soon as possible' +
+      '<h1>'+_('not implemented yet')+'</h1> ' +
+      '<h2>'+_('Feature actually not available')+'</h2>' +
+      _('Sorry: this feature has not been implemented yet. We will release it as soon as possible') +
       '<br/>' +
       '<br/>' +
       '<a style="color:#36ff00;font-weight:bold" href="javascript:$.modal.close()">Continue</a>' +

@@ -26,22 +26,22 @@ cmbrtypes= false;
 
 function _cmbMonths(iid) {
   return '<select id="' + iid + '">' + 
-    '<option value="1">Jan</option>' + 
-    '<option value="2">Feb</option>' + 
-    '<option value="3">Mar</option>' + 
-    '<option value="4">Apr</option>' + 
-    '<option value="5">May</option>' + 
-    '<option value="6">Jun</option>' + 
-    '<option value="7">Jul</option>' + 
-    '<option value="8">Aug</option>' + 
-    '<option value="9">Sep</option>' + 
-    '<option value="10">Oct</option>' +
-    '<option value="11">Nov</option>' +
-    '<option value="12">Dec</option></select>';
+    '<option value="1">'+_('Jan')+'</option>' + 
+    '<option value="2">'+_('Feb')+'</option>' + 
+    '<option value="3">'+_('Mar')+'</option>' + 
+    '<option value="4">'+_('Apr')+'</option>' + 
+    '<option value="5">'+_('May')+'</option>' + 
+    '<option value="6">'+_('Jun')+'</option>' + 
+    '<option value="7">'+_('Jul')+'</option>' + 
+    '<option value="8">'+_('Aug')+'</option>' + 
+    '<option value="9">'+_('Sep')+'</option>' + 
+    '<option value="10">'+_('Oct')+'</option>' +
+    '<option value="11">'+_('Nov')+'</option>' +
+    '<option value="12">'+_('Dec')+'</option></select>';
 }
 var _cmbGender= function(iid, m) {
-    if (m==1) return '<select id="' + iid + '"><option value="1" selected="selected">Male</option><option value="2">Female</option></select>';
-    return '<select id="' + iid + '"><option value="1">Male</option><option selected="selected" value="2">Female</option></select>';
+    if (m==1) return '<select id="' + iid + '"><option value="1" selected="selected">'+_('Male')+'</option><option value="2">'+_('Female')+'</option></select>';
+    return '<select id="' + iid + '"><option value="1">'+_('Male')+'</option><option selected="selected" value="2">'+_('Female')+'</option></select>';
 }
 
 var _cmbRtypes= function(rtid) {
@@ -70,25 +70,25 @@ function putSearchResult(s, rec) {
     r+= '<div class="div_search_content" style="display:none" id="div_search_' + zakSearchCounter + '">';
     if (fdel) {
       r+= '<div style="float:right">';
-      r+= '<input type="submit" value="Delete" onclick="' + fdel + '(' + rec.id + ')"></input>';
+      r+= '<input type="submit" value="'+_('Delete')+'" onclick="' + fdel + '(' + rec.id + ')"></input>';
       r+= '</div>';
     }
     return r;
   };
 
   if (rec.fromtable == 'invoice') {
-    res+= _preamble('/imgs/invoice.png', 'Invoice ' + rec.n);
-    res+= '<b>Invoice</b>';
+    res+= _preamble('/imgs/invoice.png', _('Invoice')+' ' + rec.n);
+    res+= '<b>'+_('Invoice')+'</b>';
     res+= '<table>';
     res+= '<tr>';
-    res+= '<td>Year</td><td>' + rec.year + '</td>';
+    res+= '<td>'+_('Year')+'</td><td>' + rec.year + '</td>';
     res+= '</tr>';
     res+= '<tr>';
-    res+= '<td>Number</td><td>' + rec.n + '</td>';
+    res+= '<td>'+_('Number')+'</td><td>' + rec.n + '</td>';
     res+= '</tr>';
     res+= '<tr><td colspan="2" align="center">';
-    res+= '<input type="submit" value="Go to invoice" onclick="goInvoice(' + rec.id_reservation + ')"></input>';
-    res+= '<input type="submit" value="Go to reservation" onclick="goDetails(' + rec.id_reservation + ')"></input>';
+    res+= '<input type="submit" value="'+_('Go to invoice')+'" onclick="goInvoice(' + rec.id_reservation + ')"></input>';
+    res+= '<input type="submit" value="'+_('Go to reservation')+'" onclick="goDetails(' + rec.id_reservation + ')"></input>';
     res+= '</td></tr>';
     res+= '</div>';
   }

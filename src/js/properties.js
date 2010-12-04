@@ -14,10 +14,10 @@ function _roomTd(room, rtype, tags) {
   var rid= room.id;
   var rtypeid= room.id_room_type;
   var res= '<td>' + rname + '</td><td>' + rcode + '</td><td>' + rtype + '</td>';
-  res+= '<td><a href="javascript:delRoom(\'' + rid + '\')">Delete</a></td>';
+  res+= '<td><a href="javascript:delRoom(\'' + rid + '\')">' + _('Delete')+ '</a></td>';
   var args= [rid,rname,rcode,rtypeid].join("','");
   args= "'" + args + "'";
-  res+= '<td><a href="javascript:askModRoom(' + args + ')">Modify</a></td>';
+  res+= '<td><a href="javascript:askModRoom(' + args + ')">'+_('Modify')+'</a></td>';
   /*var tags= room.tags;*/
   if (!tags) {
     res+= '<td>no tag</td>';
@@ -82,7 +82,7 @@ function modRoom() {
   var rcode= $('#modroom_code').val();
   var rtype= $('#modroom_rtype').val();
   if (repeatedRoomCode(rcode, rid)) {
-    humanMsg.displayMsg('Room code specified already in use', 1);
+    humanMsg.displayMsg(_('Room code specified already in use'), 1);
     return;
   }
   if (rtype) {
@@ -99,7 +99,7 @@ function modRoom() {
   }
   var newtypename= $('#modroom_newtype').val();
   if (!newtypename) {
-    humanMsg.displayMsg('Please, specify a valid room type');
+    humanMsg.displayMsg(_('Please, specify a valid room type'));
     return;
   }
   llUpdRoomAndType(rid, rname, rcode, newtypename,
@@ -119,7 +119,7 @@ function askNewRoomType() {
 }
 
 function designRoomTypes() {
-  var res= '<option value="">New</option>';
+  var res= '<option value="">'+_('New')+'</option>';
   llGetRoomTypes(function(ses, recs) {
     for (var i= 0;i < recs.rows.length;i ++) {
       var rec= recs.rows.item(i);
@@ -135,11 +135,11 @@ function addNewRoomWithType() {
   var rtype= $('#rtype').val();
   console.log('Rtype: ' + rtype);
   if (!rname || !rcode) {
-    humanMsg.displayMsg('Please, insert a room name and a Unique Room Code', 1);
+    humanMsg.displayMsg(_('Please, insert a room name and a Unique Room Code'), 1);
     return;
   }
   if (repeatedRoomCode(rcode)) {
-    humanMsg.displayMsg('Room code specified already in use', 1);
+    humanMsg.displayMsg(_('Room code specified already in use'), 1);
     return;
   }
   llGetRoomTypes(function(ses, recs) {
@@ -148,7 +148,6 @@ function addNewRoomWithType() {
     for (var i= 0;i< recs.rows.length; i++) {
       if (recs.rows.item(i).name == rtype) {
         var rec= recs.rows.item(i);
-        console.log('Existing rtype!!!');
         llNewRoom(getActiveProperty()['id'], rcode, rname, rec.id,
           function(ses, recs) {
             var rid= recs.insertId;
@@ -164,7 +163,6 @@ function addNewRoomWithType() {
       }
     }
 
-    console.log('New rtype');
     llNewRoomAndType(getActiveProperty()['id'], rcode, rname, rtype,
       function(ses, recs) {
         var rid= recs.insertId;
@@ -186,11 +184,11 @@ function addNewRoom() {
   var rname= $('#newroomname').val();
   var rcode= $('#newroomcode').val();
   if (!rname || !rcode) {
-    humanMsg.displayMsg('Please, insert a room name and a Unique Room Code', 1);
+    humanMsg.displayMsg(_('Please, insert a room name and a Unique Room Code'), 1);
     return;
   }
   if (repeatedRoomCode(rcode)) {
-    humanMsg.displayMsg('Room code specified already in use', 1);
+    humanMsg.displayMsg(_('Room code specified already in use'), 1);
     return;
   }
   var rtype= $('#newroomtype').val();
@@ -307,7 +305,7 @@ function addNewProperty() {
   var propname= $('#newpropertyname').val();
   var currency= $('#newpropertycur').val();
   if(!propname) {
-    humanMsg.displayMsg('Please, insert a valid property name', 1);
+    humanMsg.displayMsg(_('Please, insert a valid property name'), 1);
     return;
   }
   llNewProperty(propname, currency,
@@ -324,24 +322,20 @@ function addNewProperty() {
 function askNewProperty() {
   $('#newProperty').modal({onClose: function() {
     if (!getActiveProperty()) {
-      console.log('maintaining modal, no property');
       $('#newProperty').modal();
       }
     }});
 }
 
 function initProperties() {
-  console.log('Initializing Properties...');
   designRoomTypes();
   llGetProperties(
     function(ses, recs) {
       if (recs.rows.length < 1) {
-        console.log('No property!');
         askNewProperty();
         return;
       }
       if (!getActiveProperty()) {
-        console.log('Setting active property');
         setActiveProperty(recs.rows.item(0));
       }
       initRooms();

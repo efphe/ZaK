@@ -6,9 +6,9 @@ pyclean:
 SRCJSDIR=src/js
 
 $(SRCJSDIR)/cm/j.js: $(SRCJSDIR)/jquery/jquery.js $(SRCJSDIR)/jquery/jquery-ui.js \
+			 $(SRCJSDIR)/jquery/jquery.gettext.js \
 			 $(SRCJSDIR)/jquery/jquery.hoverIntent.js $(SRCJSDIR)/jquery/jquery.humanmsg.js \
-			 $(SRCJSDIR)/jquery/jquery.simplemodal-1.3.5.js $(SRCJSDIR)/jquery/jquery.contextMenu.js \
-			 $(SRCJSDIR)/jquery/jquery.gettext.js
+			 $(SRCJSDIR)/jquery/jquery.simplemodal-1.3.5.js $(SRCJSDIR)/jquery/jquery.contextMenu.js 
 			 #$(SRCJSDIR)/jquery/jquery.simpletip-1.3.1.pack.js
 	cat $^ > $@
 
@@ -73,6 +73,9 @@ po2mo:
 	for i in locale/??/LC_MESSAGES/zak.po; do ./po2mo.py $$i; done
 	for i in jslocale/??/LC_MESSAGES/zak.po; do ./po2mo.py $$i; done
 	./jpo2mo.py
+
+test:
+	for i in src/js/*js; do echo $$i && jszip $$i gigi;done
 
 jspages:
 	make $(SRCJSDIR)/cm/j.js

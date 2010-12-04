@@ -99,7 +99,6 @@ function llNewRoomAndType(pid, rcode, rname, rtype, cbs, cbe) {
     ses.executeSql('insert into room_type (name) values (?)', [rtype], 
       function(ses, recs) {
         var rtypeid= recs.insertId;
-        console.log([rcode,rname,pid,rtypeid]);
         ses.executeSql('insert into room (code,name,id_property,id_room_type) values (?,?,?,?)', [rcode,rname,pid,rtypeid], cbs, cbe);
       }, cbe);
   });
@@ -158,7 +157,6 @@ function llCheckOccupancyChance(oid, rid, day, n, args, cb) {
         cb(ses, false);
       },
       function(ses, err) {
-        console.log('Error here: ' + err.message);
         cb(ses, false);
       });
   });
@@ -190,7 +188,6 @@ function llDelOccupancy(oid, cbs, cbe) {
 }
 
 function llMoveOccupancy(oid, udfrom, udto, rid, cbs, cbe) {
-  console.log('Updating dfrom, dto, idr, oid' + [udfrom,udto,rid,oid].join(', '));
   var targs= {udfrom: udfrom, udto: udto, rid: rid, oid: oid};
   llCheckOccupancyChance(oid, rid, udfrom, diffDateDays(udfrom, udto), targs,
     function(ses, newargs) {
@@ -209,14 +206,11 @@ function llMoveOccupancy(oid, udfrom, udto, rid, cbs, cbe) {
           var res= recs.rows.item(0);
           var oldrid= res.id_room;
           var pricing= res.custom_pricing;
-          console.log('Old pricing: ' + pricing);
           if (pricing) {
             pricing= JSON.parse(pricing);
-            console.log(pricing);
             if (pricing[oldrid]) {
               pricing[rid]= pricing[oldrid];
               delete pricing[oldrid];
-              console.log(pricing);
               pricing= JSON.stringify(pricing);
               ses.executeSql('update reservation set custom_pricing= ? where id = ?', [pricing, res.id]);
             }
@@ -241,7 +235,6 @@ function llCopyOccupancy(occ, cust, udfrom, udto, rid, cbs, cbe) {
       var audf= args.udfrom;
       var audt= args.udto;
       var acust= args.customer;
-      console.log(acust);
       _addOcc(audf, audt, arid, acust, false, aocc['status'], aocc['id_reservation'], ses, cbs, cbe);
       }, cbe);
 }
@@ -252,7 +245,6 @@ function _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs,
   ses.executeSql(ss, [unixDate(udfrom), unixDate(udto), rid, customer, stat, resid],
     function(ses, recs) {
       if (excustomer) {
-        console.log('Linking customer: ' + excustomer);
         llAssignExistingCustomer(rid, excustomer, function(ses, recs) {
           ses.executeSql('select code from room where id = ?', [rid], cbs, cbe);
         }, cbe);
@@ -266,12 +258,10 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
   db.transaction(function(ses) {
     var dfrom= unixDate(udfrom);
     var dto= unixDate(dateAddDays(udfrom, ndays));
-    console.log('Inserting now a new reservation...');
     var s= 'insert into reservation (dfrom,dto,customer,status,id_property) values ';
     s+= '(?,?,?,?,?)';
     ses.executeSql(s, [dfrom, dto, customer,stat,pid], 
       function(ses, recs) {
-        console.log('Associating now occupancies...');
         var resid= recs.insertId;
         if (optargs) {
           var sd= updateStatement(optargs); 
@@ -281,7 +271,6 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
           ses.executeSql('update reservation set ' + sqry + ' where id = ?', sqarr);
         }
         if (rcustomer) {
-          console.log('Assigning new customer to this reservation');
           llAssignCustomer(resid, rcustomer, false, function(s, r) {}, function(s, e) {});
         }
         var ss= 'insert into occupancy (dfrom,dto,id_room,customer,status,id_reservation) ';
@@ -315,11 +304,8 @@ function llNewReservationAndOccupancies(pid, stat, rids, udfrom, ndays, customer
 /* resid is eventually the reservation id */
 function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, excustomer, cbs, cbe) {
   if (excustomer && !customer) {
-    console.log('Loading customer (pre booking) ' + excustomer);
     llGetCustomer(excustomer, false, function(ses, recs) {
       var lc= recs.rows.item(0);
-      console.log('Inserting new reservation with existcustomer customer');
-      console.log(lc);
       llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, lc.name, excustomer, cbs, cbe);
         }, cbe);
     return;
@@ -328,7 +314,6 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, excustom
   llCheckOccupancyChance(false, rid, udfrom, ndays, args,
     function(ses, newargs) {
       if (!newargs) {
-        console.log('Impossible occupancy');
         /* you're requesting an impossible reservation */
         /* callback with false as first arg*/
         cbs(false);
@@ -343,13 +328,11 @@ function llNewOccupancy(pid, resid, stat, rid, udfrom, ndays, customer, excustom
       if (resid) 
         return _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs, cbe);
 
-      console.log('Fresh reservation');
       /* Add a new reservation */
       var s= 'insert into reservation (dfrom,dto,customer,status,id_property) values ';
       s+= '(?,?,?,?,?)';
       ses.executeSql(s, [udfrom,udto,customer,stat,pid],
         function(ses, recs) {
-          console.log('Now adding occupancy');
           resid= recs.insertId;
           return _addOcc(udfrom, udto, rid, customer, excustomer, stat, resid, ses, cbs, cbe);
         }, cbe);
@@ -380,7 +363,6 @@ function llModOccupancy(oid, params, cbs, cbe) {
         rdto= 'select max(dto) from occupancy where id_reservation = (' + idrid + ')'; 
         var qry= 'update reservation set dfrom = (' + rdfrom + '), dto= (' + rdto + ')';
         qry+= ' where id = (' + idrid + ')';
-        console.log(qry);
         ses.executeSql(qry, [], cbs, cbe);
       }, cbe);
   });
@@ -388,7 +370,6 @@ function llModOccupancy(oid, params, cbs, cbe) {
 
 /* cbs(reservation) */
 function llGetReservationFromOid(oid, cbs, cbe) {
-  console.log('Loading reservation ' + oid);
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
     s= 'select reservation.* from reservation join occupancy on reservation.id= occupancy.id_reservation ';
@@ -589,51 +570,6 @@ function llGetPeriodPricing(dfrom, dto, cbs, cbe) {
   });
 }
 
-/*function llGetPricingPerioded(prid, dfrom, dto, cbs) {*/
-/*db= zakOpenDb();*/
-/*db.transaction(function(ses) {*/
-/*ses.executeSql('select * from pricing where id = ?', [prid],*/
-/*function(ses, recs) {*/
-/*var pricing= recs.rows.item(0);*/
-/*ses.executeSql('select * from pricing_periods where id_pricing = ?', [*/
-/*}*/
-/*});*/
-/*}*/
-
-/*function llGetRoomPricing(prid, dfrom, dto, cbs) {*/
-/*if (!prid) {*/
-/*var prices= new Array(), i;*/
-/*for (i=0;i<diffDateDays(dfrom, dto);i++) {*/
-/*prices.push(false);*/
-/*}*/
-/*cbs(prices);*/
-/*}*/
-/*db= zakOpenDb();*/
-/*db.transaction(function(ses) {*/
-/*var s= 'select * from pricing_periods where id_pricing = ? ';*/
-/*s+= 'and dfrom < ? and dto > ? order by dfrom';*/
-/*ses.executeSql(s, [prid, dto, dfrom], */
-/*function(ses, recs) {*/
-/*var periods= arrayFromRecords(recs);*/
-/*var i, j, prices= new Array();*/
-/*for(i=0;i<diffDateDays(dfrom, dto);i++) {*/
-/*var d= dfrom+ (86400 * i), found= false;*/
-/*for (j=0;j<periods.length;j++) {*/
-/*var per= periods[j];*/
-/*if (d>=per['dfrom'] && d<= per['dto']) {*/
-/*prices.push(per); */
-/*found= true;*/
-/*break;*/
-/*}*/
-/*}*/
-/*if (!found) {*/
-/*if(per*/
-/*}*/
-/*}*/
-/*});*/
-/*});*/
-/*}*/
-
 function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
   var db= zakOpenDb();
   db.readTransaction(function(ses) {
@@ -641,7 +577,7 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
     dto= unixDate(xdto);
     if (excludelast) {
       dto-= 86400;
-    } else console.log('INcluding las tday');
+    };
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
       function(ses, frecs) {
         var frow= frecs.rows.item(0), i;
@@ -661,7 +597,6 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
             var limit= 1000, count= 0;
             while(1) {
               if (count>limit) {
-                console.log('Ai ai aiaiaiaiai');
                 break;
               }
               count+= 1;
@@ -695,7 +630,7 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
     dto= unixDate(xdto);
     if (excludelast) {
       dto-= 86400;
-    } else console.log('INcluding las tday');
+    };
     recs= ses.executeSql('select * from pricing where id = ?', [prid],
       function(ses, frecs) {
         var frow= frecs.rows.item(0), i;
@@ -714,17 +649,14 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
             var limit= 1000, count= 0;
             while(1) {
               if (count>limit) {
-                console.log('Ai ai aiaiaiaiai');
                 break;
               }
               count+= 1;
               if (cdate > dto) break;
               for(j=0;j<recs.rows.length;j++) {
                 var per= recs.rows.item(j);
-                console.log(per['dfrom'] + ', ' + cdate + ', ' + per['dto']);
                 if (parseInt(per['dfrom']) <= cdate && parseInt(per['dto']) >= cdate) {
                   var idx= diffDateDays(cdate, dfrom);
-                  console.log('Found good period');
                   try {
                     var pper= JSON.parse(per.prices);
                   } catch(e) {pper= -1};
@@ -734,8 +666,6 @@ function llGetDatedPricing(prid, xdfrom, xdto, excludelast, cbs, cbe) {
               }
               cdate+= 86400;
             }
-            console.log('Ok done');
-            console.log(aprices);
             try {
               cbs(aprices);
             } catch(e) {};
@@ -804,7 +734,6 @@ function llGetReservationInvoiceHeader(rid, cb) {
 }
 
 function llDelItype(iid, cb) {
-  console.log('deleteing itype ' + iid);
   var db= zakOpenDb();
   db.transaction(function(ses) {
     ses.executeSql('delete from invoice_type where id = ?', [iid], cb);
@@ -912,7 +841,6 @@ function llGetCustomer(cid, rid, cb) {
   db.readTransaction(function(ses) {
     if (rid) {
       ses.executeSql('select customer.*,rcustomer.* from customer join rcustomer on rcustomer.id_customer = customer.id where customer.id = ? and rcustomer.id_reservation = ?', [cid, rid], cb);
-      console.log('Loading reservatin customer');
       }
     else
       ses.executeSql('select * from customer where id = ?', [cid], cb);
@@ -964,11 +892,8 @@ function llGetInvoiceN(pid, it, cb) {
     q+= 'reservation.id= invoice.id_reservation join property on ';
     q+= 'property.id = reservation.id_property where property.id = ? ';
     q+= 'and invoice.year = ? and invoice.id_invoice_type = ?';
-    console.log(q);
-    console.log([pid,year,it]);
     ses.executeSql(q, [pid, year, it],
       function(ses, recs) {
-        console.log(recs);
         if (recs.rows.length == 0) {
           cb(1);
           return;
@@ -977,11 +902,9 @@ function llGetInvoiceN(pid, it, cb) {
         if (!n) {
           cb(1);return;
         }
-        console.log('Last invoice: ' + n);
         cb(n+1);
       },
       function(ses, err) {
-        console.log('Error getIn: ' + err.message);
         cb(1);
       });
   });
@@ -1015,7 +938,6 @@ function llSaveInvoice(rid, html, n, head, chead, itype, cb, cbe) {
 function llChangeReservationStatus(rid, s, cb, cbe) {
   var db= zakOpenDb();
   db.transaction(function(ses) {
-    console.log([s,rid]);
     ses.executeSql('update occupancy set status = ? where id_reservation = ?', [s,rid], 
       function(ses, recs) {
         ses.executeSql('update reservation set status = ? where id = ?', [s, rid], cb, cbe);
