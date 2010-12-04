@@ -61,7 +61,9 @@
 				$.get(this.href, function(data){
 					$.gt.messages[lang] = $.gt.messages[lang] || {};
                     $.gt.lang= lang;
-					$.extend($.gt.messages[lang], data);
+                    console.log(data);
+                    gigio=data;
+					$.extend($.gt.messages[lang], JSON.parse(data));
 
 					var pl = $.gt.pl_re.exec($.gt.messages[lang]['']);
 					if(pl){

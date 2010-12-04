@@ -263,11 +263,14 @@ var iRoom= function(tableau, room) {
       var space= (cspan * 28) / 7;
       try {
         var cust= occ['customer'];
-        if (cust.length > space)
-          cust= cust.substr(0, space);
-      } catch(e) {console.log('Error customer: '+ e + '('+ocount+')');cust= 'Unkn.'};
+        var scust= cust.split(' ')
+        scust.reverse();
+        scust= scust.join(' ')
+        if (scust.length > space)
+          scust= scust.substr(0, space);
+      } catch(e) {console.log('Error customer: '+ e + '('+ocount+')');scust= 'Unkn.'};
 
-      res+= '<td ' + dataoid + ' class="' + menuclass + '" data-day="' + i + '" colspan="' + cspan + '">'+cust+'</td>';
+      res+= '<td ' + dataoid + ' class="' + menuclass + '" data-day="' + i + '" colspan="' + cspan + '">'+scust+'</td>';
       zdone= false;
       j= i+ cspan;
     }

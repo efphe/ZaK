@@ -256,7 +256,7 @@ msgid "Zip"
 msgstr "Cap"
 
 msgid "Address"
-msgid "Indirizzo"
+msgstr "Indirizzo"
 
 msgid "Birth place"
 msgstr "Nato a"

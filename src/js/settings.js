@@ -73,7 +73,7 @@ function _itypeRow(iid, name) {
 function addNewIType() {
   var name= $('#newitypename').val();
   if (!name) {
-    humanMsg.displayMsg('Please, specify a valid name', 1);
+    humanMsg.displayMsg(_('Please, specify a valid name'), 1);
     $.modal.close();
     return;
   }
