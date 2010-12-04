@@ -1,0 +1,3 @@
+# Traduzioni in italiano, js, zak: http://it.zak.wubook.net/
+msgid ""
+msgstr ""
