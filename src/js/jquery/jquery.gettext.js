@@ -56,6 +56,33 @@
 		pl_re: /^Plural-Forms:\s*nplurals\s*=\s*(\d+);\s*plural\s*=\s*([^a-zA-Z0-9\$]*([a-zA-Z0-9\$]+).+)$/m,
 		plural: function(n) {return n != 1;},
 		load: function() {
+          if (window._gtlang) {
+              var lang = _gtlang;
+              $.gt.messages[lang] = $.gt.messages[lang] || {};
+              $.gt.lang= lang;
+              try {
+                $.extend($.gt.messages[lang], JSON.parse(_gtmessages));
+              } catch(e) {
+                try {
+                  $.extend($.gt.messages[lang], _gtmessages);
+                } catch(e) {};
+              }
+
+              var pl = $.gt.pl_re.exec($.gt.messages[lang]['']);
+              if(pl){
+                  var expr = pl[2];
+                  var np = pl[1];
+                  var v = pl[3];
+                  try {
+                      var fn = eval('(function(' + v + ') {return ' + expr + ';})');
+                  } catch(e) {
+                      return;
+                  }
+                  $.gt.plural = fn;
+              }
+
+			$.gt.setLang(lang);
+          } else {
 			$('link[rel=gettext]').each(function(){
 				var lang = this.lang;
 				$.get(this.href, function(data){
@@ -86,6 +113,7 @@
 				});
 			});
 			$.gt.setLang($('html').attr('lang'));
+          }
 		},
 		gettext: function(msgstr) {
 			var lang = $.gt.lang;

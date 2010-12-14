@@ -37,6 +37,15 @@ class IZak:
 
 ZaK= IZak()
 
+_gtMessages= {}
+def getGtMessages(lang):
+  m= _gtMessages.get(lang)
+  if m: return m
+  j= open('src/js/gt/zak.mo.%s.json' % lang).read()
+  s= T.script()[T.raw('_gtlang=\'%s\';_gtmessages=%s' % (lang,j))]
+  _gtMessages[lang]= s
+  return s
+
 class AdminTemplate(rend.Page):
   addSlash= 0
   docFactory= loaders.xmlfile(_sdir + 'html/template.xhtml')
@@ -48,6 +57,7 @@ class AdminTemplate(rend.Page):
     return _zt_(self, ctx, data).children
 
   def render_gtlang(self, ctx, data):
+    #return getGtMessages(ctx.arg('lang') or 'en')
     lang= ctx.arg('lang') or 'en'
     return T.link(href= '/js/gt/zak.mo.%s.json' % lang, lang= lang, rel= 'gettext')
 
