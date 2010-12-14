@@ -61,9 +61,15 @@
 				$.get(this.href, function(data){
 					$.gt.messages[lang] = $.gt.messages[lang] || {};
                     $.gt.lang= lang;
-                    console.log(data);
+                    /*console.log(data);*/
                     gigio=data;
-					$.extend($.gt.messages[lang], JSON.parse(data));
+                    try {
+                      $.extend($.gt.messages[lang], JSON.parse(data));
+                    } catch(e) {
+                      try {
+                        $.extend($.gt.messages[lang], data);
+                      } catch(e) {};
+                    }
 
 					var pl = $.gt.pl_re.exec($.gt.messages[lang]['']);
 					if(pl){
