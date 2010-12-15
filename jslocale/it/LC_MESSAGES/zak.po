@@ -266,3 +266,18 @@ msgstr "Note"
 
 msgid "No results"
 msgstr "Nessun risultato"
+
+msgid "Specify a valid number of nights"
+msgstr "Specifica un numero di notti valido"
+
+msgid "Welcome"
+msgstr "Benvenuto"
+
+msgid "You can't add a new occupancy on the same room"
+msgstr "Non puoi aggiungere un'occupancy alla stessa camera"
+
+msgid "Rooms setup"
+msgstr "Assetti camera"
+
+msgid "Unknown setup"
+msgstr "Nessun assetto"

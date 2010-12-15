@@ -8,7 +8,6 @@ function initDimensions() {
   try {
     var w= window.innerWidth;
     ZAK_TAB_LENGHT= parseInt((w - 140) / 30);
-    console.log('ZAK_TAB_LENGHT: ' + ZAK_TAB_LENGHT);
   } catch(e) {}
 }
 
@@ -130,7 +129,6 @@ var iRoom= function(tableau, room) {
 
       /* past occupancy */
       if (odfrom < unixDate(zakTableau.dfrom)) {
-        /*console.log('Setting up past occupancy');*/
         n= diffDateDays(zakTableau.dfrom, odto);
         for(j=0;j<n;j++) {
           if (j >= zakTableau.lendays) break;
@@ -153,7 +151,6 @@ var iRoom= function(tableau, room) {
         continue;
       }
 
-      /*console.log('Setting up occupancy');*/
       bidx= diffDateDays(zakTableau.dfrom, odfrom);
       if (bidx >= days.length) continue;
       n= diffDateDays(odfrom, odto) + 1;
@@ -321,10 +318,8 @@ var iTableau= function(dfrom, lendays, rids) {
         for(i=0;i<recs.rows.length;i++) {
           var rroom= recs.rows.item(i);
           if (!zakTableau.roomEnabled(rroom['id'], loadrids)) {
-            console.log('Skipping not included room:' + rroom['id']);
             continue;
           }
-          console.log('Designing now room:' + rroom['id']);
           var iroom= zakTableau.rooms[rroom['id']]= new iRoom(zakTableau, rroom);
           iroom.getYourRow();
           rids.push(rroom['id']);
@@ -355,7 +350,6 @@ var iTableau= function(dfrom, lendays, rids) {
               var ir= zakTableau.rooms[rid];
               ir.addOccupancy(occ);
             }
-            console.log('Designing tableau');
             zakTableau.designMe(false);
             if (cbs) cbs();
           },

@@ -277,3 +277,18 @@ msgstr "Remarks"
 
 msgid "No results"
 msgstr "No results"
+
+msgid "Specify a valid number of nights"
+msgstr "Specify a valid number of nights"
+
+msgid "Welcome"
+msgstr "Welcome"
+
+msgid "You can't add a new occupancy on the same room"
+msgstr "You can't add a new occupancy on the same room"
+
+msgid "Rooms setup"
+msgstr "Rooms setup"
+
+msgid "Unknown setup"
+msgstr "Unknown setup"

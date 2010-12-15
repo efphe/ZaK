@@ -12,26 +12,25 @@ function writeReservationNights() {
 function _addNewReservation() {
   var cust= $('#addNewReservationCustomer').val();
   if (!cust) {
-    humanMsg.displayMsg('Specify a valid customer');
+    humanMsg.displayMsg(_('Specify a valid customer'), 1);
     return;
   }
   var nights= $('#addNewReservationNights').val();
   if (parseInt(nights) != nights) {
-    humanMsg.displayMsg('Specify a valid number of nights');
+    humanMsg.displayMsg(_('Specify a valid number of nights'), 1);
     return;
   }
   var sta= $('#addNewReservationStatus').val();
   if (parseInt(sta) != sta || ! ZAK_MAP_STATUS[parseInt(sta)]) {
-    humanMsg.displayMsg('Specify a valid reservation status');
+    humanMsg.displayMsg(_('Specify a valid reservation status'), 1);
     return;
   }
   var rid= addNewReservationRid;
   var sday= dateAddDays(zakTableau.dfrom, addNewReservationDay);
-  console.log('Adding new Reservation: from ' + strDate(sday) + ', nights= ' + nights);
   llNewOccupancy(getActiveProperty()['id'], false, sta, rid, sday, nights, cust, false,
     function(ses, recs) {
       if (!ses) {
-        humanMsg.displayMsg('Not enough free days for this reservation/room', 1);
+        humanMsg.displayMsg(_('Not enough free days for this reservation/room'), 1);
         return;
       }
       if ($('#addNewReservationDetails').is(':checked')) {
@@ -45,13 +44,13 @@ function _addNewReservation() {
           }, function(ses, err) {
             zakTableau.loadRooms([rid]);
             $.modal.close();
-            humanMsg.displayMsg('Welcome ' + cust);
+            humanMsg.displayMsg(_('Welcome')+' ' + cust);
           });
       }
       else {
         zakTableau.loadRooms([rid]);
         $.modal.close();
-        humanMsg.displayMsg('Welcome ' + cust);
+        humanMsg.displayMsg(_('Welcome')+' ' + cust);
       }
     },
     function(ses, err) {
@@ -66,12 +65,8 @@ function copyOccupancy() {
   srid= movingAction['srid'];
   drid= movingAction['drid'];
 
-  console.log('Oid: ' + oid);
-  console.log('Day: ' + day);
-  console.log('Src Rid: ' + srid);
-  console.log('Dst Rid: ' + drid);
   if (srid == drid) {
-    humanMsg.displayMsg('You can\'t add a new occupancy on the same room', 1);
+    humanMsg.displayMsg(_('You can\'t add a new occupancy on the same room'), 1);
     $.modal.close();
     return;
   }
@@ -88,7 +83,7 @@ function copyOccupancy() {
   llCopyOccupancy(occ, customer, udfrom, udto, drid, 
     function(ses, recs) {
       if (!recs) {
-        humanMsg.displayMsg('Not enough space for this reservation');
+        humanMsg.displayMsg(_('Not enough free days for this reservation/room'), 1);
         return;
       }
       if (srid == drid)
@@ -110,11 +105,6 @@ function moveOccupancy() {
   srid= movingAction['srid'];
   drid= movingAction['drid'];
 
-  console.log('Oid: ' + oid);
-  console.log('Day: ' + day);
-  console.log('Src Rid: ' + srid);
-  console.log('Dst Rid: ' + drid);
-
   var room= zakTableau.rooms[srid];
   var occ= room.getOccupancy(oid);
   var udfrom= dateAddDays(zakTableau.dfrom, day);
@@ -123,17 +113,9 @@ function moveOccupancy() {
   llMoveOccupancy(oid, udfrom, udto, drid, 
     function(ses, recs) {
       if (!recs) {
-        humanMsg.displayMsg('Not enough space for this reservation');
+        humanMsg.displayMsg(_('Not enough free days for this reservation/room'), 1);
         return;
       }
-      console.log(strDate(udfrom));
-      /*var occ= zakTableau.rooms[srid].getOccupancy(oid);*/
-      /*var newocc= new Object();*/
-      /*for (var k in occ) newocc[k]= occ[k];*/
-      /*newocc['dfrom']= udfrom;*/
-      /*newocc['dto']= udto;*/
-      /*zakTableau.rooms[srid].delOccupancy(oid);*/
-      /*zakTableau.rooms[drid].addOccupancy(newocc);*/
       if (srid == drid)
         var toload= [srid];
       else var toload= [srid, drid];
@@ -177,7 +159,6 @@ function _menuOidRidXY(e) {
 function _menuDeleteOcc(a,e,p) {
   delReservationOid= parseInt($(e).attr('data-oid'));
   delReservationRid= parseInt($(e).parent().attr('data-rid'));
-  console.log('Deletion required: rid= '+delReservationRid+', oid= '+ delReservationOid);
   $('#deleteOccupancy').modal();
   return;
 }
@@ -185,10 +166,8 @@ function _menuDeleteOcc(a,e,p) {
 function _menuEditOcc(a,e,p) {
   var editOccupancyOid= parseInt($(e).attr('data-oid'));
   var rid= parseInt($(e).attr('data-rid'));
-  console.log('Editing Occupancy: ' + editOccupancyOid);
   localStorage.editOccupancyOid= editOccupancyOid;
   localStorage.editOccupancyRid= rid;
-  console.log('Rid, oid: ' + rid + ',' + editOccupancyOid);
   goToSameDirPage('reservation');
 }
 
@@ -247,7 +226,6 @@ function updateReservationStatus() {
   var rid= $('#status_rid').val();
   var rrid= $('#status_rrid').val();
   var s= $('#cmbstatus_mod').val();
-  console.log('Updating rstatus: ' + rid);
   llChangeReservationStatus(rid, s,
     function(ses, recs) {
       humanMsg.displayMsg('Sounds good');
@@ -273,10 +251,9 @@ function postponeOccupancy() {
   llMoveOccupancy(oid, newdfrom, newdto, rid, 
     function(ses, recs) {
       if (!recs) {
-        humanMsg.displayMsg('Not enough space for this reservation');
+        humanMsg.displayMsg(_('Not enough free days for this reservation/room'), 1);
         return;
       }
-      console.log(strDate(newdfrom));
       var toload= [rid];
       zakTableau.loadRooms(toload, function() {humanMsg.displayMsg('Sounds good');});
     },
@@ -287,7 +264,6 @@ function postponeOccupancy() {
 }
 
 function _sameMenu(a,e,p) {
-  console.log('Menu action: ' + a);
   if (a == 'delete') 
     return _menuDeleteOcc(a,e,p);
   if (a == 'edit')
@@ -368,32 +344,14 @@ function afterTableau() {
     }
   }
 
-  /*var _f= function(r) {*/
-  /*var iresid= r.id;*/
-  /*var occs= rsrmap[r.id];*/
-  /*console.log(occs);*/
-  /*var rmrks= r.remarks || 'No remakrs';*/
-  /*var res= '<div style="font-size:12px">';*/
-  /*res+= '<b>' + r.customer + '</b><br/>';*/
-  /*res+= '<div><b>Remarks</b><br/>' + rmrks + '</div>';*/
-  /*res+= '</div>';*/
-  /*return res;*/
-  /**//*return '<div style="font-size:12px"><b>Remarks</b><br/>' + rmrks + '</div>';*/
-  /*}*/
-
   var db= zakOpenDb();
   db.transaction(function(ses) {
     var strrids= tresids.join(',');
     var qry= 'select * from reservation where id in (' + strrids + ')';
-    console.log(qry);
     ses.executeSql(qry, [], function(ses, recs) {
       for (var j= 0; j< recs.rows.length; j++) {
         var rsr= recs.rows.item(j);
         tabRsrvPreview(ses, rsr);
-        /*var rsrid= rsr.id;*/
-        /*var cont= _f(rsr);*/
-        /*console.log('qtip: ' + rsrid);*/
-        /*$('td[data-rid="' + rsrid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#bd0000', radius:5, width:2}}, content: cont, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});*/
       }
       });
   });
@@ -461,17 +419,12 @@ function initTableau(d, lendays, rids) {
     try {
       var dd= JSON.parse(localStorage.zakTableauDfrom);
       if (dd) {
-        console.log('Overwriting date from lstorage');
-        console.log(dd);
         d= dd;
       }
     } catch(e) {};
   }
   initDimensions();
-  console.log(d);
   var dd= jsDate(d);
-  console.log(dd);
-  console.log('Initializing zak: ' + dd);
   try {
     lrids= JSON.parse(localStorage.zkTabRids);
   } catch (e) {lrids= false};
@@ -487,7 +440,6 @@ function initTableau(d, lendays, rids) {
 
 function goToTableauDate(d) {
   /*$('#tabtable').hide();*/
-  console.log('Going to: ' + d);
   if (!d && dateIsToday(zakTableau.dfrom) == 0) return;
   try {
     if (d && unixDate(zakTableau.dfrom) == unixDate(d)) return;
@@ -542,8 +494,6 @@ function tabRsrvPreview(ses, rsrv) {
       } catch(e) {
         var rmeals= {};
       }
-      console.log('meals');
-      console.log(rmeals);
       for (var mealday in rmeals) {
         var mm= rmeals[mealday];
         for (var jj= 0; jj< mm.length; jj++) {
@@ -556,14 +506,14 @@ function tabRsrvPreview(ses, rsrv) {
       res+= ', ' + eamount.toFixed(2) + ' ' + getCurrency();
       res+= ', ' + mamount.toFixed(2) + ' ' + getCurrency();
       res+= '<br/>';
-      res+= '<table style="font-size:12px;margin-left:10px"><tr><td colspan="2" align="center" style="color:gray">Rooms setup</td></tr>';
+      res+= '<table style="font-size:12px;margin-left:10px"><tr><td colspan="2" align="center" style="color:gray">'+_('Rooms setup')+'</td></tr>';
       for (var j= 0; j<recs.rows.length;j++) {
         var occ= recs.rows.item(j);
-        res+= '<tr><td><b>' + occ.roname + '</b></td><td>' + (occ.rsname || 'Unknown setup') + '</td></tr>';
+        res+= '<tr><td><b>' + occ.roname + '</b></td><td>' + (occ.rsname || _('Unknown setup')) + '</td></tr>';
       }
       res+= '</table>';
       if (rsrv.remarks)
-        res+= '<br/><b>Remarks:</b>' + rsrv.remarks;
+        res+= '<br/><b>'+('Remarks')+':</b>' + rsrv.remarks;
       res+= '</div>';
       $('td[data-rid="' + rid + '"]').qtip({show: {solo: true, effect: { type: 'fade' } }, style: {name: 'light', border: {color: '#570000', radius:5, width:2}}, content: res, position: {corner: {target: 'topMiddle', tooltip: 'bottomMiddle'}}});
     },
@@ -579,7 +529,6 @@ function selectedRoomTag() {
     initTableau(zakTableau.dfrom, zakTableau.lendays);
     return;
   }
-  console.log(v);
   localStorage.zkActualTag= v;
   var db= zakOpenDb();
   var q= "select id from room where tags like('%," + v + ",%') or tags = '"+v+"' or tags like('"+v+",%') or tags like('%,"+v+"')";
@@ -612,10 +561,8 @@ function initializeTtags() {
           var res= '<option value="--">--</option>';
         else
           var res= '<option selected="selected" value="--">--</option>';
-        console.log('inside');
         for (var i= 0; i< recs.rows.length; i++) {
           var rtags= recs.rows.item(i).tags;
-          console.log(rtags);
           if (!rtags) continue;
           rtags= rtags.split(',');
           for (var j=0; j< rtags.length; j++) {
@@ -628,7 +575,6 @@ function initializeTtags() {
               res+= '<option value="' + t + '">'+t+'</option>';
           }
         }
-        console.log(res);
         $('#ttags').html(res).change(selectedRoomTag);
       }, function(ses, err) {console.log('Error ttags: '+ err.message)});
   });
