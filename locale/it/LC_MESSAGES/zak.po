@@ -540,7 +540,7 @@ msgid "<b>drag me</b> to move your reservations"
 msgstr "<b>trascinami</b> per muovere l'occupazione"
 
 msgid "To insert a new reservation, <b>right click on a cell</b>"
-msgstr "Per inserire una nuova prenotazioni, <b>clicca in una cella</b>"
+msgstr "Nuova prenotazione? Usa il <b>pulsante destro</b> del mouse sul planning"
 
 msgid "Add new"
 msgstr "Aggiungi"

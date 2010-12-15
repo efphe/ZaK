@@ -610,9 +610,3 @@ msgstr ""
 
 msgid ""
 msgstr ""
->>>>>>> traduzioni:locale/en/LC_MESSAGES/zak.po
-
-
-
-
-
