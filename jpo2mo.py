@@ -18,6 +18,10 @@ def gettext_json():
     df= '%s/zak.mo.%s.json' % (_bdir,l)
     print 'Writing file: %s' % df
     open(df, 'w').write(buf)
+    print 'Writing file: %s.js' % df
+    j= open(df).read()
+    open('%s.js' % df, 'w').write('_gtlang=\'%s\';_gtmessages=%s' % (l,j)) 
+    os.system('gzip -c %s.js > %s.jsgz' % (df, df))
 
 if __name__ == '__main__':
   print gettext_json()

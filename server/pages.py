@@ -37,14 +37,14 @@ class IZak:
 
 ZaK= IZak()
 
-_gtMessages= {}
-def getGtMessages(lang):
-  m= _gtMessages.get(lang)
-  if m: return m
-  j= open('src/js/gt/zak.mo.%s.json' % lang).read()
-  s= T.script()[T.raw('_gtlang=\'%s\';_gtmessages=%s' % (lang,j))]
-  _gtMessages[lang]= s
-  return s
+#_gtMessages= {}
+#def getGtMessages(lang):
+  #m= _gtMessages.get(lang)
+  #if m: return m
+  #j= open('src/js/gt/zak.mo.%s.json' % lang).read()
+  #s= T.script()[T.raw('_gtlang=\'%s\';_gtmessages=%s' % (lang,j))]
+  #_gtMessages[lang]= s
+  #return s
 
 class AdminTemplate(rend.Page):
   addSlash= 0
@@ -53,13 +53,28 @@ class AdminTemplate(rend.Page):
   cssorigin= None
   xmlfile= None
 
+  def __init__(self, usession= None):
+    rend.Page.__init__(self)
+    self.usession= usession
+
   def render_i18n(self, ctx, data):
     return _zt_(self, ctx, data).children
 
+  def getLangFactory(self, ctx):
+    lang= ctx.arg('lang')
+    if lang: return lang
+    try:
+      lang= self.usession.get_lang()
+      if lang: return lang
+    except: pass
+    return 'en'
+
   def render_gtlang(self, ctx, data):
-    #return getGtMessages(ctx.arg('lang') or 'en')
-    lang= ctx.arg('lang') or 'en'
-    return T.link(href= '/js/gt/zak.mo.%s.json' % lang, lang= lang, rel= 'gettext')
+    lang= self.getLangFactory(ctx)
+    return T.script(src= '/js/gt/zak.mo.%s.json.js' % lang)
+    #return getGtMessages(lang or 'en')
+    #lang= self.getLangFactory(ctx)
+    #return T.link(href= '/js/gt/zak.mo.%s.json.js' % lang, lang= lang, rel= 'gettext')
 
   def render_contents(self, ctx, data):
     lang= ctx.arg('lang')
