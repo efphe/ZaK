@@ -64,7 +64,7 @@ class AdminTemplate(rend.Page):
     lang= ctx.arg('lang')
     if lang: return lang
     try:
-      lang= self.usession.get_lang()
+      lang= self.usession.get_lang(ctx)
       if lang: return lang
     except: pass
     return 'en'
