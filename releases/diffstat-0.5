@@ -1,0 +1,70 @@
+ Makefile                        |   20 +-
+ gateway.py                      |    6 +-
+ jpo2mo.py                       |   27 ++
+ jslocale/en/LC_MESSAGES/zak.mo  |  Bin 0 -> 4304 bytes
+ jslocale/en/LC_MESSAGES/zak.po  |  294 +++++++++++++++++++
+ jslocale/it/LC_MESSAGES/zak.mo  |  Bin 0 -> 4319 bytes
+ jslocale/it/LC_MESSAGES/zak.po  |  283 ++++++++++++++++++
+ locale/en/LC_MESSAGES/zak.mo    |  Bin 0 -> 11003 bytes
+ locale/en/LC_MESSAGES/zak.po    |  612 ++++++++++++++++++++++++++++++++++++++
+ locale/it/LC_MESSAGES/zak.mo    |  Bin 0 -> 11117 bytes
+ locale/it/LC_MESSAGES/zak.po    |  613 +++++++++++++++++++++++++++++++++++++++
+ po2mo.py                        |   15 +
+ releases/ChangeLog-0.4          |   91 ++++++
+ releases/ShortLog-0.4           |   17 +
+ releases/diffstat-0.4           |   29 ++
+ releases/patch-0.4.gz           |  Bin 0 -> 906749 bytes
+ server/pages.py                 |   52 ++++-
+ src/css/template.css            |    8 +
+ src/db/2.sql                    |    1 +
+ src/html/invoice.xhtml          |   22 +-
+ src/html/pricing.xhtml          |   22 +-
+ src/html/properties.xhtml       |  106 ++++----
+ src/html/property_invoice.xhtml |   22 +-
+ src/html/reservation.xhtml      |  166 ++++++------
+ src/html/search.xhtml           |   89 +++---
+ src/html/settings.xhtml         |   39 ++--
+ src/html/tableau.xhtml          |  114 ++++----
+ src/html/template.xhtml         |    1 +
+ src/js/cm/pginit.js             |    2 +-
+ src/js/cm/pginvoice.js          |    2 +-
+ src/js/cm/pgpricing.js          |    2 +-
+ src/js/cm/pgprops.js            |    2 +-
+ src/js/cm/pgres.js              |   49 ---
+ src/js/cm/pgsearch.js           |    2 +-
+ src/js/cm/pgsettings.js         |    2 +-
+ src/js/cm/pgtab.js              |   49 ---
+ src/js/commons.js               |   13 +-
+ src/js/invoice.js               |   41 ++--
+ src/js/jquery/jquery.gettext.js |  170 +++++++++++
+ src/js/ll.js                    |  127 +++-----
+ src/js/llsearch.js              |   14 +-
+ src/js/pricing.js               |   31 +--
+ src/js/properties.js            |  103 ++++++--
+ src/js/propsbase.js             |   29 +-
+ src/js/res.js                   |   26 +--
+ src/js/resbase.js               |   10 +-
+ src/js/reservation.js           |   82 ++----
+ src/js/search.js                |  115 ++++----
+ src/js/settings.js              |    2 +-
+ src/js/tab.js                   |  163 ++++++-----
+ src/js/tabbase.js               |   19 +-
+ 51 files changed, 2913 insertions(+), 791 deletions(-)
+ create mode 100755 jpo2mo.py
+ create mode 100644 jslocale/en/LC_MESSAGES/zak.mo
+ create mode 100644 jslocale/en/LC_MESSAGES/zak.po
+ create mode 100644 jslocale/it/LC_MESSAGES/zak.mo
+ create mode 100644 jslocale/it/LC_MESSAGES/zak.po
+ create mode 100644 locale/en/LC_MESSAGES/zak.mo
+ create mode 100644 locale/en/LC_MESSAGES/zak.po
+ create mode 100644 locale/it/LC_MESSAGES/zak.mo
+ create mode 100644 locale/it/LC_MESSAGES/zak.po
+ create mode 100755 po2mo.py
+ create mode 100644 releases/ChangeLog-0.4
+ create mode 100644 releases/ShortLog-0.4
+ create mode 100644 releases/diffstat-0.4
+ create mode 100644 releases/patch-0.4.gz
+ create mode 100644 src/db/2.sql
+ delete mode 100644 src/js/cm/pgres.js
+ delete mode 100644 src/js/cm/pgtab.js
+ create mode 100644 src/js/jquery/jquery.gettext.js
