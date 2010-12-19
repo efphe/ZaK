@@ -1,5 +1,6 @@
 from nevow import rend, loaders, tags as T, inevow
 from nevow.i18n import  I18NConfig
+from twisted.web import resource
 from twisted.web.util import ChildRedirector
 from twisted.web.static import File
 from twisted.python.util import sibpath
@@ -16,6 +17,13 @@ _cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
 from nevow.i18n import render as i18nrender
 _zt_= i18nrender()
 del i18nrender
+
+class Manifest(resource.Resource):
+  def render_GET(self, rqst):
+    rqst.setHeader('Content-Type', 'text/cache-manifest')
+    return \
+"""CACHE MANIFEST
+NETWORK: *"""
 
 class IZak:
   def __init__(self):
@@ -56,6 +64,9 @@ class AdminTemplate(rend.Page):
   def __init__(self, usession= None):
     rend.Page.__init__(self)
     self.usession= usession
+
+  def render_manifest(self, ctx, data):
+    return '/manifest'
 
   def render_i18n(self, ctx, data):
     return _zt_(self, ctx, data).children
@@ -149,7 +160,8 @@ class ZakAdmin(rend.Page):
         display:none;
       }
     </style>
-    <script src="/js/cm/pginit.js"></script> 
+    <script src="/js/cm/j.jsgz"></script> 
+    <script src="/js/cm/pginit.jsgz"></script> 
   </head> 
   <body> 
   <div>
@@ -177,6 +189,7 @@ class ZakAdmin(rend.Page):
         'search': AdminSearch(),
         'favicon.ico': Favicon,
         '': self,
+        'manifest': Manifest(),
         }
 
 def getRootResource():
