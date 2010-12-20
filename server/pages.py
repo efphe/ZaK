@@ -12,7 +12,15 @@ CssDispenser= File(_sdir + 'css', defaultType= 'text/css')
 ImgDispenser= File(_sdir + 'imgs', defaultType= 'image/png')
 Favicon= File(_sdir + 'imgs/favicon.ico')
 
-_cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.css'
+newEncodings= {
+    #'.jsgz': 'application/x-gzip',
+    #'.cssgz': 'application/x-gzip',
+    '.jsgz': 'gzip',
+    '.cssgz': 'gzip',
+    }
+JsDispenser.contentEncodings.update(newEncodings)
+CssDispenser.contentEncodings.update(newEncodings)
+_cssblitz= '/css/ui-themes/blitzer/jquery-ui-1.8.2.custom.cssgz'
 
 from nevow.i18n import render as i18nrender
 _zt_= i18nrender()
