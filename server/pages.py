@@ -144,6 +144,8 @@ class AdminSearch(AdminTemplate):
 
 class AdminInvoice(rend.Page):
   docFactory= loaders.xmlfile(_bdir + 'src/html/invoice.xhtml')
+  def render_i18n(self, ctx, data):
+    return _zt_(self, ctx, data).children
 
 class AdminInit(rend.Page):
   docFactory= None
