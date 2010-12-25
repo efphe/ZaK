@@ -169,6 +169,21 @@ class ZakAdmin(rend.Page):
       #humanMsgLog, #humanMsgErr, #humanMsg, #tmplmadd {
         display:none;
       }
+.tablepricing {
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+.tablepricing td {
+  text-align: center;
+  padding: 4px;
+}
+.tablepricing th {
+  background-color: #bd0000;
+  text-align: center;
+  color: white;
+  padding: 4px;
+}
     </style>
     <script src="/js/cm/j.jsgz"></script> 
     <script src="/js/cm/pginit.jsgz"></script> 
@@ -178,7 +193,9 @@ class ZakAdmin(rend.Page):
     <img src="/imgs/zak.png"></img>
   </div>
   <br/>
+  <div id="zakLoader" style="display:none">
     <b>Welcome</b>:<br/> please wait, Zak is loading... <img src="/imgs/lgear.gif"></img>
+  </div>
   </body> 
 </html>""")
 
