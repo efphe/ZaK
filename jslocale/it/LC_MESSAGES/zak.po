@@ -186,6 +186,15 @@ msgstr "Fattura"
 msgid "Year"
 msgstr "Anno"
 
+msgid "Years"
+msgstr "Anni"
+
+msgid "year"
+msgstr "Anno"
+
+msgid "years"
+msgstr "Anni"
+
 msgid "Number"
 msgstr "Numero"
 

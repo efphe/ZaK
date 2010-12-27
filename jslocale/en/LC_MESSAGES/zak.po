@@ -197,6 +197,15 @@ msgstr "Invoice"
 msgid "Year"
 msgstr "Year"
 
+msgid "Years"
+msgstr "Anni"
+
+msgid "year"
+msgstr "Year"
+
+msgid "years"
+msgstr "Anni"
+
 msgid "Number"
 msgstr "Number"
 
