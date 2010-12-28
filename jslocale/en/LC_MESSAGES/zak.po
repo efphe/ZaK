@@ -198,13 +198,13 @@ msgid "Year"
 msgstr "Year"
 
 msgid "Years"
-msgstr "Anni"
+msgstr "years"
 
 msgid "year"
 msgstr "Year"
 
 msgid "years"
-msgstr "Anni"
+msgstr "years"
 
 msgid "Number"
 msgstr "Number"
