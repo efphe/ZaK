@@ -433,3 +433,34 @@ function goInvoice(rid) {
       });
   });
 }
+
+function updateRoomSetup(rsid) {
+  var name= $('#rs_name_' + rsid).val();
+  if (!name) {
+    humanMsg.displayMsg(_('Please, specify a valid name'));
+    return;
+  }
+  var db= zakOpenDb();
+  db.transaction(function(ses) {
+    ses.executeSql('update room_setup set name = ? where id = ?', [name, rsid],
+    function(ses, recs) {
+      $.modal.close();
+      /*document.location.reload(false);*/
+      humanMsg.displayMsg('Sounds good');
+    },
+    function(ses, err) {
+      $.modal.close();
+      humanMsg.displayMsg('Error there: ' + err.message, 1);
+    });
+  });
+
+}
+
+function delRoomSetup(rsid) {
+  $('#deleting_link').attr('href', 'javascript:_delRoomSetup(' + rsid + ')');
+  $('#deleting_div').modal();
+}
+function _delRoomSetup(mid) {
+  _stupidDelete(mid, 'room_setup');
+}
+
