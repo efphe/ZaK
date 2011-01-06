@@ -393,7 +393,7 @@ function goTableau(rid) {
       function(ses, recs) {
         var dfrom= recs.rows.item(0).dfrom;
         dfrom= parseInt(dfrom) - (86400 *2) ;
-        localStorage.zakTableauDate= dfrom;
+        localStorage.zakTableauDfrom= dfrom;
         goToSameDirPage('tableau');
       },
       function(ses, err) {

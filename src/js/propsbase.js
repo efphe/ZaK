@@ -150,7 +150,7 @@ function _addNewFlyReservation() {
           });
       }
       else {
-        localStorage.zakTableauDate= sday - (86400*3);
+        localStorage.zakTableauDfrom= sday - (86400*3);
         goToSameDirPage('tableau');
       }
     },
