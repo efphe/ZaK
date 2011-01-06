@@ -151,10 +151,19 @@ function llCheckOccupancyChance(oid, rid, day, n, args, cb) {
     ses.executeSql(s, [rid, unixDate(day)], 
       function(ses, recs) {
         var df= recs.rows.item(0).dfrom;
-        if (!df) {cb(ses, args);return;}
-        var diff= diffDateDays(day, df);
-        if (n <= diff) {cb(ses, args);return;}
-        cb(ses, false);
+        if (df && diffDateDays(day, df) < n) {
+          cb(ses, false);
+          return;
+        }
+        ses.executeSql('select count(1) as nn from occupancy where id_room = ? and dfrom < ? and dto > ?', [rid, unixDate(day), unixDate(day)], function(ses, recs) {
+          var nn= recs.rows.item(0).nn;
+          nn= parseInt(nn);
+          if (nn!= 0) {
+            cb(ses, false);
+            return;
+          }
+          cb(ses, args);
+        });
       },
       function(ses, err) {
         cb(ses, false);
